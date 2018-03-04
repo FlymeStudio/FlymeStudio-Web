@@ -1,0 +1,100 @@
+@-webkit-keyframes rotate {
+  0% {
+    -webkit-transform: rotateY(0);
+    -moz-transform   : rotateY(0);
+    -o-transform     : rotateY(0);
+    -ms-transform    : rotateY(0);
+    transform        : rotateY(0);
+  }
+
+  30% {
+    -webkit-transform: rotateY(-360deg);
+    -moz-transform   : rotateY(-360deg);
+    -o-transform     : rotateY(-360deg);
+    -ms-transform    : rotateY(-360deg);
+    transform        : rotateY(-360deg);
+  }
+
+  50% {
+    -webkit-transform: rotateY(-360deg);
+    -moz-transform   : rotateY(-360deg);
+    -o-transform     : rotateY(-360deg);
+    -ms-transform    : rotateY(-360deg);
+    transform        : rotateY(-360deg);
+  }
+
+  80% {
+    -webkit-transform: rotateY(0);
+    -moz-transform   : rotateY(0);
+    -o-transform     : rotateY(0);
+    -ms-transform    : rotateY(0);
+    transform        : rotateY(0);
+  }
+
+  100% {
+    -webkit-transform: rotateY(0);
+    -moz-transform   : rotateY(0);
+    -o-transform     : rotateY(0);
+    -ms-transform    : rotateY(0);
+    transform        : rotateY(0);
+  }
+}
+
+.div-top {
+  list-style-type: none;
+  margin         : 0;
+  padding        : 0;
+  overflow       : hidden;
+  width          : auto;
+  height         : auto;
+  padding        : 5px 10px;
+  align-items    : center;
+  justify-content: center;
+}
+
+.div-top li {
+  height         : auto;
+  width          : auto;
+  float          : left;
+  font-weight    : bold;
+  text-align     : center;
+  align-items    : center;
+  justify-content: center;
+}
+
+.div-top li.li-right {
+  float: right;
+}
+@media screen and (max-width: 500px) {
+  .div-top li {
+    float: none;
+    width: 100%;
+  }
+}
+
+.div-top img {
+  width            : 64px;
+  height           : auto;
+  display          : block;
+  margin           : 0 auto;
+  -webkit-animation: rotate 8s infinite linear;
+  -moz-animation   : rotate 8s infinite linear;
+  -o-animation     : rotate 8s infinite linear;
+  -ms-animation    : rotate 8s infinite linear;
+  transition       : rotate 8s infinite linear;
+}
+
+.div-top span {
+  margin     : 15px;
+  height     : auto;
+  width      : auto;
+  display    : block;
+  color      : #1788e8;
+  font-weight: bold;
+  cursor     : pointer;
+  font-size  : 18px;
+}
+
+.li-right span {
+  text-decoration: underline;
+}

@@ -10,8 +10,8 @@
   <div class="div-content">
     <ul class="content-tag">
       <li v-bind:class="tagId == 0 ? 'li-active' : ''" @click="clickInformation">Info</li>
-      <li v-bind:class="tagId == 1 ? 'li-active' : ''" @click="clickplan">Plan</li>
-      <li v-bind:class="tagId == 2 ? 'li-active' : ''" @click="clickachieve">Achieve</li>
+      <li v-bind:class="tagId == 1 ? 'li-active' : ''" @click="clickPlan">Plan</li>
+      <li v-bind:class="tagId == 2 ? 'li-active' : ''" @click="clickAchieve">Achieve</li>
     </ul>
     <div class="content-data">
       <div class="data-information" v-show="tagId == 0">
@@ -53,39 +53,51 @@
         <span class="span-value" style="color:red;">{{ information.plan.rest }}</span>
         <progress class="plan-progress" max="100" value="75" />
         <span class="span-value">{{ information.plan.percent }}</span>
-        <ul>
-          <li v-for="year in plan" :key="year.year">
-            {{ year.year + ' : ' + year.title}}
+        <ul id="ul-plan">
+          <!-- <li class="li-item" v-for="year in plan" :key="year.year">
+            {{ year.year }}
+            <span v-if="year.title != ''"> >>>>>> </span>
+            <span class="span-value" @click="openPlan()" v-if="year.title != ''">{{ year.title }}</span>
             <ul>
-              <li v-for="month in year.res" :key="month.month">
-                {{ month.month + ' : ' + month.title }}
+              <li class="li-item" v-for="month in year.res" :key="month.month">
+                {{ month.month }}
+                <span v-if="month.title != ''"> >>>>>> </span>
+                <span class="span-value" @click="openPlan()" v-if="month.title != ''">{{ month.title }}</span>
                 <ul>
-                  <li v-for="day in month.res" :key="day.day">
-                    {{ day.day + ' : ' + day.title }}
+                  <li class="li-item" v-for="day in month.res" :key="day.day">
+                    {{ day.day }}
+                    <span v-if="day.title != ''"> >>>>>> </span>
+                    <span class="span-value" @click="openPlan()" v-if="day.title != ''">{{ day.title }}</span>
                   </li>
                 </ul>
               </li>
             </ul>
-          </li>
+          </li> -->
         </ul>
       </div>
       <div class="data-achieve" v-show="tagId == 2">
         <span class="span-key">Total</span>
         <span class="span-value">{{ information.achieve.total }}</span>
-        <ul>
-          <li v-for="year in achieve" :key="year.year">
-            {{ year.year + ' : ' + year.title}}
+        <ul id="ul-achieve">
+          <!-- <li class="li-item" v-for="year in achieve" :key="year.year">
+            {{ year.year }}
+            <span v-if="year.title != ''"> >>>>>> </span>
+            <span class="span-value" @click="openPlan()" v-if="year.title != ''">{{ year.title }}</span>
             <ul>
-              <li v-for="month in year.res" :key="month.month">
-                {{ month.month + ' : ' + month.title }}
+              <li class="li-item" v-for="month in year.res" :key="month.month">
+                {{ month.month }}
+                <span v-if="month.title != ''"> >>>>>> </span>
+                <span class="span-value" @click="openPlan()" v-if="month.title != ''">{{ month.title }}</span>
                 <ul>
-                  <li v-for="day in month.res" :key="day.day">
-                    {{ day.day + ' : ' + day.title }}
+                  <li class="li-item" v-for="day in month.res" :key="day.day">
+                    {{ day.day }}
+                    <span v-if="day.title != ''"> >>>>>> </span>
+                    <span class="span-value" @click="openPlan()" v-if="day.title != ''">{{ day.title }}</span>
                   </li>
                 </ul>
               </li>
             </ul>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -221,14 +233,74 @@ export default {
     clickInformation: function () {
       this.tagId = 0
     },
-    clickplan: function () {
+    clickPlan: function () {
       this.tagId = 1
     },
-    clickachieve: function () {
+    clickAchieve: function () {
       this.tagId = 2
+    },
+    openPlan: function () {},
+    initPlans: function () {
+      var ul_plan_year = document.getElementById('ul-plan')
+      var years = this.plan
+      for (var i = 0; i < years.length; i++) {
+        var li_year = document.createElement('li')
+        li_year.setAttribute('class', 'li-item')
+        var text_year = document.createTextNode(years[i].year)
+        li_year.appendChild(text_year)
+        if (years[i].title.trim().length > 0) {
+          var span_year = document.createElement('span')
+          span_year.setAttribute('class', 'span-value')
+          var text_year_title = document.createTextNode(years[i].title)
+          li_year.appendChild(text_year_title)
+        }
+        if (years.res.length > 0) {
+          var months = years.res
+          var ul_plan_month = document.createElement('ul')
+          for (var j = 0; j < months.length; j++) {
+            var li_month = document.createElement('li')
+            li_month.setAttribute('class', 'li-item')
+            var text_month = document.createTextNode(months[j].month)
+            li_month.appendChild(text_month)
+            if (months[j].title.trim().length > 0) {
+              var span_month = document.createElement('span')
+              span_month.setAttribute('class', 'span-value')
+              var text_month_title = document.createTextNode(months[j].title)
+              span_month.appendChild(text_month_title)
+              li_month.appendChild(text_month_title)
+            }
+            if (months.res.length > 0) {
+              var days = months.res
+              var ul_plan_day = document.createElement('ul')
+              for (var k = 0; k < days.length; k++) {
+                var li_day = document.createElement('li')
+                li_day.setAttribute('class', 'li-item')
+                var text_day = document.createTextNode(days[k].day)
+                li_day.appendChild(text_day)
+                if (days[k].title.trim().length > 0) {
+                  var span_day = document.createElement('span')
+                  span_day.setAttribute('class', 'span-value')
+                  var text_day_title = document.createTextNode(days[k].title)
+                  span_day.appendChild(text_day_title)
+                  li_day.appendChild(span_day)
+                }
+                ul_plan_day.appendChild(li_day)
+              }
+              li_month.appendChild(ul_plan_day)
+            }
+            ul_plan_month.appendChild(li_month)
+          }
+          li_year.appendChild(ul_plan_month)
+        }
+        ul_plan_year.appendChild(li_year)
+      }
+    },
+    initAchieves: function () {
+
     }
   }
 }
+
 </script>
 
 <style scoped >
@@ -325,7 +397,8 @@ export default {
   font-size   : 20px;
 }
 
-.btn-details {
-  margin-top: 15px;
+.li-item{
+  margin-bottom: 10px;
+  font-size   : 20px;
 }
 </style>

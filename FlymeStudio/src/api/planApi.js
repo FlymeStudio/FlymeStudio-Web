@@ -1,23 +1,20 @@
 import {
-  registerApi
+  planApi
 } from './urlApi'
 import axios from 'axios'
 import qs from 'qs'
 
 export default {
-  register (name, tel, email, password) {
+  plan (tel) {
     var data = qs.stringify({
-      name: name,
-      tel: tel,
-      email: email,
-      password: password
+      tel: tel
     })
     return axios({
       method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: registerApi.registerUrl(),
+      url: planApi.planUrl(),
       data: data,
       withCredentials: true
     })

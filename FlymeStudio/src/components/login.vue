@@ -1,7 +1,7 @@
 <template>
 <div class="div-outer">
   <div class="div-login">
-    <div><img src="https://cloud-res.mzres.com/resources/sync/images/flymelogo144.png">
+    <div><img class="img-flyme"  src="https://cloud-res.mzres.com/resources/sync/images/flymelogo144.png" @click="flyme">
     </div>
     <form class="form-login" onsubmit="">
       <input type="email|tel" placeHolder="Email or tel" v-model="id" />
@@ -28,18 +28,21 @@ export default {
     }
   },
   methods: {
+    flyme: function () {
+      window.open('https://www.flyme.cn/')
+    },
     login: function () {
-      this.$router.push('/main')
+      this.$router.push('/home')
+      let _this = this
       loginApi.login(this.id, this.password)
         .then(function (response) {
           if (response.data.result === true) {
-            let _this = this
-            let loginInfo = {
-              id: _this.id,
-              password: _this.password
-            }
-            _this.$store.dispatch('doLogin', loginInfo)
-            _this.$router.push('/main')
+            // let loginInfo = {
+            //   id: _this.id,
+            //   password: _this.password
+            // }
+            // _this.$store.dispatch('doLogin', loginInfo)
+            _this.$router.push('/home')
           }
         })
     },
@@ -74,12 +77,7 @@ export default {
 }
 
 .div-login img {
-  margin-top       : 10px;
-  -webkit-animation: rotate 8s infinite linear;
-  -moz-animation   : rotate 8s infinite linear;
-  -o-animation     : rotate 8s infinite linear;
-  -ms-animation    : rotate 8s infinite linear;
-  transition       : rotate 8s infinite linear;
+  margin-top: 10px;
 }
 
 .form-login {

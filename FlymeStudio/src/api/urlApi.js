@@ -14,14 +14,14 @@ export const quitApi = {
   quitUrl: () => ''
 }
 
-export const informationApi = {
-  informatioUrl: () => ''
+export const infoApi = {
+  infoUrl: () => ''
 }
 
-export const objectiveApi = {
-  objectiveUrl: () => ''
+export const planApi = {
+  planUrl: () => ''
 }
 
-export const summaryApi = {
-  summaryUrl: () => ''
+export const achieveApi = {
+  achieveUrl: () => ''
 }

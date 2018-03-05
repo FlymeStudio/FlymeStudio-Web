@@ -1,8 +1,8 @@
 <template>
 <div>
   <ul class="div-top">
-    <li><img src="https://cloud-res.mzres.com/resources/sync/images/flymelogo144.png"></li>
-    <li><span @click="flyme" style="font-size:30px;">Flyme</span></li>
+    <li><img class="img-flyme"  src="https://cloud-res.mzres.com/resources/sync/images/flymelogo144.png" @click="flyme"></li>
+    <li><span style="font-size:30px;" @click="flyme">Flyme</span></li>
     <li class="li-right"><span @click="retrieve">Retrieve</span></li>
     <li class="li-right"><span @click="login">Sign In</span></li>
   </ul>
@@ -10,23 +10,23 @@
     <form class="div-content-register" v-show="!isResultView">
       <div class="div-item">
         <input type="text" placeHolder="Name" v-model.trim="name" />
-        <div class="input-state" v-bind:class="{ correct: isNameCorrect }" />
+        <div v-bind:class="['input-state', { correct: isNameCorrect }]" />
       </div>
       <div class="div-item">
         <input type="tel" placeHolder="Tel" v-model.trim="tel" />
-        <div class="input-state" v-bind:class="{ correct: isTelCorrect }" />
+        <div v-bind:class="['input-state', { correct: isTelCorrect }]" />
       </div>
       <div class="div-item">
         <input type="email" placeHolder="Email" v-model.trim="email" />
-        <div class="input-state" v-bind:class="{ correct: isEmailCorrect }" />
+        <div v-bind:class="['input-state', { correct: isEmailCorrect }]" />
       </div>
       <div class="div-item">
         <input type="password" placeHolder="Password" v-model.trim="password" />
-        <div class="input-state" v-bind:class="{ correct: isPasswordCorrect }" />
+        <div v-bind:class="['input-state', { correct: isPasswordCorrect }]" />
       </div>
       <div class="div-item">
         <input type="password" placeHolder="Confirm" v-model.trim="confirm" />
-        <div class="input-state" v-bind:class="{ correct: isConfirmCorrect }" />
+        <div v-bind:class="['input-state', { correct: isConfirmCorrect }]" />
       </div>
       <button v-bind:class="[{ 'btn-correct': isDataCorrect }, 'btn-sign']" @click="register">Sign Up</button>
       <div class="div-message" style="color:red;" v-show="isRegisterCallback">{{ messageFail }}</div>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-// import registerApi from '../api/registerApi'
+import registerApi from '../api/registerApi'
 
 export default {
   name: 'register',
@@ -117,16 +117,15 @@ export default {
     },
     register: function () {
       if (this.isDataCorrect) {
-        this.$router.push('/home')
-        // registerApi.register(this.name, this.tel, this.email, this.password)
-        //   .then(function (response) {
-        //     if (response.data.result === true) {
-        //       this.isResultView = true
-        //     } else {
-        //       this.isResultView = false
-        //       this.isRegisterCallback = true
-        //     }
-        //   })
+        registerApi.register(this.name, this.tel, this.email, this.password)
+          .then(function (response) {
+            if (response.data.result === true) {
+              this.isResultView = true
+            } else {
+              this.isResultView = false
+              this.isRegisterCallback = true
+            }
+          })
       }
     }
   }

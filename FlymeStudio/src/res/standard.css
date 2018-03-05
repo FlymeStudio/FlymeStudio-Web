@@ -73,15 +73,19 @@
 }
 
 .div-top img {
-  width            : 64px;
-  height           : auto;
-  display          : block;
-  margin           : 0 auto;
+  width  : 64px;
+  height : auto;
+  display: block;
+  margin : 0 auto;
+}
+
+.img-flyme {
   -webkit-animation: rotate 8s infinite linear;
   -moz-animation   : rotate 8s infinite linear;
   -o-animation     : rotate 8s infinite linear;
   -ms-animation    : rotate 8s infinite linear;
   transition       : rotate 8s infinite linear;
+  cursor           : pointer;
 }
 
 .div-top span {
@@ -92,6 +96,7 @@
   color      : #1788e8;
   font-weight: bold;
   cursor     : pointer;
+  text-align : center;
   font-size  : 18px;
 }
 

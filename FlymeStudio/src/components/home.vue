@@ -54,50 +54,50 @@
         <progress class="plan-progress" max="100" value="75" />
         <span class="span-value">{{ information.plan.percent }}</span>
         <ul id="ul-plan">
-          <!-- <li class="li-item" v-for="year in plan" :key="year.year">
+          <li class="li-item" v-for="year in plan" :key="year.year">
             {{ year.year }}
-            <span v-if="year.title != ''"> >>>>>> </span>
-            <span class="span-value" @click="openPlan()" v-if="year.title != ''">{{ year.title }}</span>
+            <span v-if="year.title != ''"> ———— </span>
+            <span class="item-value" @click="openPlan(year.searchId)" v-if="year.title != ''">{{ year.title }}</span>
             <ul>
-              <li class="li-item" v-for="month in year.res" :key="month.month">
+              <li class="li-item" v-for="month in year.array" :key="month.month">
                 {{ month.month }}
-                <span v-if="month.title != ''"> >>>>>> </span>
-                <span class="span-value" @click="openPlan()" v-if="month.title != ''">{{ month.title }}</span>
+                <span v-if="month.title != ''"> ———— </span>
+                <span class="item-value" @click="openPlan(month.searchId)" v-if="month.title != ''">{{ month.title }}</span>
                 <ul>
-                  <li class="li-item" v-for="day in month.res" :key="day.day">
+                  <li class="li-item" v-for="day in month.array" :key="day.day">
                     {{ day.day }}
-                    <span v-if="day.title != ''"> >>>>>> </span>
-                    <span class="span-value" @click="openPlan()" v-if="day.title != ''">{{ day.title }}</span>
+                    <span v-if="day.title != ''"> ———— </span>
+                    <span class="item-value" @click="openPlan(day.searchId)" v-if="day.title != ''">{{ day.title }}</span>
                   </li>
                 </ul>
               </li>
             </ul>
-          </li> -->
+          </li>
         </ul>
       </div>
       <div class="data-achieve" v-show="tagId == 2">
         <span class="span-key">Total</span>
         <span class="span-value">{{ information.achieve.total }}</span>
         <ul id="ul-achieve">
-          <!-- <li class="li-item" v-for="year in achieve" :key="year.year">
+          <li class="li-item" v-for="year in achieve" :key="year.year">
             {{ year.year }}
-            <span v-if="year.title != ''"> >>>>>> </span>
-            <span class="span-value" @click="openPlan()" v-if="year.title != ''">{{ year.title }}</span>
+            <span v-if="year.title != ''"> ———— </span>
+            <span class="item-value" @click="openAchieve(year.searchId)" v-if="year.title != ''">{{ year.title }}</span>
             <ul>
-              <li class="li-item" v-for="month in year.res" :key="month.month">
+              <li class="li-item" v-for="month in year.array" :key="month.month">
                 {{ month.month }}
-                <span v-if="month.title != ''"> >>>>>> </span>
-                <span class="span-value" @click="openPlan()" v-if="month.title != ''">{{ month.title }}</span>
+                <span v-if="month.title != ''"> ———— </span>
+                <span class="item-value" @click="openAchieve(month.searchId)" v-if="month.title != ''">{{ month.title }}</span>
                 <ul>
-                  <li class="li-item" v-for="day in month.res" :key="day.day">
+                  <li class="li-item" v-for="day in month.array" :key="day.day">
                     {{ day.day }}
-                    <span v-if="day.title != ''"> >>>>>> </span>
-                    <span class="span-value" @click="openPlan()" v-if="day.title != ''">{{ day.title }}</span>
+                    <span v-if="day.title != ''"> ———— </span>
+                    <span class="item-value" @click="openAchieve(day.searchId)" v-if="day.title != ''">{{ day.title }}</span>
                   </li>
                 </ul>
               </li>
             </ul>
-          </li> -->
+          </li>
         </ul>
       </div>
     </div>
@@ -137,60 +137,76 @@ export default {
       },
       plan: [{
         year: 2017,
+        searchId: 0,
         title: '',
-        res: [{
+        array: [{
           month: 8,
+          searchId: 1,
           title: '',
-          res: []
+          array: []
         }, {
           month: 12,
+          searchId: 2,
           title: '12 month',
-          res: [{
+          array: [{
             day: 13,
+            searchId: 3,
             title: '13 day'
           }, {
             day: 24,
+            searchId: 4,
             title: '24 day'
           }]
         }]
       }, {
         year: 2018,
+        searchId: 5,
         title: '2018 year',
-        res: [{
+        array: [{
           month: 1,
+          searchId: 6,
           title: '',
-          res: [{
+          array: [{
             day: 6,
+            searchId: 7,
             title: '6 day'
           }]
         }]
       }],
       achieve: [{
         year: 2017,
+        searchId: 8,
         title: '',
-        res: [{
+        array: [{
           month: 8,
+          searchId: 9,
           title: '',
-          res: []
+          array: []
         }, {
           month: 12,
+          searchId: 10,
           title: '12 month',
-          res: [{
+          array: [{
             day: 13,
+            searchId: 11,
             title: '13 day'
           }, {
             day: 24,
+            searchId: 12,
             title: '24 day'
           }]
         }]
       }, {
         year: 2018,
+        searchId: 13,
         title: '2018 year',
-        res: [{
+        array: [{
           month: 1,
+          searchId: 14,
           title: '',
-          res: [{
+          array: [{
             day: 6,
+            searchId: 15,
             title: '6 day'
           }]
         }]
@@ -239,64 +255,11 @@ export default {
     clickAchieve: function () {
       this.tagId = 2
     },
-    openPlan: function () {},
-    initPlans: function () {
-      var ul_plan_year = document.getElementById('ul-plan')
-      var years = this.plan
-      for (var i = 0; i < years.length; i++) {
-        var li_year = document.createElement('li')
-        li_year.setAttribute('class', 'li-item')
-        var text_year = document.createTextNode(years[i].year)
-        li_year.appendChild(text_year)
-        if (years[i].title.trim().length > 0) {
-          var span_year = document.createElement('span')
-          span_year.setAttribute('class', 'span-value')
-          var text_year_title = document.createTextNode(years[i].title)
-          li_year.appendChild(text_year_title)
-        }
-        if (years.res.length > 0) {
-          var months = years.res
-          var ul_plan_month = document.createElement('ul')
-          for (var j = 0; j < months.length; j++) {
-            var li_month = document.createElement('li')
-            li_month.setAttribute('class', 'li-item')
-            var text_month = document.createTextNode(months[j].month)
-            li_month.appendChild(text_month)
-            if (months[j].title.trim().length > 0) {
-              var span_month = document.createElement('span')
-              span_month.setAttribute('class', 'span-value')
-              var text_month_title = document.createTextNode(months[j].title)
-              span_month.appendChild(text_month_title)
-              li_month.appendChild(text_month_title)
-            }
-            if (months.res.length > 0) {
-              var days = months.res
-              var ul_plan_day = document.createElement('ul')
-              for (var k = 0; k < days.length; k++) {
-                var li_day = document.createElement('li')
-                li_day.setAttribute('class', 'li-item')
-                var text_day = document.createTextNode(days[k].day)
-                li_day.appendChild(text_day)
-                if (days[k].title.trim().length > 0) {
-                  var span_day = document.createElement('span')
-                  span_day.setAttribute('class', 'span-value')
-                  var text_day_title = document.createTextNode(days[k].title)
-                  span_day.appendChild(text_day_title)
-                  li_day.appendChild(span_day)
-                }
-                ul_plan_day.appendChild(li_day)
-              }
-              li_month.appendChild(ul_plan_day)
-            }
-            ul_plan_month.appendChild(li_month)
-          }
-          li_year.appendChild(ul_plan_month)
-        }
-        ul_plan_year.appendChild(li_year)
-      }
+    openPlan: function (searchId) {
+      console.log('searchId:' + searchId)
     },
-    initAchieves: function () {
-
+    openAchieve: function (searchId) {
+      console.log('searchId:' + searchId)
     }
   }
 }
@@ -334,11 +297,11 @@ export default {
   cursor                     : pointer;
   padding-left               : 5px;
   font-size                  : 20px;
-  -webkit-transition-duration: 0.5s;
-  -moz-transition-duration   : 0.5s;
-  -o-transition-duration     : 0.5s;
-  -ms-transition-duration    : 0.5s;
-  transition-duration        : 0.5s;
+  -webkit-transition-duration: .5s;
+  -moz-transition-duration   : .5s;
+  -o-transition-duration     : .5s;
+  -ms-transition-duration    : .5s;
+  transition-duration        : .5s;
 }
 
 .content-tag li:hover {
@@ -397,8 +360,18 @@ export default {
   font-size   : 20px;
 }
 
-.li-item{
-  margin-bottom: 10px;
-  font-size   : 20px;
+.li-item {
+  margin-bottom: 15px;
+  font-size    : 20px;
+}
+
+.item-value {
+  margin-left    : 20px;
+  color          : #1788e8;
+  font-weight    : bold;
+  margin-right   : 15px;
+  font-size      : 20px;
+  cursor         : pointer;
+  text-decoration: underline;
 }
 </style>

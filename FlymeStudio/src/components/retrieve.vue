@@ -2,7 +2,7 @@
 <div class="div-msg">{{ message }}</div>
 </template>
 
-<script>
+<script type="text/javascript">
 export default {
   name: 'retrieve',
   data () {

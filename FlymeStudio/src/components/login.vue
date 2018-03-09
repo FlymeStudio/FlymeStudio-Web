@@ -16,7 +16,7 @@
 </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import loginApi from '../api/loginApi'
 
 export default {
@@ -56,7 +56,7 @@ export default {
 }
 </script>
 
-<style scoped >
+<style scoped>
 .div-outer {
   width          : 100%;
   height         : 100%;

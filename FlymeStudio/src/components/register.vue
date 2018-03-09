@@ -39,7 +39,7 @@
 </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import registerApi from '../api/registerApi'
 
 export default {

@@ -41,18 +41,20 @@
 }
 
 .div-top {
-  list-style-type: none;
-  margin         : 0;
-  padding        : 0;
-  overflow       : hidden;
-  width          : auto;
-  height         : auto;
-  padding        : 5px 10px;
-  align-items    : center;
-  justify-content: center;
+  list-style-type : none;
+  margin          : 0;
+  overflow        : hidden;
+  width           : 100%;
+  height          : auto;
+  padding         : 5px 0;
+  align-items     : center;
+  justify-content : center;
+  background-color: white;
 }
 
 .div-top li {
+  margin         : 0 auto;
+  padding        : 0 10px;
   height         : auto;
   width          : auto;
   float          : left;
@@ -66,9 +68,10 @@
   float: right;
 }
 @media screen and (max-width: 500px) {
-  .div-top li {
+  .div-top li,
+  .div-top li.li-right {
     float: none;
-    width: 100%;
+    width: 90%;
   }
 }
 

@@ -3,7 +3,7 @@ export const loginApi = {
 }
 
 export const registerApi = {
-  registerUrl: () => 'https://www.baidu.com/'
+  registerUrl: () => ''
 }
 
 export const retrieveApi = {

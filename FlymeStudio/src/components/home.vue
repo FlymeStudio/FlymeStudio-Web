@@ -58,10 +58,7 @@ import componentAchieveOverview from './achieve-overview.vue'
 import componentAchieveWrite from './achieve-write.vue'
 import componentAchieveUpload from './achieve-upload.vue'
 import componentAchieveSearch from './achieve-search.vue'
-import quitApi from '../api/quitApi'
-// import infoApi from '../api/infoApi'
-// import planApi from '../api/planApi'
-// import achieveApi from '../api/achieveApi'
+import accountApi from '../api/accountApi'
 
 export default {
   name: 'home',
@@ -97,17 +94,17 @@ export default {
   methods: {
     getInfo () {
       this.name = '曾宇'
-      // infoApi.info(this).then(function (response) {
+      // accountApi.info(this).then(function (response) {
       //   if (response.data.result === true) {
       //     this.information = response.data.information
       //   }
       // })
-      // planApi.plan(this).then(function (response) {
+      // accountApi.plan(this).then(function (response) {
       //   if (response.data.result === true) {
       //     this.plan = response.data.plan
       //   }
       // })
-      // achieveApi.achieve(this).then(function (response) {
+      // accountApi.achieve(this).then(function (response) {
       //   if (response.data.result === true) {
       //     this.achieve = response.data.achieve
       //   }
@@ -121,7 +118,7 @@ export default {
     },
     clickQuit: function () {
       this.$router.push('/login')
-      quitApi.quit(this.tel).then(function (response) {
+      accountApi.quit(this.tel).then(function (response) {
         if (response.data.result === true) {
           this.$router.push('/login')
         }

@@ -17,7 +17,7 @@
 </template>
 
 <script type="text/javascript">
-import loginApi from '../api/loginApi'
+import accountApi from '../api/accountApi'
 
 export default {
   name: 'login',
@@ -34,7 +34,7 @@ export default {
     login: function () {
       this.$router.push('/home')
       let _this = this
-      loginApi.login(this.id, this.password)
+      accountApi.login(this.id, this.password)
         .then(function (response) {
           if (response.data.result === true) {
             // let loginInfo = {

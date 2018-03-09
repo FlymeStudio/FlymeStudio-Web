@@ -40,7 +40,7 @@
 </template>
 
 <script type="text/javascript">
-import registerApi from '../api/registerApi'
+import accountApi from '../api/accountApi'
 
 export default {
   name: 'register',
@@ -117,7 +117,7 @@ export default {
     },
     register: function () {
       if (this.isDataCorrect) {
-        registerApi.register(this.name, this.tel, this.email, this.password)
+        accountApi.register(this.name, this.tel, this.email, this.password)
           .then(function (response) {
             if (response.data.result === true) {
               this.isResultView = true

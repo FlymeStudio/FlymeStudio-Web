@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="div-all">
   <ul class="div-top">
     <li><img class="img-flyme" src="https://cloud-res.mzres.com/resources/sync/images/flymelogo144.png" @click="clickFlyme"></li>
     <li><span style="font-size:25px;">{{ name }}</span></li>
@@ -143,6 +143,10 @@ export default {
   border-bottom: 3px solid #bbb;
 }
 
+.div-all{
+  min-width: 600px;
+}
+
 .div-content {
   width  : auto;
   height : auto;
@@ -193,15 +197,14 @@ export default {
 }
 
 .div-right-outer {
-  width  : auto;
-  height : auto;
-  padding: 20px;
+  width      : auto;
+  height     : auto;
+  padding    : 20px;
+  border-left: 0.5px solid #bbb;
 }
 
 .div-right {
-  height          : 100%;
-  margin-left     : 180px;
-  background-color: yellow;
-  border-left     : 0.5px solid #bbb;
+  height     : 100%;
+  margin-left: 180px;
 }
 </style>

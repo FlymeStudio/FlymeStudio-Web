@@ -1,28 +1,30 @@
 <template>
 <div id="plan-write">
   <form>
-    <input class="input-type" type="radio" name="types" id="0"/>
-    <span class="span-type">Year</span>
-    <input class="input-type" type="radio" name="types" id="1"/>
-    <span class="span-type">Month</span>
-    <input class="input-type" type="radio" name="types" id="2"/>
-    <span class="span-type">Day</span>
-    <input class="input-date" type="date" v-model="date"/>
-    <input class="input-filename" type="text" v-model="filename" placeHolder="filename"/>
-    <textarea class="textarea-content" type="text" v-model="content" placeHolder="Content"/>
+    <input class="input-type" type="radio" name="types" id="0" />
+    <span class="span-type">Yearly</span>
+    <input class="input-type" type="radio" name="types" id="1" />
+    <span class="span-type">Monthly</span>
+    <input class="input-type" type="radio" name="types" id="2" />
+    <span class="span-type">Weekly</span>
+    <input class="input-type" type="radio" name="types" id="3" />
+    <span class="span-type">Daily</span>
+    <input class="input-date" type="date" v-model="date" />
+    <input class="input-articlename" type="text" v-model="articlename" placeHolder="Article name" />
+    <mavon-editor id="me"></mavon-editor>
     <button class="btn-submit" @click="submit">Submit</button>
   </form>
 </div>
 </template>
 
 <script type="text/javascript">
+
 export default {
   name: 'plan-write',
   data () {
     return {
       date: '',
-      filename: '',
-      content: ''
+      articlename: ''
     }
   },
   methods: {
@@ -35,7 +37,7 @@ export default {
 
 <style scoped>
 .input-type {
-  margin-left: 20px;
+  margin-right: 5px;
   font-size  : 22px;
 }
 
@@ -43,36 +45,30 @@ export default {
   align-items: center;
   height     : auto;
   font-size  : 20px;
+  margin-right: 20px;
 }
 
 .input-date {
-  margin-left: 30px;
+  margin-top: 20px;
   width      : 160px;
   font-size  : 18px;
-}
-
-.input-filename {
-  width     : auto;
-  margin    : 20px 0;
-  height    : auto;
-  word-wrap : break-word;
-  font-size : 25px;
-  display   : block;
-  color     : #1788e8;
-}
-
-.textarea-content {
-  height     : 600px;
-  width      : 90%;
-  overflow   : auto;
-  word-wrap  : break-word;
-  margin     : 20px 0;
   display    : block;
-  color      : #1788e8;
-  font-size  : 20px;
-  resize     : none;
-  line-height: 30px;
-  padding    : 5px;
+}
+
+.input-articlename {
+  width    : auto;
+  margin   : 20px 0;
+  height   : auto;
+  word-wrap: break-word;
+  font-size: 25px;
+  display  : block;
+  color    : #1788e8;
+}
+
+#me {
+  height : 600px;
+  width  : 100%;
+  margin : 20px 0;
 }
 
 .btn-submit {

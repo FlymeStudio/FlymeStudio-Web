@@ -8,9 +8,9 @@
     <Input class="input-title" type="text" v-model="title" placeholder="Title" clearable size="large" />
     <mavon-editor class="mavonEditor" v-model="markdownValue" :toolbarsFlag="toolbarsFlag" :subfield="subfield" :defaultOpen="defaultOpen" :toolbars="toolbars"></mavon-editor>
     <input class="input-chooser" icon="ios-cloud-upload-outline" type="file" accept=".md" id="chooser">
-    <Button class="btn-upload" @click="modalConfirm = true"  size="large">Upload</Button>
+    <Button class="btn-upload" @click="upload" size="large">Upload</Button>
     <Button type="success" class="btn-save" @click="save"  size="large">Save</Button>
-    <Modal class="modal-confirm" v-model="modalConfirm" title="Warning" @on-ok="upload" @on-cancel="uploadCancel">
+    <Modal class="modal-confirm" v-model="modalConfirm" title="Warning" @on-ok="uploadOk" @on-cancel="uploadCancel">
       <p>The content you upload will cover the origin content.</p>
       <p>Are you sure to upload?</p>
     </Modal>
@@ -46,7 +46,7 @@ export default {
       title: '',
       markdownValue: '',
       toolbarsFlag: true,
-      subfield: false,
+      subfield: true,
       defaultOpen: '',
       toolbars: {
         bold: true, // 粗体
@@ -88,6 +88,11 @@ export default {
   },
   methods: {
     upload: function () {
+      if (document.getElementById('chooser').files[0] != null) {
+        this.modalConfirm = true
+      }
+    },
+    uploadOk: function () {
       var file = document.getElementById('chooser').files[0]
       var reader = new FileReader()
       let _this = this
@@ -103,6 +108,9 @@ export default {
       }
       reader.readAsText(file, 'utf-8')
     },
+    uploadCancel () {
+      this.modal1 = false
+    },
     uploadSuccess (nodesc) {
       this.$Notice.success({
         title: 'Upload successful',
@@ -115,9 +123,6 @@ export default {
         desc: nodesc ? '' : 'Upload failed. '
       })
     },
-    uploadCancel () {
-      this.modal1 = false
-    },
     save: function () {}
   }
 }
@@ -125,28 +130,29 @@ export default {
 
 <style scoped>
 .select-type {
-  width    : 160px;
+  width       : 160px;
   margin-right: 20px;
-  z-index     : 1501;
-  position: relative;
+  z-index     : 7;
+  position    : relative;
 }
 
 .datePicker {
-  width    : 160px;
-  z-index     : 1501;
+  width   : 160px;
+  z-index : 7;
   position: relative;
 }
 
 .input-title {
-  width    : 240px;
-  margin   : 20px 0;
-  display  : block;
+  width  : 240px;
+  margin : 20px 0;
+  display: block;
 }
 
 .mavonEditor {
-  height: 600px;
-  width : 100%;
-  margin: 20px 0;
+  height : 600px;
+  width  : 100%;
+  margin : 20px 0;
+  z-index: 5;
 }
 
 .input-chooser {
@@ -156,19 +162,19 @@ export default {
 }
 
 .btn-upload {
-  width    : auto;
-  margin   : 10px 0;
+  width : auto;
+  margin: 10px 0;
 }
 
 .btn-save {
-  width    : 120px;
-  margin   : 10px 0;
-  display  : block;
+  width  : 120px;
+  margin : 10px 0;
+  display: block;
 }
 
 .modal-confirm {
   position: absolute;
-  z-index : 1501;
+  z-index : 10;
   color   : red;
 }
 

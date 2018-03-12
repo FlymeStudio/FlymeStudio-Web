@@ -1,17 +1,19 @@
 <template>
 <div id="info">
-  <div class="div-item">
-    <img class="img-info" src="../assets/tel.jpg">
-    <span class="span-info">{{ tel }}</span>
-  </div>
-  <div class="div-item">
-    <img class="img-info" src="../assets/email.jpg">
-    <span class="span-info">{{ email }}</span>
-  </div>
-  <div class="div-item">
-    <img class="img-info" src="../assets/login.jpg">
-    <span class="span-info">{{ login }}</span>
-  </div>
+  <Menu width="auto">
+    <MenuItem>
+    <Icon type="ios-telephone"></Icon>
+    {{ tel }}
+    </MenuItem>
+    <MenuItem>
+    <Icon type="email"></Icon>
+    {{ email }}
+    </MenuItem>
+    <MenuItem>
+    <Icon type="log-in"></Icon>
+    {{ login }}
+    </MenuItem>
+  </Menu>
 </div>
 </template>
 

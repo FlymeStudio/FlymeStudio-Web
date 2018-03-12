@@ -1,69 +1,92 @@
 <template>
-<div class="div-all">
-  <ul class="div-top">
-    <li><img class="img-flyme" src="https://cloud-res.mzres.com/resources/sync/images/flymelogo144.png" @click="clickFlyme"></li>
-    <li><span style="font-size:25px;">{{ name }}</span></li>
-    <li><span></span></li>
-    <li class="li-right"><span @click="clickQuit">Sign Out</span></li>
-    <li class="li-right"><span @click="clickHelp">Help</span></li>
-  </ul>
-
-  <div class="div-content">
-    <div class="div-left-outer">
-      <div class="div-left">
-        <div v-bind:class="tagId == 0 ? ['div-tag', 'tag-active'] : 'div-tag'" @click="select(0)">Info</div>
-
-        <div v-bind:class="tagId == 1 ? ['div-tag', 'tag-active'] : 'div-tag'" @click="select(1)">Plan</div>
-        <transition name="slide-fade">
-        <div class="div-ul" v-show="isPlanShow">
-          <div v-bind:class="tagId == 10 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(10)">Overview</div>
-          <div v-bind:class="tagId == 11 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(11)">Write</div>
-          <div v-bind:class="tagId == 12 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(12)">Search</div>
+<div class="layout">
+  <Layout>
+    <Header>
+      <Menu class="menu" mode="horizontal" theme="dark" @on-select="clickTopNav">
+        <div class="layout-logo" @click="clickFlyme"></div>
+        <div class="layout-nav">
+          <MenuItem name="0-1">
+          <Icon type="person"></Icon>
+          {{ name }}
+          </MenuItem>
+          <MenuItem name="0-2">
+          <Icon type="help"></Icon>
+          Help
+          </MenuItem>
+          <MenuItem name="0-3">
+          <Icon type="log-out"></Icon>
+          Sign Out
+          </MenuItem>
         </div>
-        </transition>
-
-        <div v-bind:class="tagId == 2 ? ['div-tag', 'tag-active'] : 'div-tag'" @click="select(2)">Achieve</div>
-        <transition name="slide-fade">
-        <div class="div-ul" v-show="isAchieveShow">
-          <div v-bind:class="tagId == 20 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(20)">Overview</div>
-          <div v-bind:class="tagId == 21 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(21)">Write</div>
-          <div v-bind:class="tagId == 22 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(22)">Search</div>
-        </div>
-        </transition>
-      </div>
-    </div>
-
-    <div class="div-right-outer">
-      <div class="div-right">
-        <transition name="component-fade" mode="out-in">
-        <componentInfo v-show="componentId == 0"></componentInfo>
-        </transition>
+      </Menu>
+    </Header>
+    <Layout>
+      <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
+        <Menu class="menu" theme="light" width="auto" @on-select="clickLeftNav">
+          <Submenu name="0">
+            <template slot="title">
+              <Icon type="person"></Icon>
+                Info
+            </template>
+            <MenuItem name="1">View</MenuItem>
+            <MenuItem name="2">Modify</MenuItem>
+          </Submenu>
+          <Submenu name="10">
+            <template slot="title">
+              <Icon type="clipboard"></Icon>
+                Plan
+            </template>
+            <MenuItem name="11">Overview</MenuItem>
+            <MenuItem name="12">Write</MenuItem>
+            <MenuItem name="13">Search</MenuItem>
+          </Submenu>
+          <Submenu name="20">
+            <template slot="title">
+              <Icon type="document-text"></Icon>
+                Achieve
+            </template>
+            <MenuItem name="21">Overview</MenuItem>
+            <MenuItem name="22">Write</MenuItem>
+            <MenuItem name="23">Search</MenuItem>
+          </Submenu>
+        </Menu>
+      </Sider>
+      <Layout :style="{padding: '0 24px 24px'}">
+        <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
           <transition name="component-fade" mode="out-in">
-        <componentPlanOverview v-show="componentId == 10"></componentPlanOverview>
-        </transition>
-          <transition name="component-fade" mode="out-in">
-        <componentPlanWrite v-show="componentId == 11"></componentPlanWrite>
-        </transition>
-          <transition name="component-fade" mode="out-in">
-        <componentPlanSearch v-show="componentId == 12"></componentPlanSearch>
-        </transition>
-          <transition name="component-fade" mode="out-in">
-        <componentAchieveOverview v-show="componentId == 20"></componentAchieveOverview>
-        </transition>
-          <transition name="component-fade" mode="out-in">
-        <componentAchieveWrite v-show="componentId == 21"></componentAchieveWrite>
-        </transition>
-          <transition name="component-fade" mode="out-in">
-        <componentAchieveSearch v-show="componentId == 22"></componentAchieveSearch>
-        </transition>
-      </div>
-    </div>
-  </div>
+          <componentInfoView v-show="componentId == 1"></componentInfoView>
+          </transition>
+            <transition name="component-fade" mode="out-in">
+            <componentInfoModify v-show="componentId == 2"></componentInfoModify>
+            </transition>
+            <transition name="component-fade" mode="out-in">
+          <componentPlanOverview v-show="componentId == 11"></componentPlanOverview>
+          </transition>
+            <transition name="component-fade" mode="out-in">
+          <componentPlanWrite v-show="componentId == 12"></componentPlanWrite>
+          </transition>
+            <transition name="component-fade" mode="out-in">
+          <componentPlanSearch v-show="componentId == 13"></componentPlanSearch>
+          </transition>
+            <transition name="component-fade" mode="out-in">
+          <componentAchieveOverview v-show="componentId == 21"></componentAchieveOverview>
+          </transition>
+            <transition name="component-fade" mode="out-in">
+          <componentAchieveWrite v-show="componentId == 22"></componentAchieveWrite>
+          </transition>
+            <transition name="component-fade" mode="out-in">
+          <componentAchieveSearch v-show="componentId == 23"></componentAchieveSearch>
+          </transition>
+        </Content>
+      </Layout>
+    </Layout>
+  </Layout>
 </div>
 </template>
 
-<script type="text/javascript">
-import componentInfo from './info.vue'
+<script>
+import componentInfoView from './info-view.vue'
+import componentInfoModify from './info-modify.vue'
 import componentPlanOverview from './plan-overview.vue'
 import componentPlanWrite from './plan-write.vue'
 import componentPlanSearch from './plan-search.vue'
@@ -86,13 +109,12 @@ export default {
       name: 'user',
       email: '1213814232@qq.com',
       tagId: 0,
-      componentId: 0,
-      isPlanShow: false,
-      isAchieveShow: false
+      componentId: 0
     }
   },
   components: {
-    componentInfo,
+    componentInfoView,
+    componentInfoModify,
     componentPlanOverview,
     componentPlanWrite,
     componentPlanSearch,
@@ -122,35 +144,89 @@ export default {
         }
       })
     },
+    clickTopNav: function (name) {
+      switch (name) {
+        case '0-1':
+          this.componentId = 1
+          break
+        case '0-2':
+          this.clickHelp()
+          break
+        case '0-3':
+          this.clickQuit()
+          break
+        default:
+      }
+    },
     clickFlyme: function () {
       window.open('https://www.flyme.cn/')
     },
     clickHelp: function () {
-      window.open('https://www.baidu.com/')
+      window.open('https://github.com/flymestudio/FlymeStudio-web')
     },
     clickQuit: function () {
+      this.$Message.success('Success!')
       this.$router.push('/login')
+      let _this = this
       accountApi.quit(this.tel).then(function (response) {
         if (response.data.result === true) {
+          _this.$Message.success('Success!')
           this.$router.push('/login')
+        } else {
+          _this.$Message.error('Fail!')
         }
       })
     },
-    select (tagId) {
-      this.tagId = tagId
-      if (tagId === 1) {
-        this.isPlanShow = !this.isPlanShow
-      } else if (tagId === 2) {
-        this.isAchieveShow = !this.isAchieveShow
-      } else {
-        this.componentId = tagId
-      }
+    clickLeftNav: function (name) {
+      this.componentId = name
     }
   }
 }
 </script>
 
 <style scoped>
+@-webkit-keyframes rotate {
+  0% {
+    -webkit-transform: rotateY(0);
+    -moz-transform   : rotateY(0);
+    -o-transform     : rotateY(0);
+    -ms-transform    : rotateY(0);
+    transform        : rotateY(0);
+  }
+
+  30% {
+    -webkit-transform: rotateY(-360deg);
+    -moz-transform   : rotateY(-360deg);
+    -o-transform     : rotateY(-360deg);
+    -ms-transform    : rotateY(-360deg);
+    transform        : rotateY(-360deg);
+  }
+
+  50% {
+    -webkit-transform: rotateY(-360deg);
+    -moz-transform   : rotateY(-360deg);
+    -o-transform     : rotateY(-360deg);
+    -ms-transform    : rotateY(-360deg);
+    transform        : rotateY(-360deg);
+  }
+
+  80% {
+    -webkit-transform: rotateY(0);
+    -moz-transform   : rotateY(0);
+    -o-transform     : rotateY(0);
+    -ms-transform    : rotateY(0);
+    transform        : rotateY(0);
+  }
+
+  100% {
+    -webkit-transform: rotateY(0);
+    -moz-transform   : rotateY(0);
+    -o-transform     : rotateY(0);
+    -ms-transform    : rotateY(0);
+    transform        : rotateY(0);
+  }
+}
+
 .slide-fade-enter-active {
   transition: all 0.5s ease;
 }
@@ -175,90 +251,47 @@ export default {
 
 .component-fade-enter {
   opacity  : 0;
-  transform: translateY(-480px);
+  transform: translateY(300px);
 }
 
 .component-fade-leave-to {
-  transform: translateY(480px);
+  transform: translateY(-300px);
   opacity  : 0;
 }
 
-.div-top {
-  border-bottom: 3px solid #bbb;
+.layout {
+  border       : 1px solid #d7dde4;
+  background   : #f5f7f9;
+  position     : relative;
+  border-radius: 4px;
+  overflow     : hidden;
 }
 
-.div-all {
-  min-width: 600px;
+.layout-logo {
+  width            : 50px;
+  height           : 50px;
+  background-image : url("https://cloud-res.mzres.com/resources/sync/images/flymelogo144.png");
+  background-repeat: no-repeat;
+  background-size  : cover;
+  border-radius    : 3px;
+  float            : left;
+  position         : relative;
+  top              : 5px;
+  left             : 5px;
+  -webkit-animation: rotate 8s infinite linear;
+  -moz-animation   : rotate 8s infinite linear;
+  -o-animation     : rotate 8s infinite linear;
+  -ms-animation    : rotate 8s infinite linear;
+  transition       : rotate 8s infinite linear;
+  cursor           : pointer;
 }
 
-.div-content {
-  width  : auto;
-  height : auto;
-  display: block;
+.layout-nav {
+  width : 340px;
+  margin: 0 0 0 auto;
 }
 
-.div-left-outer {
-  width : auto;
-  height: auto;
-}
-
-.div-left {
-  width        : 180px;
-  height       : auto;
-  border-right : 0.5px solid #bbb;
-  border-bottom: 0.5px solid #bbb;
-  position     : absolute;
-}
-
-.div-tag {
-  color                      : black;
-  cursor                     : pointer;
-  padding                    : 10px 20px;
-  font-weight                : bold;
-  font-size                  : 20px;
-  -webkit-transition-duration: 0.5s;
-  -moz-transition-duration   : 0.5s;
-  -o-transition-duration     : 0.5s;
-  -ms-transition-duration    : 0.5s;
-  transition-duration        : 0.5s;
-}
-
-.div-tag:hover {
-  background-color: grey;
-  color           : white;
-}
-
-.div-li {
-  color                      : #333;
-  cursor                     : pointer;
-  padding                    : 10px 20px 10px 40px;
-  font-size                  : 18px;
-  -webkit-transition-duration: 0.5s;
-  -moz-transition-duration   : 0.5s;
-  -o-transition-duration     : 0.5s;
-  -ms-transition-duration    : 0.5s;
-  transition-duration        : 0.5s;
-}
-
-.tag-active {
-  color           : #1788e8;
-  background-color: #bbb;
-}
-
-.div-li:hover {
-  background-color: grey;
-  color           : white;
-}
-
-.div-right-outer {
-  width      : auto;
-  height     : auto;
-  padding    : 20px;
-  margin-left: 180px;
-}
-
-.div-right {
-  height: 100%;
-  font-size: 20px;
+.menu {
+  z-index: 5;
 }
 </style>

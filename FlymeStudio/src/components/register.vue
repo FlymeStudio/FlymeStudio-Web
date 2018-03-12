@@ -33,7 +33,7 @@
     </form>
     <div class="div-content-result" v-show="isResultView">
       <div class="div-message" style="color:green;">{{ messageSuccess }}</div>
-      <button class="btn-sign" style="background-color:#1788e8;cursor:pointer;" @click="login">Sign In</button>
+      <Button class="btn-sign" style="background-color:#1788e8;cursor:pointer;" @click="login" size="large">Sign In</Button>
     </div>
   </div>
 </div>
@@ -116,14 +116,19 @@ export default {
       this.$router.push('/retrieve')
     },
     register: function () {
+      this.$Message.success('Success!')
+      this.isResultView = true
+      let _this = this
       if (this.isDataCorrect) {
         accountApi.register(this.name, this.tel, this.email, this.password)
           .then(function (response) {
             if (response.data.result === true) {
-              this.isResultView = true
+              _this.$Message.success('Success!')
+              _this.isResultView = true
             } else {
-              this.isResultView = false
-              this.isRegisterCallback = true
+              _this.$Message.error('Fail!')
+              _this.isResultView = false
+              _this.isRegisterCallback = true
             }
           })
       }

@@ -9,8 +9,8 @@
       <Button class="btn-login" @click="login" size="large">Sign In</Button>
     </form>
     <div class="div-others">
-      <div class="div-a" float="left" style="margin-right:60px;" @click="register">Sign Up</div>
-      <div class="div-a" float="right" style="margin-left:60px;" @click="retrieve">Retrieve</div>
+      <div class="div-a" float="left" style="margin-right:50px;" @click="register">Sign Up</div>
+      <div class="div-a" float="right" style="margin-left:50px;" @click="retrieve">Retrieve</div>
     </div>
   </div>
 </div>
@@ -32,17 +32,21 @@ export default {
       window.open('https://www.flyme.cn/')
     },
     login: function () {
+      this.$Message.success('Success!')
       this.$router.push('/home')
       let _this = this
       accountApi.login(this.id, this.password)
         .then(function (response) {
           if (response.data.result === true) {
+            _this.$Message.success('Success!')
             // let loginInfo = {
             //   id: _this.id,
             //   password: _this.password
             // }
             // _this.$store.dispatch('doLogin', loginInfo)
             _this.$router.push('/home')
+          } else {
+            _this.$Message.error('Fail!')
           }
         })
     },

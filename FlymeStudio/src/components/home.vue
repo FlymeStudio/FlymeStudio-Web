@@ -17,16 +17,14 @@
         <div class="div-ul" v-show="isPlanShow">
           <div v-bind:class="tagId == 10 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(10)">Overview</div>
           <div v-bind:class="tagId == 11 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(11)">Write</div>
-          <div v-bind:class="tagId == 12 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(12)">Upload</div>
-          <div v-bind:class="tagId == 13 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(13)">Search</div>
+          <div v-bind:class="tagId == 12 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(12)">Search</div>
         </div>
 
         <div v-bind:class="tagId == 2 ? ['div-tag', 'tag-active'] : 'div-tag'" @click="select(2)">Achieve</div>
         <div class="div-ul" v-show="isAchieveShow">
           <div v-bind:class="tagId == 20 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(20)">Overview</div>
           <div v-bind:class="tagId == 21 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(21)">Write</div>
-          <div v-bind:class="tagId == 22 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(22)">Upload</div>
-          <div v-bind:class="tagId == 23 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(23)">Search</div>
+          <div v-bind:class="tagId == 22 ? ['div-li', 'tag-active'] : 'div-li'" @click="select(22)">Search</div>
         </div>
       </div>
     </div>
@@ -36,12 +34,10 @@
         <componentInfo v-show="componentId == 0"></componentInfo>
         <componentPlanOverview v-show="componentId == 10"></componentPlanOverview>
         <componentPlanWrite v-show="componentId == 11"></componentPlanWrite>
-        <componentPlanUpload v-show="componentId == 12"></componentPlanUpload>
-        <componentPlanSearch v-show="componentId == 13"></componentPlanSearch>
+        <componentPlanSearch v-show="componentId == 12"></componentPlanSearch>
         <componentAchieveOverview v-show="componentId == 20"></componentAchieveOverview>
         <componentAchieveWrite v-show="componentId == 21"></componentAchieveWrite>
-        <componentAchieveUpload v-show="componentId == 22"></componentAchieveUpload>
-        <componentAchieveSearch v-show="componentId == 23"></componentAchieveSearch>
+        <componentAchieveSearch v-show="componentId == 22"></componentAchieveSearch>
       </div>
     </div>
   </div>
@@ -52,11 +48,9 @@
 import componentInfo from './info.vue'
 import componentPlanOverview from './plan-overview.vue'
 import componentPlanWrite from './plan-write.vue'
-import componentPlanUpload from './plan-upload.vue'
 import componentPlanSearch from './plan-search.vue'
 import componentAchieveOverview from './achieve-overview.vue'
 import componentAchieveWrite from './achieve-write.vue'
-import componentAchieveUpload from './achieve-upload.vue'
 import componentAchieveSearch from './achieve-search.vue'
 import accountApi from '../api/accountApi'
 
@@ -84,11 +78,9 @@ export default {
     componentInfo,
     componentPlanOverview,
     componentPlanWrite,
-    componentPlanUpload,
     componentPlanSearch,
     componentAchieveOverview,
     componentAchieveWrite,
-    componentAchieveUpload,
     componentAchieveSearch
   },
   methods: {
@@ -200,11 +192,10 @@ export default {
   width      : auto;
   height     : auto;
   padding    : 20px;
-  border-left: 0.5px solid #bbb;
+  margin-left: 180px;
 }
 
 .div-right {
   height     : 100%;
-  margin-left: 180px;
 }
 </style>

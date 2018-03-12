@@ -3,3 +3,8 @@
 ---
 # Web
 ---
+## Dependency
+- [mavonEditor](https://github.com/hinesboy/mavonEditor)
+> npm install mavon-editor --save
+
+-

@@ -32,7 +32,7 @@ export default {
     getInfo () {
       this.tel = '13608089849'
       this.email = '1213814232@qq.com'
-      this.login = new Date()
+      this.login = '' + new Date()
     }
   }
 }

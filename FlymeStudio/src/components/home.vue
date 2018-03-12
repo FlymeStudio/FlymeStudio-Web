@@ -241,7 +241,7 @@ export default {
 }
 
 .tag-active {
-  color           : blue;
+  color           : #1788e8;
   background-color: #bbb;
 }
 

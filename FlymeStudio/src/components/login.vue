@@ -4,9 +4,9 @@
     <div><img class="img-flyme"  src="https://cloud-res.mzres.com/resources/sync/images/flymelogo144.png" @click="flyme">
     </div>
     <form class="form-login" onsubmit="">
-      <input type="email|tel" placeHolder="Email or tel" v-model="id" />
-      <input type="password" placeHolder="Password" v-model="password" />
-      <button class="btn-login" @click="login">Sign In</button>
+      <Input class="input-login" type="email|tel" placeholder="Email or tel" v-model="id" size="large" clearable/>
+      <Input class="input-login" type="password" placeholder="Password" v-model="password" size="large" clearable/>
+      <Button class="btn-login" @click="login" size="large">Sign In</Button>
     </form>
     <div class="div-others">
       <div class="div-a" float="left" style="margin-right:60px;" @click="register">Sign Up</div>
@@ -88,26 +88,19 @@ export default {
   display   : block;
 }
 
-.form-login input {
-  width        : 235px;
-  height       : 35px;
-  margin-top   : 10px;
-  border       : 2px solid #1788e8;
-  border-radius: 5px;
-  padding      : 0 5px;
-  font-size    : 18px;
+.input-login {
+  width     : 240px;
+  height    : 35px;
+  margin-top: 10px;
 }
 
 .btn-login {
-  width           : 250px;
+  width           : 240px;
   height          : 42px;
-  margin-top      : 15px;
+  margin-top      : 25px;
   font-weight     : bold;
   color           : white;
   background-color: #1788e8;
-  border          : none;
-  border-radius   : 5px;
-  cursor          : pointer;
   font-size       : 20px;
 }
 

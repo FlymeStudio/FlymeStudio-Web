@@ -1,19 +1,15 @@
 <template>
 <div id="plan-write">
   <form>
-    <select class="select-type" v-model="type">
-      <option disabled value="">Type</option>
-      <option value="0">Yearly</option>
-      <option value="1">Monthly</option>
-      <option value="2">Weekly</option>
-      <option value="3">Daily</option>
+    <Select class="select-type" v-model="selectType" size="large" placeholder="Type">
+      <Option v-for="item in types" :value="item.value" :key="item.value">{{ item.label }}</Option>
     </select>
-    <input class="input-date" type="date" v-model="date" />
-    <input class="input-title" type="text" v-model="title" placeHolder="Title" />
-    <mavon-editor class="me" v-model="markdownValue" :toolbarsFlag="toolbarsFlag" :subfield="subfield" :defaultOpen="defaultOpen" :toolbars="toolbars"></mavon-editor>
-    <input class="input-chooser" type="file" accept=".md" id="chooser">
-    <button class="btn-upload" @click="modalConfirm = true">Upload</button>
-    <button class="btn-save" @click="save">Save</button>
+    <DatePicker class="datePicker" type="date" size="large" v-model="date" placeholder="Date" confirm/>
+    <Input class="input-title" type="text" v-model="title" placeholder="Title" clearable size="large" />
+    <mavon-editor class="mavonEditor" v-model="markdownValue" :toolbarsFlag="toolbarsFlag" :subfield="subfield" :defaultOpen="defaultOpen" :toolbars="toolbars"></mavon-editor>
+    <input class="input-chooser" icon="ios-cloud-upload-outline" type="file" accept=".md" id="chooser">
+    <Button class="btn-upload" @click="modalConfirm = true"  size="large">Upload</Button>
+    <Button type="success" class="btn-save" @click="save"  size="large">Save</Button>
     <Modal class="modal-confirm" v-model="modalConfirm" title="Warning" @on-ok="upload" @on-cancel="uploadCancel">
       <p>The content you upload will cover the origin content.</p>
       <p>Are you sure to upload?</p>
@@ -27,7 +23,25 @@ export default {
   name: 'plan-write',
   data () {
     return {
-      type: '',
+      types: [
+        {
+          value: '0',
+          label: 'Yearly'
+        },
+        {
+          value: '1',
+          label: 'Monthly'
+        },
+        {
+          value: '2',
+          label: 'Weekly'
+        },
+        {
+          value: '3',
+          label: 'Daily'
+        }
+      ],
+      selectType: '',
       date: '',
       title: '',
       markdownValue: '',
@@ -111,26 +125,25 @@ export default {
 
 <style scoped>
 .select-type {
+  width    : 160px;
   margin-right: 20px;
-  font-size   : 18px;
+  z-index     : 1501;
+  position: relative;
 }
 
-.input-date {
+.datePicker {
   width    : 160px;
-  font-size: 18px;
+  z-index     : 1501;
+  position: relative;
 }
 
 .input-title {
-  width    : auto;
+  width    : 240px;
   margin   : 20px 0;
-  height   : auto;
-  word-wrap: break-word;
-  font-size: 20px;
   display  : block;
-  color    : #1788e8;
 }
 
-.me {
+.mavonEditor {
   height: 600px;
   width : 100%;
   margin: 20px 0;
@@ -144,16 +157,12 @@ export default {
 
 .btn-upload {
   width    : auto;
-  padding  : 0 10px;
   margin   : 10px 0;
-  font-size: 18px;
 }
 
 .btn-save {
-  width    : auto;
-  padding  : 0 10px;
+  width    : 120px;
   margin   : 10px 0;
-  font-size: 18px;
   display  : block;
 }
 

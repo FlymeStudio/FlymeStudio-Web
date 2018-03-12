@@ -9,26 +9,26 @@
   <div class="div-bg">
     <form class="div-content-register" v-show="!isResultView">
       <div class="div-item">
-        <input type="text" placeHolder="Name" v-model.trim="name" />
+        <Input class="input-register" type="text" placeholder="Name" v-model.trim="name"  size="large"/>
         <div v-bind:class="['input-state', { correct: isNameCorrect }]" />
       </div>
       <div class="div-item">
-        <input type="tel" placeHolder="Tel" v-model.trim="tel" />
+        <Input class="input-register" type="tel" placeholder="Tel" v-model.trim="tel"  size="large"/>
         <div v-bind:class="['input-state', { correct: isTelCorrect }]" />
       </div>
       <div class="div-item">
-        <input type="email" placeHolder="Email" v-model.trim="email" />
+        <Input class="input-register" type="email" placeholder="Email" v-model.trim="email"  size="large"/>
         <div v-bind:class="['input-state', { correct: isEmailCorrect }]" />
       </div>
       <div class="div-item">
-        <input type="password" placeHolder="Password" v-model.trim="password" />
+        <Input class="input-register" type="password" placeholder="Password" v-model.trim="password"  size="large"/>
         <div v-bind:class="['input-state', { correct: isPasswordCorrect }]" />
       </div>
       <div class="div-item">
-        <input type="password" placeHolder="Confirm" v-model.trim="confirm" />
+        <Input class="input-register" type="password" placeholder="Confirm" v-model.trim="confirm"  size="large"/>
         <div v-bind:class="['input-state', { correct: isConfirmCorrect }]" />
       </div>
-      <button v-bind:class="[{ 'btn-correct': isDataCorrect }, 'btn-sign']" @click="register">Sign Up</button>
+      <Button v-bind:class="[{ 'btn-correct': isDataCorrect }, 'btn-sign']" @click="register" size="large">Sign Up</Button>
       <div class="div-message" style="color:red;" v-show="isRegisterCallback">{{ messageFail }}</div>
     </form>
     <div class="div-content-result" v-show="isResultView">
@@ -186,6 +186,10 @@ export default {
   background: green;
 }
 
+.input-register {
+width           : 240px;
+}
+
 .btn-sign {
   margin-left     : 10px;
   width           : 240px;
@@ -195,8 +199,6 @@ export default {
   color           : white;
   background-color: grey;
   cursor          : wait;
-  border          : none;
-  border-radius   : 5px;
   font-size       : 20px;
 }
 

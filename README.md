@@ -7,4 +7,5 @@
 - [mavonEditor](https://github.com/hinesboy/mavonEditor)
 > npm install mavon-editor --save
 
--
+- [iView](https://github.com/iview/iview)
+> npm install iview --save

@@ -1,4 +1,4 @@
-# flymestudio
+# FlymeStudio
 
 > A Vue.js project
 

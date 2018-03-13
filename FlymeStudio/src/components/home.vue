@@ -4,6 +4,7 @@
     <Header>
       <Menu class="menu" mode="horizontal" theme="dark" @on-select="clickTopNav">
         <div class="layout-logo" @click="clickFlyme"></div>
+        <div class="layout-title">Flyme Studio</div>
         <div class="layout-nav">
           <MenuItem name="0-1">
           <Icon type="person"></Icon>
@@ -286,9 +287,22 @@ export default {
   cursor           : pointer;
 }
 
+.layout-title {
+  float      : left;
+  position   : relative;
+  width      : auto;
+  height     : auto;
+  color      : white;
+  left       : 30px;
+  font-weight: bold;
+  font-size  : 18px;
+  font-family: 'Microsoft Yahei';
+}
+
 .layout-nav {
-  width : 340px;
-  margin: 0 0 0 auto;
+  width : auto;
+  margin: 0;
+  float : right;
 }
 
 .menu {

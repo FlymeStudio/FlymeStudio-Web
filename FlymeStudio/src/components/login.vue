@@ -1,44 +1,117 @@
 <template>
-<div class="div-outer">
-  <div class="div-login">
-    <div><img class="img-flyme"  src="https://cloud-res.mzres.com/resources/sync/images/flymelogo144.png" @click="flyme">
-    </div>
-    <form class="form-login" onsubmit="">
-      <Input class="input-login" type="email|tel" placeholder="Email or tel" v-model="id" size="large" clearable/>
-      <Input class="input-login" type="password" placeholder="Password" v-model="password" size="large" clearable/>
-      <Button class="btn-login" @click="login" size="large">Sign In</Button>
-    </form>
-    <div class="div-others">
-      <div class="div-a" float="left" style="margin-right:50px;" @click="register">Sign Up</div>
-      <div class="div-a" float="right" style="margin-left:50px;" @click="retrieve">Retrieve</div>
-    </div>
-  </div>
+<div class="layout">
+  <Layout>
+    <Header class="header">
+      <Menu class="menu" mode="horizontal" theme="dark" @on-select="clickTopNav">
+        <div class="layout-logo" @click="clickFlyme"></div>
+        <div class="layout-title">Flyme Studio</div>
+        <div class="layout-nav">
+          <MenuItem name="0-1">
+          <Icon type="person-add"></Icon>
+          Sign Up
+          </MenuItem>
+          <MenuItem name="0-2">
+          <Icon type="unlocked"></Icon>
+          Retrieve
+          </MenuItem>
+        </div>
+      </Menu>
+    </Header>
+    <Content class="content">
+      <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
+        <FormItem class="form-item" prop="id">
+          <Input type="text" v-model="formInline.id" placeholder="Tel or email" size="large" clearable>
+          <Icon type="person" slot="prepend"></Icon>
+          </Input>
+        </FormItem>
+        <FormItem class="form-item" prop="password">
+          <Input type="password" v-model="formInline.password" placeholder="Password" size="large" clearable>
+          <Icon type="android-lock" slot="prepend"></Icon>
+          </Input>
+        </FormItem>
+        <FormItem class="form-item-btn">
+          <Button class="btn-item" type="primary" @click="handleSubmit('formInline')" style="margin-right:15px;">Sign In</Button>
+          <Button class="btn-item" @click="handleReset('formInline')" style="margin-left:15px;">Reset</Button>
+        </FormItem>
+        </FormItem>
+      </Form>
+    </Content>
+    <Footer class="layout-footer-center">
+      <Form width="auto" inline>
+        <FormItem>
+          2018 &copy; zengyu
+        </FormItem>
+        <FormItem>
+          <a href="https://github.com/frogfans" target="_blank" style="color:black;">
+            <Icon type="social-github"></Icon>
+            frogfans
+          </a>
+        </FormItem>
+      </Form>
+    </Footer>
+  </Layout>
 </div>
 </template>
 
-<script type="text/javascript">
-import accountApi from '../api/accountApi'
-
+<script>
 export default {
   name: 'login',
   data () {
     return {
-      id: '',
-      password: ''
+      formInline: {
+        id: '',
+        password: ''
+      },
+      ruleInline: {
+        id: [
+          {
+            required: true,
+            message: 'Please fill in the account.',
+            trigger: 'blur'
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: 'Please fill in the password.',
+            trigger: 'blur'
+          }
+        ]
+      }
     }
   },
   methods: {
-    flyme: function () {
+    clickTopNav: function (name) {
+      switch (name) {
+        case '0-1':
+          this.clickRegister()
+          break
+        case '0-2':
+          this.clickRetrieve()
+          break
+        default:
+      }
+    },
+    clickFlyme: function () {
       window.open('https://www.flyme.cn/')
     },
+    clickRegister: function () {
+      this.$router.push('/register')
+    },
+    clickRetrieve: function () {
+      this.$router.push('/retrieve')
+    },
+    github: function () {
+      window.open('https://github.com/frogfans')
+    },
     login: function () {
-      this.$Message.success('Success!')
+      this.$Message.success('Sign in successful!')
       this.$router.push('/home')
       let _this = this
       accountApi.login(this.id, this.password)
         .then(function (response) {
           if (response.data.result === true) {
-            _this.$Message.success('Success!')
+            _this.$Message.success('Sign in successful!')
             // let loginInfo = {
             //   id: _this.id,
             //   password: _this.password
@@ -46,82 +119,115 @@ export default {
             // _this.$store.dispatch('doLogin', loginInfo)
             _this.$router.push('/home')
           } else {
-            _this.$Message.error('Fail!')
+            _this.$Message.error('Sign in failed!')
           }
         })
     },
-    register: function () {
-      this.$router.push('/register')
+    handleSubmit (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.login()
+        } else {
+          this.$Message.error('Information is incorrect!')
+        }
+      })
     },
-    retrieve: function () {
-      this.$router.push('/retrieve')
+    handleReset (name) {
+      this.$refs[name].resetFields()
     }
   }
 }
 </script>
 
 <style scoped>
-.div-outer {
-  width          : 100%;
-  height         : 100%;
-  display        : flex;
-  display        : -webkit-flex;
-  position       : fixed;
-  align-items    : center;
-  justify-content: center;
-  text-align     : center;
-  overflow-y     : auto;
+.header {
+  position: fixed;
+  width   : 100%;
+  z-index : 10;
 }
 
-.div-login {
-  width         : 400px;
-  height        : auto;
-  margin        : auto 40px;
-  padding-bottom: 60px;
+.layout {
+  border       : 1px solid #d7dde4;
+  background   : #f5f7f9;
+  position     : relative;
+  border-radius: 4px;
+  overflow     : hidden;
 }
 
-.div-login img {
-  margin-top: 10px;
+.layout-logo {
+  width            : 50px;
+  height           : 50px;
+  background-image : url("../assets/logo.png");
+  background-repeat: no-repeat;
+  background-size  : cover;
+  border-radius    : 3px;
+  float            : left;
+  position         : relative;
+  top              : 5px;
+  left             : 5px;
+  -webkit-animation: rotate 8s infinite linear;
+  -moz-animation   : rotate 8s infinite linear;
+  -o-animation     : rotate 8s infinite linear;
+  -ms-animation    : rotate 8s infinite linear;
+  transition       : rotate 8s infinite linear;
+  cursor           : pointer;
 }
 
-.form-login {
-  width     : auto;
-  height    : auto;
-  padding   : 40px;
+.layout-title {
+  float      : left;
+  position   : relative;
+  width      : auto;
+  height     : auto;
+  color      : white;
+  left       : 30px;
+  font-weight: bold;
+  font-size  : 18px;
+  font-family: 'Microsoft Yahei';
+}
+
+.layout-nav {
+  width : auto;
+  margin: 0;
+  float : right;
+}
+
+.content {
+  height               : 100%;
+  min-height           : 1000px;
+  margin               : 0;
+  background-color     : #1788e8;
+  background-image     : url("../assets/banner.jpg");
+  background-position  : center bottom;
+  background-repeat    : no-repeat;
+  background-attachment: fixed;
+  background-size      : cover;
+}
+
+.form {
+  width      : auto;
+  height     : auto;
+  position   : absolute;
+  margin-top : 180px;
+  margin-left: 10%;
+  display    : block;
+}
+
+.form-item {
+  width: 240px;
+}
+
+.form-item-btn {
+  text-align: center;
+}
+
+.btn-item {
+  width     : 100px;
   margin-top: 20px;
-  display   : block;
+  font-size : 15px;
 }
 
-.input-login {
-  width     : 240px;
-  height    : 35px;
-  margin-top: 10px;
-}
-
-.btn-login {
-  width           : 240px;
-  height          : 42px;
-  margin-top      : 25px;
-  font-weight     : bold;
-  color           : white;
-  background-color: #1788e8;
-  font-size       : 20px;
-}
-
-.div-others {
-  width         : 100%;
-  margin-top    : 10px;
-  font-weight   : bold;
-  margin-bottom : 10px;
-  padding-bottom: 40px;
-}
-
-.div-a {
-  width          : auto;
-  display        : inline-block;
-  color          : #1788e8;
-  cursor         : pointer;
-  font-size      : 18px;
-  text-decoration: underline;
+.layout-footer-center {
+  text-align : center;
+  font-weight: bold;
 }
 </style>

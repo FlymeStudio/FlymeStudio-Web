@@ -1,148 +1,263 @@
 <template>
-<div>
-  <ul class="div-top">
-    <li><img class="img-flyme"  src="https://cloud-res.mzres.com/resources/sync/images/flymelogo144.png" @click="flyme"></li>
-    <li><span style="font-size:30px;" @click="flyme">Flyme</span></li>
-    <li class="li-right"><span @click="retrieve">Retrieve</span></li>
-    <li class="li-right"><span @click="login">Sign In</span></li>
-  </ul>
-  <div class="div-bg">
-    <form class="div-content-register" v-show="!isResultView">
-      <div class="div-item">
-        <Input class="input-register" type="text" placeholder="Name" v-model.trim="name"  size="large"/>
-        <div v-bind:class="['input-state', { correct: isNameCorrect }]" />
-      </div>
-      <div class="div-item">
-        <Input class="input-register" type="tel" placeholder="Tel" v-model.trim="tel"  size="large"/>
-        <div v-bind:class="['input-state', { correct: isTelCorrect }]" />
-      </div>
-      <div class="div-item">
-        <Input class="input-register" type="email" placeholder="Email" v-model.trim="email"  size="large"/>
-        <div v-bind:class="['input-state', { correct: isEmailCorrect }]" />
-      </div>
-      <div class="div-item">
-        <Input class="input-register" type="password" placeholder="Password" v-model.trim="password"  size="large"/>
-        <div v-bind:class="['input-state', { correct: isPasswordCorrect }]" />
-      </div>
-      <div class="div-item">
-        <Input class="input-register" type="password" placeholder="Confirm" v-model.trim="confirm"  size="large"/>
-        <div v-bind:class="['input-state', { correct: isConfirmCorrect }]" />
-      </div>
-      <Button v-bind:class="[{ 'btn-correct': isDataCorrect }, 'btn-sign']" @click="register" size="large">Sign Up</Button>
-      <div class="div-message" style="color:red;" v-show="isRegisterCallback">{{ messageFail }}</div>
-    </form>
-    <div class="div-content-result" v-show="isResultView">
-      <div class="div-message" style="color:green;">{{ messageSuccess }}</div>
-      <Button class="btn-sign" style="background-color:#1788e8;cursor:pointer;" @click="login" size="large">Sign In</Button>
-    </div>
-  </div>
+<div class="layout">
+  <Layout>
+    <Header class="header">
+      <Menu class="menu" mode="horizontal" theme="dark" @on-select="clickTopNav">
+        <div class="layout-logo" @click="clickFlyme"></div>
+        <div class="layout-title">Flyme Studio</div>
+        <div class="layout-nav">
+          <MenuItem name="0-1">
+          <Icon type="log-in"></Icon>
+          Sign In
+          </MenuItem>
+          <MenuItem name="0-2">
+          <Icon type="unlocked"></Icon>
+          Retrieve
+          </MenuItem>
+        </div>
+      </Menu>
+    </Header>
+    <Content class="content">
+      <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
+        <FormItem class="form-item" prop="name">
+          <Input type="text" v-model="formInline.name" placeholder="Username" size="large" clearable>
+          <Icon type="person" slot="prepend"></Icon>
+          </Input>
+        </FormItem>
+        <FormItem class="form-item" prop="tel">
+          <Input type="text" v-model="formInline.tel" placeholder="Telephone" size="large" clearable>
+          <Icon type="ios-telephone" slot="prepend"></Icon>
+          </Input>
+        </FormItem>
+        <FormItem class="form-item" prop="email">
+          <Input type="text" v-model="formInline.email" placeholder="Email" size="large" clearable>
+          <Icon type="email" slot="prepend"></Icon>
+          </Input>
+        </FormItem>
+        <FormItem class="form-item" prop="password">
+          <Input type="password" v-model="formInline.password" placeholder="Password" size="large" clearable>
+          <Icon type="android-lock" slot="prepend"></Icon>
+          </Input>
+        </FormItem>
+        <FormItem class="form-item" prop="confirm">
+          <Input type="password" v-model="formInline.confirm" placeholder="Confirm" size="large" clearable>
+          <Icon type="checkmark" slot="prepend"></Icon>
+          </Input>
+        </FormItem>
+        <FormItem class="form-item-btn">
+          <Button class="btn-item" type="primary" @click="handleSubmit('formInline')" style="margin-right:15px;">Sign Up</Button>
+          <Button class="btn-item" @click="handleReset('formInline')" style="margin-left:15px;">Reset</Button>
+        </FormItem>
+        </FormItem>
+      </Form>
+    </Content>
+    <Footer class="layout-footer-center">
+      <Form width="auto" inline>
+        <FormItem>
+          2018 &copy; zengyu
+        </FormItem>
+        <FormItem>
+          <a href="https://github.com/frogfans" target="_blank" style="color:black;">
+            <Icon type="social-github"></Icon>
+            frogfans
+          </a>
+        </FormItem>
+      </Form>
+    </Footer>
+  </Layout>
 </div>
 </template>
 
-<script type="text/javascript">
+<script>
 import accountApi from '../api/accountApi'
 
 export default {
   name: 'register',
   data () {
     return {
-      name: '曾宇 ',
-      tel: '13608089849 ',
-      email: '1213814232@qq.com ',
-      password: '1234567',
-      confirm: '1234567',
-      isResultView: false,
-      isNameCorrect: false,
-      isTelCorrect: false,
-      isEmailCorrect: false,
-      isPasswordCorrect: false,
-      isConfirmCorrect: false,
-      isDataCorrect: false,
-      isRegisterCallback: false,
-      messageFail: 'Sign up failed, please retry.',
-      messageSuccess: 'Sign up successful, sign in now?'
-    }
-  },
-  watch: {
-    name: function (newValue) {
-      let reg = /^[\u4E00-\u9FA5]{2,4}$/
-      if (reg.test(newValue)) {
-        this.isNameCorrect = true
-      } else {
-        this.isNameCorrect = false
-      }
-    },
-    tel: function (newValue) {
-      let reg = /^(13[0-9]{9})|(14[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})|(18[0-9]{9})$/
-      if (reg.test(newValue)) {
-        this.isTelCorrect = true
-      } else {
-        this.isTelCorrect = false
-      }
-    },
-    email: function (newValue) {
-      let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-]{2,})+(\.[a-zA-Z0-9_-]{2,})+/
-      if (reg.test(newValue)) {
-        this.isEmailCorrect = true
-      } else {
-        this.isEmailCorrect = false
-      }
-    },
-    password: function (newValue) {
-      if (newValue !== '' && newValue.length >= 6) {
-        this.isPasswordCorrect = true
-      } else {
-        this.isPasswordCorrect = false
-      }
-    },
-    confirm: function (newValue) {
-      if (newValue === this.password) {
-        this.isConfirmCorrect = true
-        this.isDataCorrect = this.isNameCorrect & this.isTelCorrect & this.isEmailCorrect & this.isConfirmCorrect
-      } else {
-        this.isConfirmCorrect = false
-        this.isDataCorrect = false
+      formInline: {
+        name: '',
+        tel: '',
+        email: '',
+        password: '',
+        confirm: ''
+      },
+      ruleInline: {
+        name: [
+          {
+            required: true,
+            message: 'Please fill in the username.',
+            trigger: 'blur'
+          },
+          {
+            type: 'string',
+            pattern: /^[\u4E00-\u9FA5]{2,4}$/,
+            message: 'Wrong username!',
+            trigger: 'blur'
+          }
+        ],
+        tel: [
+          {
+            required: true,
+            message: 'Please fill in the telephone number.',
+            trigger: 'blur'
+          },
+          {
+            pattern: /^[0-9]{11}$/,
+            message: 'Telephone number is 11 bits.',
+            trigger: 'blur'
+          },
+          {
+            pattern: /^(13[0-9]{9})|(14[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})|(18[0-9]{9})$/,
+            message: 'Wrong telephone number.',
+            trigger: 'blur'
+          }
+        ],
+        email: [
+          {
+            required: true,
+            message: 'Please fill in the email.',
+            trigger: 'blur'
+          },
+          {
+            type: 'email',
+            message: 'Wrong email.'
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: 'Please fill in the password.',
+            trigger: 'blur'
+          },
+          {
+            type: 'string',
+            min: 6,
+            message: 'The password is too short.',
+            trigger: 'blur'
+          }
+        ],
+        confirm: [
+          {
+            required: true,
+            message: 'Please fill in the confirm.',
+            trigger: 'blur'
+          }
+        ]
       }
     }
   },
   methods: {
-    flyme: function () {
+    clickTopNav: function (name) {
+      switch (name) {
+        case '0-1':
+          this.clickLogin()
+          break
+        case '0-2':
+          this.clickRetrieve()
+          break
+        default:
+      }
+    },
+    clickFlyme: function () {
       window.open('https://www.flyme.cn/')
     },
-    login: function () {
+    clickLogin: function () {
       this.$router.push('/login')
     },
-    retrieve: function () {
+    clickRetrieve: function () {
       this.$router.push('/retrieve')
     },
+    github: function () {
+      window.open('https://github.com/frogfans')
+    },
     register: function () {
-      this.$Message.success('Success!')
-      this.isResultView = true
       let _this = this
-      if (this.isDataCorrect) {
-        accountApi.register(this.name, this.tel, this.email, this.password)
-          .then(function (response) {
-            if (response.data.result === true) {
-              _this.$Message.success('Success!')
-              _this.isResultView = true
-            } else {
-              _this.$Message.error('Fail!')
-              _this.isResultView = false
-              _this.isRegisterCallback = true
-            }
-          })
-      }
+      this.$Message.success('Sign up successful!')
+      this.isResultView = true
+      accountApi.register(this.name, this.tel, this.email, this.password).then(function (response) {
+        if (response.data.result === true) {
+          _this.$Message.success('Sign up successful!')
+          _this.isResultView = true
+        } else {
+          _this.$Message.error('Sign up failed!')
+          _this.isResultView = false
+          _this.isRegisterCallback = true
+        }
+      })
+    },
+    handleSubmit (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.register()
+        } else {
+          this.$Message.error('Information is incorrect!')
+        }
+      })
+    },
+    handleReset (name) {
+      this.$refs[name].resetFields()
     }
   }
 }
 </script>
 
 <style scoped>
-.div-bg {
-  width                : 100%;
+.header {
+  position: fixed;
+  width   : 100%;
+  z-index : 10;
+}
+
+.layout {
+  border       : 1px solid #d7dde4;
+  background   : #f5f7f9;
+  position     : relative;
+  border-radius: 4px;
+  overflow     : hidden;
+}
+
+.layout-logo {
+  width            : 50px;
+  height           : 50px;
+  background-image : url("../assets/logo.png");
+  background-repeat: no-repeat;
+  background-size  : cover;
+  border-radius    : 3px;
+  float            : left;
+  position         : relative;
+  top              : 5px;
+  left             : 5px;
+  -webkit-animation: rotate 8s infinite linear;
+  -moz-animation   : rotate 8s infinite linear;
+  -o-animation     : rotate 8s infinite linear;
+  -ms-animation    : rotate 8s infinite linear;
+  transition       : rotate 8s infinite linear;
+  cursor           : pointer;
+}
+
+.layout-title {
+  float      : left;
+  position   : relative;
+  width      : auto;
+  height     : auto;
+  color      : white;
+  left       : 30px;
+  font-weight: bold;
+  font-size  : 18px;
+  font-family: 'Microsoft Yahei';
+}
+
+.layout-nav {
+  width : auto;
+  margin: 0;
+  float : right;
+}
+
+.content {
   height               : 100%;
-  min-height           : 500px;
-  position             : absolute;
+  min-height           : 1000px;
+  margin               : 0;
   background-color     : #1788e8;
   background-image     : url("../assets/banner.jpg");
   background-position  : center bottom;
@@ -151,80 +266,31 @@ export default {
   background-size      : cover;
 }
 
-.div-content-register {
+.form {
   width      : auto;
   height     : auto;
   position   : absolute;
-  margin-top : 80px;
+  margin-top : 180px;
   margin-left: 10%;
   display    : block;
 }
 
-.div-item {
-  width          : 280px;
-  height         : auto;
-  margin-top     : 10px;
-  align-items    : center;
-  justify-content: center;
-  display        : flex;
+.form-item {
+  width: 240px;
 }
 
-.div-item input {
-  width        : 215px;
-  height       : 35px;
-  padding      : 0 10px;
-  border       : 3px solid #1788e8;
-  border-radius: 10px;
-  font-size    : 18px;
-  outline      : none;
+.form-item-btn {
+  text-align: center;
 }
 
-.input-state {
-  width        : 10px;
-  height       : 10px;
-  margin       : auto 5px;
-  border-radius: 10px;
-  background   : red;
+.btn-item {
+  width     : 100px;
+  margin-top: 20px;
+  font-size : 15px;
 }
 
-.correct {
-  background: green;
-}
-
-.input-register {
-width           : 240px;
-}
-
-.btn-sign {
-  margin-left     : 10px;
-  width           : 240px;
-  height          : 42px;
-  margin-top      : 40px;
-  font-weight     : bold;
-  color           : white;
-  background-color: grey;
-  cursor          : wait;
-  font-size       : 20px;
-}
-
-.btn-correct {
-  background-color: #1788e8;
-  cursor          : pointer;
-}
-
-.div-message {
-  margin-top : 30px;
-  font-size  : 20px;
-  padding    : 0 10px;
+.layout-footer-center {
+  text-align : center;
   font-weight: bold;
-}
-
-.div-content-result {
-  width      : auto;
-  height     : auto;
-  position   : absolute;
-  margin-top : 80px;
-  margin-left: 10%;
-  display    : block;
 }
 </style>

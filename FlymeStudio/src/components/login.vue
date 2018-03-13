@@ -7,7 +7,7 @@
         <div class="layout-title">Flyme Studio</div>
         <div class="layout-nav">
           <MenuItem name="0-1">
-          <Icon type="person-add" size="18"></Icon>
+          <Icon class="item-icon" type="person-add" size="18"></Icon>
           Sign up
           </MenuItem>
           <MenuItem name="0-2">
@@ -32,7 +32,6 @@
         <FormItem class="form-item-btn">
           <Button class="btn-item" type="primary" @click="handleSubmit('formInline')" style="margin-right:15px;">Sign in</Button>
           <Button class="btn-item" @click="handleReset('formInline')" style="margin-left:15px;">Reset</Button>
-        </FormItem>
         </FormItem>
       </Form>
     </Content>

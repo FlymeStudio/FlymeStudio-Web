@@ -7,15 +7,15 @@
         <div class="layout-title">Flyme Studio</div>
         <div class="layout-nav">
           <MenuItem name="0-1">
-          <Icon type="person" size="18"></Icon>
+          <Icon class="item-icon" type="person" size="18"></Icon>
           {{ name }}
           </MenuItem>
           <MenuItem name="0-2">
-          <Icon type="help" size="18"></Icon>
+          <Icon class="item-icon" type="help" size="18"></Icon>
           Help
           </MenuItem>
           <MenuItem name="0-3">
-          <Icon type="log-out" size="18"></Icon>
+          <Icon class="item-icon" type="log-out" size="18"></Icon>
           Sign out
           </MenuItem>
         </div>

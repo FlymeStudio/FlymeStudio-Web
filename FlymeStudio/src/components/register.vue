@@ -48,7 +48,6 @@
           <Button class="btn-item" type="primary" @click="handleSubmit('formInline')" style="margin-right:15px;">Sign up</Button>
           <Button class="btn-item" @click="handleReset('formInline')" style="margin-left:15px;">Reset</Button>
         </FormItem>
-        </FormItem>
       </Form>
     </Content>
     <componentFooter></componentFooter>

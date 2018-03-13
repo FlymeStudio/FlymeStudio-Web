@@ -6,7 +6,7 @@ Unfinished function
 
 <script type="text/javascript">
 export default {
-  name: 'info-view'
+  name: 'info-modify'
 }
 </script>
 

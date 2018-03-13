@@ -20,7 +20,7 @@
         <Button class="btn-upload" @click="upload" size="large">Upload</Button>
     </FormItem>
     <FormItem>
-      <Button type="success" class="btn-item" @click="save" size="large">Save</Button>
+      <Button type="primary" class="btn-item" @click="save" size="large">Save</Button>
       <Button class="btn-item" @click="handleReset('formItem')" size="large">Reset</Button>
     </FormItem>
     <Modal class="modal-confirm" v-model="modalConfirm" title="Warning" @on-ok="uploadOk" @on-cancel="uploadCancel">

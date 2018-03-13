@@ -7,15 +7,15 @@
         <div class="layout-title">Flyme Studio</div>
         <div class="layout-nav">
           <MenuItem name="0-1">
-          <Icon type="person"></Icon>
+          <Icon type="person" size="18"></Icon>
           {{ name }}
           </MenuItem>
           <MenuItem name="0-2">
-          <Icon type="help"></Icon>
+          <Icon type="help" size="18"></Icon>
           Help
           </MenuItem>
           <MenuItem name="0-3">
-          <Icon type="log-out"></Icon>
+          <Icon type="log-out" size="18"></Icon>
           Sign out
           </MenuItem>
         </div>
@@ -26,7 +26,7 @@
         <Menu class="menu" theme="light" width="auto" @on-select="clickLeftNav">
           <Submenu name="0">
             <template slot="title">
-              <Icon type="person"></Icon>
+              <Icon type="person" size="18"></Icon>
                 Info
             </template>
             <MenuItem name="1">View</MenuItem>
@@ -34,7 +34,7 @@
           </Submenu>
           <Submenu name="10">
             <template slot="title">
-              <Icon type="clipboard"></Icon>
+              <Icon type="clipboard" size="18"></Icon>
                 Plan
             </template>
             <MenuItem name="11">Overview</MenuItem>
@@ -43,7 +43,7 @@
           </Submenu>
           <Submenu name="20">
             <template slot="title">
-              <Icon type="document-text"></Icon>
+              <Icon type="document-text" size="18"></Icon>
                 Achieve
             </template>
             <MenuItem name="21">Overview</MenuItem>
@@ -81,19 +81,7 @@
         </Content>
       </Layout>
     </Layout>
-    <Footer class="layout-footer-center">
-      <Form width="auto" inline>
-        <FormItem>
-          2018 &copy; zengyu
-        </FormItem>
-        <FormItem>
-          <a href="https://github.com/frogfans" target="_blank" style="color:black;">
-            <Icon type="social-github"></Icon>
-            frogfans
-          </a>
-        </FormItem>
-      </Form>
-    </Footer>
+    <componentFooter></componentFooter>
     <BackTop></BackTop>
   </Layout>
 </div>
@@ -108,6 +96,7 @@ import componentPlanSearch from './plan-search.vue'
 import componentAchieveOverview from './achieve-overview.vue'
 import componentAchieveWrite from './achieve-write.vue'
 import componentAchieveSearch from './achieve-search.vue'
+import componentFooter from './component-footer.vue'
 import accountApi from '../api/accountApi'
 import infoApi from '../api/infoApi'
 import planApi from '../api/planApi'
@@ -135,7 +124,8 @@ export default {
     componentPlanSearch,
     componentAchieveOverview,
     componentAchieveWrite,
-    componentAchieveSearch
+    componentAchieveSearch,
+    componentFooter
   },
   methods: {
     getInfo () {
@@ -180,15 +170,15 @@ export default {
       window.open('https://github.com/flymestudio/FlymeStudio-web')
     },
     clickQuit: function () {
-      this.$Message.success('Success!')
+      this.$Message.success('Sign out successful!')
       this.$router.push('/login')
       let _this = this
       accountApi.quit(this.tel).then(function (response) {
         if (response.data.result === true) {
-          _this.$Message.success('Success!')
-          this.$router.push('/login')
+          _this.$Message.success('Sign out successful!')
+          _this.$router.push('/login')
         } else {
-          _this.$Message.error('Fail!')
+          _this.$Message.error('Sign out failed!')
         }
       })
     },
@@ -200,48 +190,6 @@ export default {
 </script>
 
 <style scoped>
-@-webkit-keyframes rotate {
-  0% {
-    -webkit-transform: rotateY(0);
-    -moz-transform   : rotateY(0);
-    -o-transform     : rotateY(0);
-    -ms-transform    : rotateY(0);
-    transform        : rotateY(0);
-  }
-
-  30% {
-    -webkit-transform: rotateY(-360deg);
-    -moz-transform   : rotateY(-360deg);
-    -o-transform     : rotateY(-360deg);
-    -ms-transform    : rotateY(-360deg);
-    transform        : rotateY(-360deg);
-  }
-
-  50% {
-    -webkit-transform: rotateY(-360deg);
-    -moz-transform   : rotateY(-360deg);
-    -o-transform     : rotateY(-360deg);
-    -ms-transform    : rotateY(-360deg);
-    transform        : rotateY(-360deg);
-  }
-
-  80% {
-    -webkit-transform: rotateY(0);
-    -moz-transform   : rotateY(0);
-    -o-transform     : rotateY(0);
-    -ms-transform    : rotateY(0);
-    transform        : rotateY(0);
-  }
-
-  100% {
-    -webkit-transform: rotateY(0);
-    -moz-transform   : rotateY(0);
-    -o-transform     : rotateY(0);
-    -ms-transform    : rotateY(0);
-    transform        : rotateY(0);
-  }
-}
-
 .slide-fade-enter-active {
   transition: all 0.5s ease;
 }
@@ -274,57 +222,8 @@ export default {
   opacity  : 0;
 }
 
-.layout {
-  border       : 1px solid #d7dde4;
-  background   : #f5f7f9;
-  position     : relative;
-  border-radius: 4px;
-  overflow     : hidden;
-}
-
-.layout-logo {
-  width            : 50px;
-  height           : 50px;
-  background-image : url("https://cloud-res.mzres.com/resources/sync/images/flymelogo144.png");
-  background-repeat: no-repeat;
-  background-size  : cover;
-  border-radius    : 3px;
-  float            : left;
-  position         : relative;
-  top              : 5px;
-  left             : 5px;
-  -webkit-animation: rotate 8s infinite linear;
-  -moz-animation   : rotate 8s infinite linear;
-  -o-animation     : rotate 8s infinite linear;
-  -ms-animation    : rotate 8s infinite linear;
-  transition       : rotate 8s infinite linear;
-  cursor           : pointer;
-}
-
-.layout-title {
-  float      : left;
-  position   : relative;
-  width      : auto;
-  height     : auto;
-  color      : white;
-  left       : 30px;
-  font-weight: bold;
-  font-size  : 18px;
-  font-family: 'Microsoft Yahei';
-}
-
-.layout-nav {
-  width : auto;
-  margin: 0;
-  float : right;
-}
-
 .menu {
   z-index: 5;
 }
 
-.layout-footer-center {
-  text-align : center;
-  font-weight: bold;
-}
 </style>

@@ -7,11 +7,11 @@
         <div class="layout-title">Flyme Studio</div>
         <div class="layout-nav">
           <MenuItem name="0-1">
-          <Icon type="person-add"></Icon>
+          <Icon type="person-add" size="18"></Icon>
           Sign up
           </MenuItem>
           <MenuItem name="0-2">
-          <Icon type="unlocked"></Icon>
+          <Icon type="unlocked" size="18"></Icon>
           Retrieve
           </MenuItem>
         </div>
@@ -21,12 +21,12 @@
       <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
         <FormItem class="form-item" prop="id">
           <Input type="text" v-model="formInline.id" placeholder="Tel or email" size="large" clearable>
-          <Icon type="person" slot="prepend"></Icon>
+          <Icon type="person" slot="prepend" size="18"></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item" prop="password">
           <Input type="password" v-model="formInline.password" placeholder="Password" size="large" clearable>
-          <Icon type="android-lock" slot="prepend"></Icon>
+          <Icon type="android-lock" slot="prepend" size="18"></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item-btn">
@@ -36,24 +36,13 @@
         </FormItem>
       </Form>
     </Content>
-    <Footer class="layout-footer-center">
-      <Form width="auto" inline>
-        <FormItem>
-          2018 &copy; zengyu
-        </FormItem>
-        <FormItem>
-          <a href="https://github.com/frogfans" target="_blank" style="color:black;">
-            <Icon type="social-github"></Icon>
-            frogfans
-          </a>
-        </FormItem>
-      </Form>
-    </Footer>
+    <componentFooter></componentFooter>
   </Layout>
 </div>
 </template>
 
 <script>
+import componentFooter from './component-footer.vue'
 import accountApi from '../api/accountApi'
 
 export default {
@@ -81,6 +70,9 @@ export default {
         ]
       }
     }
+  },
+  components: {
+    componentFooter
   },
   methods: {
     clickTopNav: function (name) {
@@ -142,57 +134,6 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  position: fixed;
-  width   : 100%;
-  z-index : 10;
-}
-
-.layout {
-  border       : 1px solid #d7dde4;
-  background   : #f5f7f9;
-  position     : relative;
-  border-radius: 4px;
-  overflow     : hidden;
-}
-
-.layout-logo {
-  width            : 50px;
-  height           : 50px;
-  background-image : url("../assets/logo.png");
-  background-repeat: no-repeat;
-  background-size  : cover;
-  border-radius    : 3px;
-  float            : left;
-  position         : relative;
-  top              : 5px;
-  left             : 5px;
-  -webkit-animation: rotate 8s infinite linear;
-  -moz-animation   : rotate 8s infinite linear;
-  -o-animation     : rotate 8s infinite linear;
-  -ms-animation    : rotate 8s infinite linear;
-  transition       : rotate 8s infinite linear;
-  cursor           : pointer;
-}
-
-.layout-title {
-  float      : left;
-  position   : relative;
-  width      : auto;
-  height     : auto;
-  color      : white;
-  left       : 30px;
-  font-weight: bold;
-  font-size  : 18px;
-  font-family: 'Microsoft Yahei';
-}
-
-.layout-nav {
-  width : auto;
-  margin: 0;
-  float : right;
-}
-
 .content {
   height               : 100%;
   min-height           : 1000px;
@@ -226,10 +167,5 @@ export default {
   width     : 100px;
   margin-top: 20px;
   font-size : 15px;
-}
-
-.layout-footer-center {
-  text-align : center;
-  font-weight: bold;
 }
 </style>

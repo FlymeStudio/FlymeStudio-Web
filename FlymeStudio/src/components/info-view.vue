@@ -1,15 +1,15 @@
 <template>
 <div id="info">
   <Menu width="auto">
-    <MenuItem>
+    <MenuItem class="menu-item" name="tel">
     <Icon type="ios-telephone"></Icon>
     {{ tel }}
     </MenuItem>
-    <MenuItem>
+    <MenuItem class="menu-item" name="email">
     <Icon type="email"></Icon>
     {{ email }}
     </MenuItem>
-    <MenuItem>
+    <MenuItem class="menu-item" name="login">
     <Icon type="log-in"></Icon>
     {{ login }}
     </MenuItem>
@@ -19,7 +19,7 @@
 
 <script type="text/javascript">
 export default {
-  name: 'info',
+  name: 'info-view',
   created () {
     this.getInfo()
   },
@@ -41,24 +41,7 @@ export default {
 </script>
 
 <style scoped>
-.div-item {
-  padding    : 10px;
-  align-items: center;
-  height     : auto;
-  display    : flex;
-  display    : -webkit-flex;
-}
-
-.img-info {
-  height       : 30px;
-  width        : 30px;
-  margin-right : 10px;
-  border-radius: 15px;
-}
-
-.span-info {
-  color      : #1788e8;
-  font-weight: bold;
-  font-size  : 20px;
+.menu-item {
+  cursor: default;
 }
 </style>

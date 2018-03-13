@@ -16,7 +16,7 @@
           </MenuItem>
           <MenuItem name="0-3">
           <Icon type="log-out"></Icon>
-          Sign Out
+          Sign out
           </MenuItem>
         </div>
       </Menu>
@@ -52,7 +52,7 @@
           </Submenu>
         </Menu>
       </Sider>
-      <Layout :style="{padding: '0 24px 24px'}">
+      <Layout :style="{padding: '0 24px'}">
         <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
           <transition name="component-fade" mode="out-in">
           <componentInfoView v-show="componentId == 1"></componentInfoView>
@@ -81,6 +81,20 @@
         </Content>
       </Layout>
     </Layout>
+    <Footer class="layout-footer-center">
+      <Form width="auto" inline>
+        <FormItem>
+          2018 &copy; zengyu
+        </FormItem>
+        <FormItem>
+          <a href="https://github.com/frogfans" target="_blank" style="color:black;">
+            <Icon type="social-github"></Icon>
+            frogfans
+          </a>
+        </FormItem>
+      </Form>
+    </Footer>
+    <BackTop></BackTop>
   </Layout>
 </div>
 </template>
@@ -307,5 +321,10 @@ export default {
 
 .menu {
   z-index: 5;
+}
+
+.layout-footer-center {
+  text-align : center;
+  font-weight: bold;
 }
 </style>

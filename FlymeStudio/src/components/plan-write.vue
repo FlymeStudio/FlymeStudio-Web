@@ -1,20 +1,33 @@
 <template>
 <div id="plan-write">
-  <form>
-    <Select class="select-type" v-model="selectType" size="large" placeholder="Type">
+  <Form ref="formItem" :model="formItem">
+    <FormItem prop="type">
+      <Select class="select-type" v-model="formItem.type" size="large" placeholder="Type">
       <Option v-for="item in types" :value="item.value" :key="item.value">{{ item.label }}</Option>
     </select>
-    <DatePicker class="datePicker" type="date" size="large" v-model="date" placeholder="Date" confirm/>
-    <Input class="input-title" type="text" v-model="title" placeholder="Title" clearable size="large" />
-    <mavon-editor class="mavonEditor" v-model="markdownValue" :toolbarsFlag="toolbarsFlag" :subfield="subfield" :defaultOpen="defaultOpen" :toolbars="toolbars"></mavon-editor>
-    <input class="input-chooser" icon="ios-cloud-upload-outline" type="file" accept=".md" id="chooser">
-    <Button class="btn-upload" @click="upload" size="large">Upload</Button>
-    <Button type="success" class="btn-save" @click="save"  size="large">Save</Button>
+    </FormItem>
+    <FormItem prop="date">
+      <DatePicker class="datePicker" type="date" size="large" v-model="formItem.date" placeholder="Date" confirm/>
+    </FormItem>
+    <FormItem prop="title">
+      <Input class="input-title" type="text" v-model="formItem.title" placeholder="Title" clearable size="large" />
+    </FormItem>
+    <FormItem prop="markdownValue">
+      <mavon-editor class="mavonEditor" :value="formItem.markdownValue" :subfield="subfield" :defaultOpen="defaultOpen" :placeholder="placeholder" :toolbarsFlag="toolbarsFlag" :toolbars="toolbars"></mavon-editor>
+    </FormItem>
+    <FormItem>
+        <input class="input-chooser" type="file" accept=".md" id="chooser">
+        <Button class="btn-upload" @click="upload" size="large">Upload</Button>
+    </FormItem>
+    <FormItem>
+      <Button type="success" class="btn-item" @click="save" size="large">Save</Button>
+      <Button class="btn-item" @click="handleReset('formItem')" size="large">Reset</Button>
+    </FormItem>
     <Modal class="modal-confirm" v-model="modalConfirm" title="Warning" @on-ok="uploadOk" @on-cancel="uploadCancel">
       <p>The content you upload will cover the origin content.</p>
       <p>Are you sure to upload?</p>
     </Modal>
-  </form>
+  </Form>
 </div>
 </template>
 
@@ -41,13 +54,16 @@ export default {
           label: 'Daily'
         }
       ],
-      selectType: '',
-      date: '',
-      title: '',
-      markdownValue: '',
-      toolbarsFlag: true,
+      formItem: {
+        type: '',
+        date: '',
+        title: '',
+        markdownValue: ''
+      },
       subfield: true,
       defaultOpen: '',
+      placeholder: 'Content',
+      toolbarsFlag: true,
       toolbars: {
         bold: true, // 粗体
         italic: true, // 斜体
@@ -97,7 +113,7 @@ export default {
       var reader = new FileReader()
       let _this = this
       reader.onload = function (event) {
-        _this.markdownValue = event.target.result
+        _this.formItem.markdownValue = event.target.result
         _this.uploadSuccess(true)
       }
       reader.onerror = function (event) {
@@ -123,6 +139,11 @@ export default {
         desc: nodesc ? '' : 'Upload failed. '
       })
     },
+    handleReset (name) {
+      this.$refs[name].resetFields()
+      var chooser = document.getElementById('chooser')
+      chooser.outerHTML = chooser.outerHTML
+    },
     save: function () {}
   }
 }
@@ -133,43 +154,41 @@ export default {
   width       : 160px;
   margin-right: 20px;
   z-index     : 7;
-  position    : relative;
+  display: block;
 }
 
 .datePicker {
   width   : 160px;
   z-index : 7;
-  position: relative;
+  display: block;
 }
 
 .input-title {
   width  : 240px;
-  margin : 20px 0;
   display: block;
 }
 
 .mavonEditor {
   height : 600px;
   width  : 100%;
-  margin : 20px 0;
   z-index: 5;
 }
 
 .input-chooser {
-  margin      : 20px 0;
   font-size   : 18px;
   margin-right: 5px;
+  margin-bottom: 10px;
 }
 
 .btn-upload {
   width : auto;
-  margin: 10px 0;
+  margin-bottom: 10px;
 }
 
-.btn-save {
-  width  : 120px;
-  margin : 10px 0;
-  display: block;
+.btn-item {
+  width  : 100px;
+  margin-right: 20px;
+  margin-bottom: 10px;
 }
 
 .modal-confirm {

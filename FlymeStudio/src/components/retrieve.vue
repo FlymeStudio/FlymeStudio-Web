@@ -18,6 +18,7 @@ export default {
   width           : auto;
   margin          : auto 0;
   display         : flex;
+  display         : -webkit-flex;
   text-align      : center;
   align-items     : center;
   justify-content : center;

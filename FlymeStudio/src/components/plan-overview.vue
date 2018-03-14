@@ -1,6 +1,6 @@
 <template>
 <div id="plan-overview">
-  <Menu mode="horizontal" theme="light" @on-select="clickTag">
+  <Menu class="menu" mode="horizontal" theme="light" @on-select="clickTag">
     <MenuItem class="menu-item" name="1">
     <Icon type="bookmark" size="18"></Icon>
     All
@@ -109,7 +109,7 @@ export default {
           percent: 100,
           date: '2018.1.12',
           title: '放假安排',
-          content: '## 1.\n- list1\n- list2\n- list3\n- list4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---',
+          content: '## 1.\n- list1\n- list2\n- list3\n- list4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
           show: true
         },
         {
@@ -130,10 +130,7 @@ export default {
           content: '内容',
           show: true
         }
-      ],
-      subfield: false,
-      defaultOpen: 'preview',
-      toolbarsFlag: false
+      ]
     }
   },
   components: {
@@ -141,7 +138,6 @@ export default {
   },
   methods: {
     clickTag: function (name) {
-      console.log('name:' + name)
       let _total = 0
       let _done = 0
       let _doing = 0
@@ -181,6 +177,10 @@ export default {
 </script>
 
 <style scoped>
+.menu {
+  z-index: 5;
+}
+
 .menu-item {
   text-align: center;
 }
@@ -203,6 +203,7 @@ export default {
   align-items: center;
   margin     : auto 0;
   display    : flex;
+  display    : -webkit-flex;
 }
 
 .card-circle {
@@ -241,6 +242,7 @@ export default {
   height    : 200px;
   margin    : 0;
   display   : flex;
+  display   : -webkit-flex;
   font-size : 12px;
   overflow  : hidden;
   z-index   : 5;

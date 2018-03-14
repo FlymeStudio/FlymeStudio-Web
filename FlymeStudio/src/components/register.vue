@@ -249,6 +249,7 @@ export default {
   margin-left: 10%;
   width      : auto;
   display    : flex;
+  display    : -webkit-flex;
   text-align : center;
   font-size  : 25px;
   color      : #1c2438;

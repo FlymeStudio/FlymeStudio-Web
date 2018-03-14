@@ -16,13 +16,13 @@
       <mavon-editor class="mavonEditor" v-model="formItem.content" :subfield="subfield" :defaultOpen="defaultOpen" :placeholder="placeholder" :toolbarsFlag="toolbarsFlag" :toolbars="toolbars"></mavon-editor>
     </FormItem>
     <FormItem>
-      <Button class="btn-item" @click="upload" size="large">Upload</Button>
+      <Button class="btn-item" @click="modalConfirm = true" size="large">Upload</Button>
     </FormItem>
     <FormItem>
       <Button type="primary" class="btn-item" @click="handleSubmit('formItem')" size="large">Save</Button>
       <Button class="btn-item" @click="handleReset('formItem')" size="large">Reset</Button>
     </FormItem>
-    <Modal class="modal-confirm" v-model="modalConfirm" title="Warning" :loading="loading" @on-ok="uploadOk" @on-cancel="uploadCancel">
+    <Modal class="modal-confirm" v-model="modalConfirm" title="Warning"  :ok-text="okText" :cancel-text="cancelText" :loading="loading" @on-ok="upload">
       <input class="input-chooser" type="file" accept=".md" id="chooser">
       <p>The content you upload will cover the origin content.</p>
       <p>Are you sure to upload?</p>
@@ -133,33 +133,34 @@ export default {
         preview: true // 预览
       },
       modalConfirm: false,
-      loading: true
+      loading: true,
+      okText: 'Upload',
+      cancelText: 'Cancel'
     }
   },
   methods: {
     upload: function () {
-      this.modalConfirm = true
-    },
-    uploadOk: function () {
-      var file = document.getElementById('chooser').files[0]
-      var reader = new FileReader()
-      let _this = this
-      reader.onload = function (event) {
-        _this.formItem.content = event.target.result
-        _this.uploadSuccess(true)
+      var chooser = document.getElementById('chooser').files
+      if (chooser.length !== 0) {
+        var file = chooser[0]
+        var reader = new FileReader()
+        let _this = this
+        reader.onload = function (event) {
+          _this.formItem.content = event.target.result
+          _this.uploadSuccess(true)
+        }
+        reader.onerror = function (event) {
+          _this.uploadError(true)
+        }
+        reader.onloadend = function (event) {
+          setTimeout(() => {
+            _this.modalConfirm = false
+          }, 1000)
+        }
+        reader.readAsText(file, 'utf-8')
+      } else {
+        this.modalConfirm = false
       }
-      reader.onerror = function (event) {
-        _this.uploadError(true)
-      }
-      reader.onloadend = function (event) {
-        setTimeout(() => {
-          _this.modalConfirm = false
-        }, 1000)
-      }
-      reader.readAsText(file, 'utf-8')
-    },
-    uploadCancel () {
-      this.modal1 = false
     },
     uploadSuccess (nodesc) {
       this.$Notice.success({
@@ -247,6 +248,6 @@ export default {
 
 .modal-confirm p {
   font-size: 18px;
-  color   : red;
+  color    : red;
 }
 </style>

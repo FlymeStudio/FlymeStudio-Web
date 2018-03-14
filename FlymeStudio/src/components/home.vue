@@ -225,5 +225,4 @@ export default {
 .menu {
   z-index: 5;
 }
-
 </style>

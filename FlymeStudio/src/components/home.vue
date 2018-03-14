@@ -53,7 +53,7 @@
         </Menu>
       </Sider>
       <Layout :style="{padding: '0 24px'}">
-        <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
+        <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
           <transition name="component-fade" mode="out-in">
           <componentInfoView v-show="componentId == 1"></componentInfoView>
           </transition>

@@ -18,20 +18,20 @@
       </Menu>
     </Header>
     <Content class="content">
-      <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
+      <Form class="form" ref="formItem" :model="formItem" :rules="ruleItem">
         <FormItem class="form-item" prop="id">
-          <Input type="text" v-model="formInline.id" placeholder="Tel or email" size="large" clearable>
+          <Input type="text" v-model="formItem.id" placeholder="Tel or email" size="large" clearable>
           <Icon type="person" slot="prepend" size="18"></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item" prop="password">
-          <Input type="password" v-model="formInline.password" placeholder="Password" size="large" clearable>
+          <Input type="password" v-model="formItem.password" placeholder="Password" size="large" clearable>
           <Icon type="android-lock" slot="prepend" size="18"></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item-btn">
-          <Button class="btn-item" type="primary" @click="handleSubmit('formInline')" style="margin-right:15px;">Sign in</Button>
-          <Button class="btn-item" @click="handleReset('formInline')" style="margin-left:15px;">Reset</Button>
+          <Button class="btn-item" type="primary" @click="handleSubmit('formItem')" style="margin-right:15px;" :loading="loading">Sign in</Button>
+          <Button class="btn-item" @click="handleReset('formItem')" style="margin-left:15px;">Reset</Button>
         </FormItem>
       </Form>
     </Content>
@@ -48,11 +48,11 @@ export default {
   name: 'login',
   data () {
     return {
-      formInline: {
+      formItem: {
         id: '',
         password: ''
       },
-      ruleInline: {
+      ruleItem: {
         id: [
           {
             required: true,
@@ -67,7 +67,8 @@ export default {
             trigger: 'blur'
           }
         ]
-      }
+      },
+      loading: false
     }
   },
   components: {
@@ -98,8 +99,11 @@ export default {
       window.open('https://github.com/frogfans')
     },
     login: function () {
-      this.$Message.success('Sign in successful!')
-      this.$router.push('/home')
+      this.loading = true
+      setTimeout(() => {
+        _this.$Message.success('Sign in successful!')
+        _this.$router.push('/home')
+      }, 1000)
       let _this = this
       accountApi.login(this.id, this.password)
         .then(function (response) {
@@ -112,6 +116,7 @@ export default {
             // _this.$store.dispatch('doLogin', loginInfo)
             _this.$router.push('/home')
           } else {
+            _this.loading = true
             _this.$Message.error('Sign in failed!')
           }
         })

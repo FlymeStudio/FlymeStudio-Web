@@ -1,6 +1,6 @@
 <template>
 <div id="plan-write">
-  <Form ref="formItem" :model="formItem">
+  <Form ref="formItem" :model="formItem" :rules="ruleItem">
     <FormItem prop="type">
       <Select class="select-type" v-model="formItem.type" size="large" placeholder="Type">
       <Option v-for="item in types" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -12,18 +12,18 @@
     <FormItem prop="title">
       <Input class="input-title" type="text" v-model="formItem.title" placeholder="Title" clearable size="large" />
     </FormItem>
-    <FormItem prop="markdownValue">
-      <mavon-editor class="mavonEditor" :value="formItem.markdownValue" :subfield="subfield" :defaultOpen="defaultOpen" :placeholder="placeholder" :toolbarsFlag="toolbarsFlag" :toolbars="toolbars"></mavon-editor>
+    <FormItem prop="content">
+      <mavon-editor class="mavonEditor" v-model="formItem.content" :subfield="subfield" :defaultOpen="defaultOpen" :placeholder="placeholder" :toolbarsFlag="toolbarsFlag" :toolbars="toolbars"></mavon-editor>
     </FormItem>
     <FormItem>
-        <input class="input-chooser" type="file" accept=".md" id="chooser">
-        <Button class="btn-upload" @click="upload" size="large">Upload</Button>
+      <Button class="btn-item" @click="upload" size="large">Upload</Button>
     </FormItem>
     <FormItem>
-      <Button type="primary" class="btn-item" @click="save" size="large">Save</Button>
+      <Button type="primary" class="btn-item" @click="handleSubmit('formItem')" size="large">Save</Button>
       <Button class="btn-item" @click="handleReset('formItem')" size="large">Reset</Button>
     </FormItem>
-    <Modal class="modal-confirm" v-model="modalConfirm" title="Warning" @on-ok="uploadOk" @on-cancel="uploadCancel">
+    <Modal class="modal-confirm" v-model="modalConfirm" title="Warning" :loading="loading" @on-ok="uploadOk" @on-cancel="uploadCancel">
+      <input class="input-chooser" type="file" accept=".md" id="chooser">
       <p>The content you upload will cover the origin content.</p>
       <p>Are you sure to upload?</p>
     </Modal>
@@ -32,6 +32,8 @@
 </template>
 
 <script type="text/javascript">
+import planApi from '../api/planApi'
+
 export default {
   name: 'plan-write',
   data () {
@@ -58,7 +60,38 @@ export default {
         type: '',
         date: '',
         title: '',
-        markdownValue: ''
+        content: ''
+      },
+      ruleItem: {
+        type: [
+          {
+            required: true,
+            message: 'Please select the type.',
+            trigger: 'blur'
+          }
+        ],
+        date: [
+          {
+            required: true,
+            type: 'date',
+            message: 'Please select the date.',
+            trigger: 'blur'
+          }
+        ],
+        title: [
+          {
+            required: true,
+            message: 'Please fill in the title.',
+            trigger: 'blur'
+          }
+        ],
+        content: [
+          {
+            required: true,
+            message: 'Please fill in the content.',
+            trigger: 'blur'
+          }
+        ]
       },
       subfield: true,
       defaultOpen: '',
@@ -99,28 +132,29 @@ export default {
         subfield: true, // 单双栏模式
         preview: true // 预览
       },
-      modalConfirm: false
+      modalConfirm: false,
+      loading: true
     }
   },
   methods: {
     upload: function () {
-      if (document.getElementById('chooser').files[0] != null) {
-        this.modalConfirm = true
-      }
+      this.modalConfirm = true
     },
     uploadOk: function () {
       var file = document.getElementById('chooser').files[0]
       var reader = new FileReader()
       let _this = this
       reader.onload = function (event) {
-        _this.formItem.markdownValue = event.target.result
+        _this.formItem.content = event.target.result
         _this.uploadSuccess(true)
       }
       reader.onerror = function (event) {
         _this.uploadError(true)
       }
       reader.onloadend = function (event) {
-        _this.modal1 = false
+        setTimeout(() => {
+          _this.modalConfirm = false
+        }, 1000)
       }
       reader.readAsText(file, 'utf-8')
     },
@@ -144,7 +178,27 @@ export default {
       var chooser = document.getElementById('chooser')
       chooser.outerHTML = chooser.outerHTML
     },
-    save: function () {}
+    handleSubmit (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.save()
+        } else {
+          this.$Message.error('Information is incorrect!')
+        }
+      })
+    },
+    save: function () {
+      this.$Message.success('Save successful!')
+      this.isResultView = true
+      let _this = this
+      planApi.submit(this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content).then(function (response) {
+        if (response.data.result === true) {
+          _this.$Message.success('Save successful!')
+        } else {
+          _this.$Message.error('Save failed!')
+        }
+      })
+    }
   }
 }
 </script>
@@ -154,12 +208,12 @@ export default {
   width       : 160px;
   margin-right: 20px;
   z-index     : 7;
-  display: block;
+  display     : block;
 }
 
 .datePicker {
-  width   : 160px;
-  z-index : 7;
+  width  : 160px;
+  z-index: 7;
   display: block;
 }
 
@@ -175,29 +229,24 @@ export default {
 }
 
 .input-chooser {
-  font-size   : 18px;
-  margin-right: 5px;
-  margin-bottom: 10px;
-}
-
-.btn-upload {
-  width : auto;
+  font-size    : 18px;
+  margin-right : 5px;
   margin-bottom: 10px;
 }
 
 .btn-item {
-  width  : 100px;
-  margin-right: 20px;
+  width        : 100px;
+  margin-right : 20px;
   margin-bottom: 10px;
 }
 
 .modal-confirm {
   position: absolute;
   z-index : 10;
-  color   : red;
 }
 
 .modal-confirm p {
   font-size: 18px;
+  color   : red;
 }
 </style>

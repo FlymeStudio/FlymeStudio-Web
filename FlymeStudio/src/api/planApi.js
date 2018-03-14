@@ -18,5 +18,22 @@ export default {
       data: data,
       withCredentials: true
     })
+  },
+  submit (type, date, title, content) {
+    var data = qs.stringify({
+      type: type,
+      date: date,
+      title: title,
+      content: content
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: planApi.submitUrl(),
+      data: data,
+      withCredentials: true
+    })
   }
 }

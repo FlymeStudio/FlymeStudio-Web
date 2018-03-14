@@ -19,9 +19,11 @@ export const infoApi = {
 }
 
 export const planApi = {
-  planUrl: () => ''
+  planUrl: () => '',
+  submitUrl: () => ''
 }
 
 export const achieveApi = {
-  achieveUrl: () => ''
+  achieveUrl: () => '',
+  submitUrl: () => ''
 }

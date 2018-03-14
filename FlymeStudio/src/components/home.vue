@@ -131,21 +131,21 @@ export default {
     getInfo () {
       this.name = '曾宇' // test
       this.email = '1213814232@qq.com' // test
-
+      let _this = this
       infoApi.info(this.tel).then(function (response) {
         if (response.data.result === true) {
-          this.name = response.data.name
-          this.email = response.data.email
+          _this.name = response.data.name
+          _this.email = response.data.email
         }
       })
       planApi.plan(this.tel).then(function (response) {
         if (response.data.result === true) {
-          this.plan = response.data.plan
+          _this.plan = response.data.plan
         }
       })
       achieveApi.achieve(this.tel).then(function (response) {
         if (response.data.result === true) {
-          this.achieve = response.data.achieve
+          _this.achieve = response.data.achieve
         }
       })
     },

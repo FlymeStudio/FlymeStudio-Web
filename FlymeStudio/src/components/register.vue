@@ -18,37 +18,41 @@
       </Menu>
     </Header>
     <Content class="content">
-      <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
+      <Form class="form" ref="formItem" :model="formItem" :rules="ruleItem" v-show="isResultView == false">
         <FormItem class="form-item" prop="name">
-          <Input type="text" v-model="formInline.name" placeholder="Username" size="large" clearable>
+          <Input type="text" v-model="formItem.name" placeholder="Username" size="large" clearable>
           <Icon type="person" slot="prepend" size="18"></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item" prop="tel">
-          <Input type="text" v-model="formInline.tel" placeholder="Telephone" size="large" clearable>
+          <Input type="text" v-model="formItem.tel" placeholder="Telephone" size="large" clearable>
           <Icon type="ios-telephone" slot="prepend" size="18"></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item" prop="email">
-          <Input type="text" v-model="formInline.email" placeholder="Email" size="large" clearable>
+          <Input type="text" v-model="formItem.email" placeholder="Email" size="large" clearable>
           <Icon type="email" slot="prepend" size="18"></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item" prop="password">
-          <Input type="password" v-model="formInline.password" placeholder="Password" size="large" clearable>
+          <Input type="password" v-model="formItem.password" placeholder="Password" size="large" clearable>
           <Icon type="android-lock" slot="prepend" size="18"></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item" prop="confirm">
-          <Input type="password" v-model="formInline.confirm" placeholder="Confirm" size="large" clearable>
+          <Input type="password" v-model="formItem.confirm" placeholder="Confirm" size="large" clearable>
           <Icon type="checkmark" slot="prepend" size="18"></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item-btn">
-          <Button class="btn-item" type="primary" @click="handleSubmit('formInline')" style="margin-right:15px;">Sign up</Button>
-          <Button class="btn-item" @click="handleReset('formInline')" style="margin-left:15px;">Reset</Button>
+          <Button class="btn-item" type="primary" @click="handleSubmit('formItem')" style="margin-right:15px;" :loading="loading">Sign up</Button>
+          <Button class="btn-item" @click="handleReset('formItem')" style="margin-left:15px;">Reset</Button>
         </FormItem>
       </Form>
+      <div class="div-result" v-show="isResultView">
+        <Icon class="icon-result" type="ios-people" size="35"></Icon>
+        <div>Welcome to join <b>Flyme Studio</b>!</div>
+      </div>
     </Content>
     <componentFooter></componentFooter>
   </Layout>
@@ -63,24 +67,25 @@ export default {
   name: 'register',
   data () {
     return {
-      formInline: {
+      isResultView: false,
+      formItem: {
         name: '',
         tel: '',
         email: '',
         password: '',
         confirm: ''
       },
-      ruleInline: {
+      ruleItem: {
         name: [
           {
             required: true,
-            message: 'Please fill in the username.',
+            message: 'The name cannot be empty.',
             trigger: 'blur'
           },
           {
             type: 'string',
             pattern: /^[\u4E00-\u9FA5]{2,4}$/,
-            message: 'Wrong username!',
+            message: 'Illegal username!',
             trigger: 'blur'
           }
         ],
@@ -97,7 +102,7 @@ export default {
           },
           {
             pattern: /^(13[0-9]{9})|(14[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})|(18[0-9]{9})$/,
-            message: 'Wrong telephone number.',
+            message: 'Incorrect telephone number format.',
             trigger: 'blur'
           }
         ],
@@ -109,7 +114,7 @@ export default {
           },
           {
             type: 'email',
-            message: 'Wrong email.'
+            message: 'Incorrect email format.'
           }
         ],
         password: [
@@ -121,7 +126,7 @@ export default {
           {
             type: 'string',
             min: 6,
-            message: 'The password is too short.',
+            message: 'The password should be more than 6 bits.',
             trigger: 'blur'
           }
         ],
@@ -132,7 +137,8 @@ export default {
             trigger: 'blur'
           }
         ]
-      }
+      },
+      loading: false
     }
   },
   components: {
@@ -163,14 +169,18 @@ export default {
       window.open('https://github.com/frogfans')
     },
     register: function () {
+      this.loading = true
+      setTimeout(() => {
+        this.$Message.success('Sign up successful!')
+        this.isResultView = true
+      }, 1000)
       let _this = this
-      this.$Message.success('Sign up successful!')
-      this.isResultView = true
-      accountApi.register(this.name, this.tel, this.email, this.password).then(function (response) {
+      accountApi.register(this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.password).then(function (response) {
         if (response.data.result === true) {
           _this.$Message.success('Sign up successful!')
           _this.isResultView = true
         } else {
+          _this.loading = true
           _this.$Message.error('Sign up failed!')
           _this.isResultView = false
           _this.isRegisterCallback = true
@@ -180,7 +190,12 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.register()
+          if (this.formItem.password === this.formItem.confirm) {
+            this.register()
+          } else {
+            this.$Message.error('Please reconfirm password!')
+            this.formItem.confirm = ''
+          }
         } else {
           this.$Message.error('Information is incorrect!')
         }
@@ -227,5 +242,19 @@ export default {
   width     : 100px;
   margin-top: 20px;
   font-size : 15px;
+}
+
+.div-result {
+  margin-top : 180px;
+  margin-left: 10%;
+  width      : auto;
+  display    : flex;
+  text-align : center;
+  font-size  : 25px;
+  color      : #1c2438;
+}
+
+.icon-result {
+  margin-right: 10px;
 }
 </style>

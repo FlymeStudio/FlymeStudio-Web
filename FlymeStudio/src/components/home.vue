@@ -54,6 +54,9 @@
       </Sider>
       <Layout :style="{padding: '0 24px'}">
         <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
+          <Spin fix v-if="spinShow">
+            <Icon class="icon-spin" type="load-c" size=50></Icon>
+          </Spin>
           <componentHome v-show="componentId == 0"></componentHome>
           <transition name="component-fade" mode="out-in">
             <componentInfoView v-show="componentId == 1"></componentInfoView>
@@ -115,7 +118,8 @@ export default {
       name: 'user',
       email: '1213814232@qq.com',
       tagId: 0,
-      componentId: 0
+      componentId: 0,
+      spinShow: false
     }
   },
   components: {
@@ -173,16 +177,23 @@ export default {
       window.open('https://github.com/flymestudio/FlymeStudio-web')
     },
     clickQuit: function () {
-      this.$Message.success('Sign out successful!')
-      this.$router.push('/login')
+      this.spinShow = true
       let _this = this
+      setTimeout(() => {
+        _this.spinShow = false
+        _this.$Message.success('Sign out successful!')
+        _this.$router.push('/login')
+      }, 1000)
       accountApi.quit(this.tel).then(function (response) {
-        if (response.data.result === true) {
-          _this.$Message.success('Sign out successful!')
-          _this.$router.push('/login')
-        } else {
-          _this.$Message.error('Sign out failed!')
-        }
+        setTimeout(() => {
+          _this.spinShow = false
+          if (response.data.result === true) {
+            _this.$Message.success('Sign out successful!')
+            _this.$router.push('/login')
+          } else {
+            _this.$Message.error('Sign out failed!')
+          }
+        }, 1000)
       })
     },
     clickLeftNav: function (name) {

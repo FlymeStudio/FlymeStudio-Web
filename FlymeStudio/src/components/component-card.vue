@@ -2,11 +2,11 @@
 <Card>
   <div>
     <div class="card-top">
-      <i-circle class="card-circle" :size=40 v-if="percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
+      <i-circle class="card-circle" :size=40 v-if="cardPercent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
         <Icon type="ios-checkmark-empty" size=40 color="#5cb85c"></Icon>
       </i-circle>
-      <i-circle class="card-circle" :size=40 v-else :percent="percent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
-        <span class="demo-Circle-inner">{{ percent }}%</span>
+      <i-circle class="card-circle" :size=40 v-else :percent="cardPercent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
+        <span class="demo-Circle-inner">{{ cardPercent }}%</span>
       </i-circle>
       <span class="card-date">{{ date }}</span>
       <span class="card-detail" @click="modalPreview = true"><Icon type="more" size="24"></Icon></span>
@@ -14,26 +14,34 @@
     <p class="card-title" slot="title">{{ title }}</p>
     <mavon-editor class="card-content" v-model="content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ content }}</mavon-editor>
   </div>
-  <Modal class="modal-preview"
-    width="90%" v-model="modalPreview" :mask-closable="false" :ok-text="okText" :cancel-text="cancelText" class-name="vertical-center-modal" @on-ok="modalConfirm = true">
-      <div>
-        <div class="card-top">
-          <i-circle class="card-circle" :size=40 v-if="percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
-            <Icon type="ios-checkmark-empty" size=40 color="#5cb85c"></Icon>
-          </i-circle>
-          <i-circle class="card-circle" :size=40 v-else :percent="percent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
-            <span class="demo-Circle-inner">{{ percent }}%</span>
-          </i-circle>
-          <span class="card-date">{{ date }}</span>
-        </div>
-        <p class="preview-title" slot="title">{{ title }}</p>
-        <mavon-editor class="preview-content" v-model="content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ content }}</mavon-editor>
+  <Modal class="preview-modal" width="90%" v-model="modalPreview" :mask-closable="false" :ok-text="okText" :cancel-text="cancelText" class-name="vertical-center-modal" @on-ok="modalConfirm = true">
+    <div>
+      <div class="card-top">
+        <i-circle class="card-circle" :size=40 v-if="cardPercent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
+          <Icon type="ios-checkmark-empty" size=40 color="#5cb85c"></Icon>
+        </i-circle>
+        <i-circle class="card-circle" :size=40 v-else :percent="cardPercent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
+          <span class="demo-Circle-inner">{{ cardPercent }}%</span>
+        </i-circle>
+        <span class="card-date">{{ date }}</span>
+      </div>
+      <p class="preview-title" slot="title">{{ title }}</p>
+      <mavon-editor class="preview-content" v-model="content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ content }}</mavon-editor>
+      <div class="div-plans">
         <Alert v-for="item in plans" :key="item.index">
+          <Progress  class="preview-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
+          <Progress  class="preview-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
           <Tag type="dot" color="blue" style="width:100px;text-align:center;">{{ item.tag }}</Tag>
           <Tag type="dot" color="yellow" style="width:300px;">{{ item.goal }}</Tag>
-          <Button type="ghost" shape="circle" icon="minus" @click="deletePlan(item.index)"></Button>
+          <Button class="btn-plans" type="ghost" shape="circle" icon="minus" @click="deletePlan(item.index)"></Button>
+        </Alert>
+        <Alert>
+          <Input type="text" clearable placeholder="Tag" style="width:100px;" v-model="editTag"></Input>
+          <Input type="text" clearable placeholder="Goal" style="width:300px;margin:auto 4px;" v-model="editGoal"></Input>
+          <Button class="btn-plans" type="ghost" shape="circle" icon="plus" @click="addPlan()"></Button>
         </Alert>
       </div>
+    </div>
   </Modal>
   <Modal class="modal-confirm" v-model="modalConfirm" title="Warning" :ok-text="okText" :cancel-text="cancelText" :loading="loading" @on-cancel="cancel()" @on-ok="save()">
     <p>Are you sure to save the change?</p>
@@ -53,7 +61,6 @@ export default{
   data () {
     return {
       key: this.cardData.key,
-      percent: this.cardData.percent,
       date: this.cardData.date,
       title: this.cardData.title,
       content: this.cardData.content,
@@ -62,11 +69,26 @@ export default{
       defaultOpen: 'preview',
       toolbarsFlag: false,
       planIndex: '',
+      editTag: '',
+      editGoal: '',
       modalPreview: false,
       modalConfirm: false,
       loading: true,
       okText: 'Save',
       cancelText: 'Cancel'
+    }
+  },
+  computed: {
+    cardPercent: function () {
+      let _percent = 0
+      for (var i = 0; i < this.plans.length; i++) {
+        _percent += this.plans[i].percent
+      }
+      if (this.plans.length === 0) {
+        return 0
+      } else {
+        return Math.round(_percent / this.plans.length)
+      }
     }
   },
   methods: {
@@ -80,6 +102,18 @@ export default{
           break
         }
       }
+    },
+    addPlan () {
+      var plan = {
+        index: this.planIndex,
+        tag: this.editTag,
+        goal: this.editGoal,
+        percent: 0
+      }
+      this.plans.push(plan)
+      this.editTag = ''
+      this.editGoal = ''
+      this.planIndex++
     },
     save () {
       let _this = this
@@ -134,16 +168,6 @@ export default{
   font-size  : 18px;
 }
 
-.preview-title {
-  width      : 100%;
-  text-align : center;
-  border-top : 1px solid #ccc;
-  margin-top : 10px;
-  padding-top: 10px;
-  font-weight: bold;
-  font-size  : 22px;
-}
-
 .card-content {
   min-width : 100px;
   min-height: 100px;
@@ -152,6 +176,20 @@ export default{
   margin    : 0;
   font-size : 12px;
   z-index   : 5;
+}
+
+.preview-modal{
+  z-index: 10;
+}
+
+.preview-title {
+  width      : 100%;
+  text-align : center;
+  border-top : 1px solid #ccc;
+  margin-top : 10px;
+  padding-top: 10px;
+  font-weight: bold;
+  font-size  : 22px;
 }
 
 .preview-content {
@@ -164,8 +202,23 @@ export default{
   z-index   : 5;
 }
 
-.modal-preview{
-  z-index: 10;
+.div-plans{
+    margin-top: 20px;
+}
+
+.preview-plans{
+}
+
+.preview-progress{
+  font-size: 16px;
+  color: #1788e8;
+  margin-bottom: 10px;
+}
+
+.btn-plans{
+  display: inline-block;
+  float: right;
+  margin-left: auto;
 }
 
 .vertical-center-modal {

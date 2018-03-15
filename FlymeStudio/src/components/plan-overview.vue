@@ -30,21 +30,21 @@
       <Collapse>
         <Panel name="Total" size="large">
           <span class="card-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
-          <div class="card-div" slot="content" v-for="card in cards" v-if="card.show == true" :key="card.key">
+          <div class="card-div" slot="content" v-for="card in computedCards" v-if="card.show == true" :key="card.key">
             <componentCard :cardData="card"></componentCard>
           </div>
         </Panel>
 
         <Panel name="Done">
           <span class="card-count" style="color:#19be6b;"> Done ({{ count.done }})</span>
-          <div class="card-div" slot="content" v-for="card in cards" v-if="card.show == true && card.percent == 100" :key="card.key">
+          <div class="card-div" slot="content" v-for="card in computedCards" v-if="card.show == true && card.percent == 100"  :key="card.key">
             <componentCard :cardData="card"></componentCard>
           </div>
         </Panel>
 
         <Panel name="Doing">
           <span class="card-count" style="color:#ed3f14;"> Doing ({{ count.doing }})</span>
-          <div class="card-div" slot="content" v-for="card in cards" v-if="card.show == true && card.percent != 100" :key="card.key">
+          <div class="card-div" slot="content" v-for="card in computedCards" v-if="card.show == true && card.percent != 100"  :key="card.key">
             <componentCard :cardData="card"></componentCard>
           </div>
         </Panel>
@@ -60,6 +60,7 @@ import componentCard from './component-card.vue'
 export default {
   name: 'plan-overview',
   created () {
+    this.computePercent()
     this.clickTag('1')
   },
   data () {
@@ -72,8 +73,9 @@ export default {
       cards: [
         {
           key: 1,
+          show: true,
           type: '2',
-          percent: 100,
+          percent: 0,
           date: '2017.3.1',
           title: '2017年度计划',
           content: '内容。。。',
@@ -81,25 +83,28 @@ export default {
             {
               index: 0,
               tag: 'plan',
-              goal: '健身'
+              goal: '健身',
+              percent: 20
             },
             {
               index: 1,
               tag: 'plan',
-              goal: '考驾照'
+              goal: '考驾照',
+              percent: 100
             },
             {
               index: 2,
               tag: 'plan',
-              goal: '秋招'
+              goal: '秋招',
+              percent: 100
             }
-          ],
-          show: true
+          ]
         },
         {
           key: 2,
+          show: true,
           type: '3',
-          percent: 6,
+          percent: 0,
           date: '2017.9.1',
           title: '2017年9月报告',
           content: '内容。。。\nddddddddddd\naaaaaaaaa',
@@ -107,20 +112,22 @@ export default {
             {
               index: 0,
               tag: '秋招',
-              goal: '复习'
+              goal: '复习',
+              percent: 70
             },
             {
               index: 1,
               tag: '开学',
-              goal: '选班委'
+              goal: '选班委',
+              percent: 100
             }
-          ],
-          show: true
+          ]
         },
         {
           key: 3,
+          show: true,
           type: '4',
-          percent: 93,
+          percent: 0,
           date: '2018.2.12',
           title: '2018春节活动',
           content: '内容。。。',
@@ -128,20 +135,22 @@ export default {
             {
               index: 0,
               tag: '旅游',
-              goal: '深圳'
+              goal: '深圳',
+              percent: 100
             },
             {
               index: 1,
               tag: '旅游',
-              goal: '香港'
+              goal: '香港',
+              percent: 100
             }
-          ],
-          show: true
+          ]
         },
         {
           key: 4,
+          show: true,
           type: '3',
-          percent: 47,
+          percent: 0,
           date: '2018.3.4',
           title: '2018开学准备',
           content: '内容',
@@ -149,15 +158,16 @@ export default {
             {
               index: 0,
               tag: '实习',
-              goal: '初期报告'
+              goal: '初期报告',
+              percent: 0
             }
-          ],
-          show: true
+          ]
         },
         {
           key: 5,
+          show: true,
           type: '3',
-          percent: 100,
+          percent: 0,
           date: '2018.1.12',
           title: '放假安排',
           content: '## 1.\n- plans1\n- plans2\n- plans3\n- plans4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
@@ -165,49 +175,76 @@ export default {
             {
               index: 0,
               tag: '年前',
-              goal: '在家休息'
+              goal: '在家休息',
+              percent: 100
             },
             {
               index: 1,
               tag: '年后',
-              goal: '出行游玩'
+              goal: '出行游玩',
+              percent: 100
             }
-          ],
-          show: true
+          ]
         },
         {
           key: 6,
+          show: true,
           type: '3',
-          percent: 18,
+          percent: 0,
           date: '2018.3.15',
           title: '实习相关事项',
           content: '内容',
-          plans: [],
-          show: true
+          plans: []
         },
         {
           key: 7,
+          show: true,
           type: '5',
-          percent: 62,
+          percent: 0,
           date: '2018.5.1',
           title: '毕设安排',
           content: '内容',
-          plans: [],
-          show: true
+          plans: []
         }
       ],
-      spinShow: true
+      currentType: '1',
+      spinShow: false
+    }
+  },
+  computed: {
+    computedCards: {
+      get: function () {
+        this.computePercent()
+        this.clickTag(this.currentType)
+        return this.cards
+      }
     }
   },
   components: {
     componentCard
   },
   methods: {
+    computePercent () {
+      console.log('computePercent:')
+      for (var i = 0; i < this.cards.length; i++) {
+        if (this.cards[i].plans.length === 0) {
+          this.cards[i].percent = 0
+        } else {
+          var percent = 0
+          for (var j = 0; j < this.cards[i].plans.length; j++) {
+            percent += this.cards[i].plans[j].percent
+          }
+          this.cards[i].percent = Math.round(percent / this.cards[i].plans.length)
+        }
+      }
+    },
     clickTag: function (name) {
+      this.currentType = name
+      console.log('clickTag:' + name)
       this.spinShow = true
-      let _total = 0
-      let _done = 0
-      let _doing = 0
+      var _total = 0
+      var _done = 0
+      var _doing = 0
       if (name === '1') {
         _total = this.cards.length
         for (let i = 0; i < this.cards.length; i++) {
@@ -248,30 +285,12 @@ export default {
 </script>
 
 <style scoped>
-@keyframes ani-demo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  50% {
-    transform: rotate(180deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .menu {
   z-index: 5;
 }
 
 .menu-item {
   text-align: center;
-}
-
-.icon-spin {
-  animation: ani-demo-spin 1s linear infinite;
 }
 
 .card-count {

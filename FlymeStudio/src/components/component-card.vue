@@ -28,9 +28,14 @@
         </div>
         <p class="preview-title" slot="title">{{ title }}</p>
         <mavon-editor class="preview-content" v-model="content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ content }}</mavon-editor>
+        <Alert v-for="item in plans" :key="item.index">
+          <Tag type="dot" color="blue" style="width:100px;text-align:center;">{{ item.tag }}</Tag>
+          <Tag type="dot" color="yellow" style="width:300px;">{{ item.goal }}</Tag>
+          <Button type="ghost" shape="circle" icon="minus" @click="deletePlan(item.index)"></Button>
+        </Alert>
       </div>
   </Modal>
-  <Modal class="modal-confirm" v-model="modalConfirm" title="Warning" :ok-text="okText" :cancel-text="cancelText" :loading="loading" @on-cancel="cancel" @on-ok="save">
+  <Modal class="modal-confirm" v-model="modalConfirm" title="Warning" :ok-text="okText" :cancel-text="cancelText" :loading="loading" @on-cancel="cancel()" @on-ok="save()">
     <p>Are you sure to save the change?</p>
   </Modal>
 </Card>
@@ -39,24 +44,24 @@
 <script>
 export default{
   name: 'component-card',
+  created () {
+    this.planIndex = this.plans.length
+  },
   props: [
-    'cardKey',
-    'cardType',
-    'cardPercent',
-    'cardDate',
-    'cardTitle',
-    'cardContent'
+    'cardData'
   ],
   data () {
     return {
-      key: this.cardKey,
-      percent: this.cardPercent,
-      date: this.cardDate,
-      title: this.cardTitle,
-      content: this.cardContent,
+      key: this.cardData.key,
+      percent: this.cardData.percent,
+      date: this.cardData.date,
+      title: this.cardData.title,
+      content: this.cardData.content,
+      plans: this.cardData.plans,
       subfield: false,
       defaultOpen: 'preview',
       toolbarsFlag: false,
+      planIndex: '',
       modalPreview: false,
       modalConfirm: false,
       loading: true,
@@ -65,10 +70,18 @@ export default{
     }
   },
   methods: {
-    cancel: function () {
+    cancel () {
       this.modalPreview = true
     },
-    save: function () {
+    deletePlan (index) {
+      for (var i = 0; i < this.plans.length; i++) {
+        if (this.plans[i].index === index) {
+          this.plans.splice(i, 1)
+          break
+        }
+      }
+    },
+    save () {
       let _this = this
       setTimeout(() => {
         _this.$Notice.success({
@@ -143,7 +156,7 @@ export default{
 
 .preview-content {
   min-width : 100px;
-  min-height: 100px;
+  min-height: 50px;
   width     : auto;
   height    : auto;
   margin-top: 10px;

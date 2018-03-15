@@ -31,21 +31,21 @@
         <Panel name="Total" size="large">
           <span class="card-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
           <div class="card-div" slot="content" v-for="card in cards" v-if="card.show == true" :key="card.key">
-            <componentCard :cardKey="card.key" :cardType="card.type" :cardPercent="card.percent" :cardDate="card.date" :cardTitle="card.title" :cardContent="card.content"></componentCard>
+            <componentCard :cardData="card"></componentCard>
           </div>
         </Panel>
 
         <Panel name="Done">
           <span class="card-count" style="color:#19be6b;"> Done ({{ count.done }})</span>
           <div class="card-div" slot="content" v-for="card in cards" v-if="card.show == true && card.percent == 100" :key="card.key">
-            <componentCard :cardKey="card.key" :cardPercent="card.percent" :cardDate="card.date" :cardTitle="card.title" :cardContent="card.content"></componentCard>
+            <componentCard :cardData="card"></componentCard>
           </div>
         </Panel>
 
         <Panel name="Doing">
           <span class="card-count" style="color:#ed3f14;"> Doing ({{ count.doing }})</span>
           <div class="card-div" slot="content" v-for="card in cards" v-if="card.show == true && card.percent != 100" :key="card.key">
-            <componentCard :cardKey="card.key" :cardPercent="card.percent" :cardDate="card.date" :cardTitle="card.title" :cardContent="card.content"></componentCard>
+            <componentCard :cardData="card"></componentCard>
           </div>
         </Panel>
       </Collapse>
@@ -77,6 +77,23 @@ export default {
           date: '2017.3.1',
           title: '2017年度计划',
           content: '内容。。。',
+          plans: [
+            {
+              index: 0,
+              tag: 'plan',
+              goal: '健身'
+            },
+            {
+              index: 1,
+              tag: 'plan',
+              goal: '考驾照'
+            },
+            {
+              index: 2,
+              tag: 'plan',
+              goal: '秋招'
+            }
+          ],
           show: true
         },
         {
@@ -86,6 +103,18 @@ export default {
           date: '2017.9.1',
           title: '2017年9月报告',
           content: '内容。。。\nddddddddddd\naaaaaaaaa',
+          plans: [
+            {
+              index: 0,
+              tag: '秋招',
+              goal: '复习'
+            },
+            {
+              index: 1,
+              tag: '开学',
+              goal: '选班委'
+            }
+          ],
           show: true
         },
         {
@@ -95,6 +124,18 @@ export default {
           date: '2018.2.12',
           title: '2018春节活动',
           content: '内容。。。',
+          plans: [
+            {
+              index: 0,
+              tag: '旅游',
+              goal: '深圳'
+            },
+            {
+              index: 1,
+              tag: '旅游',
+              goal: '香港'
+            }
+          ],
           show: true
         },
         {
@@ -104,6 +145,13 @@ export default {
           date: '2018.3.4',
           title: '2018开学准备',
           content: '内容',
+          plans: [
+            {
+              index: 0,
+              tag: '实习',
+              goal: '初期报告'
+            }
+          ],
           show: true
         },
         {
@@ -112,7 +160,19 @@ export default {
           percent: 100,
           date: '2018.1.12',
           title: '放假安排',
-          content: '## 1.\n- list1\n- list2\n- list3\n- list4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
+          content: '## 1.\n- plans1\n- plans2\n- plans3\n- plans4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
+          plans: [
+            {
+              index: 0,
+              tag: '年前',
+              goal: '在家休息'
+            },
+            {
+              index: 1,
+              tag: '年后',
+              goal: '出行游玩'
+            }
+          ],
           show: true
         },
         {
@@ -122,6 +182,7 @@ export default {
           date: '2018.3.15',
           title: '实习相关事项',
           content: '内容',
+          plans: [],
           show: true
         },
         {
@@ -131,6 +192,7 @@ export default {
           date: '2018.5.1',
           title: '毕设安排',
           content: '内容',
+          plans: [],
           show: true
         }
       ],

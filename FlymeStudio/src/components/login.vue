@@ -100,11 +100,11 @@ export default {
     },
     login: function () {
       this.loading = true
+      let _this = this
       setTimeout(() => {
         _this.$Message.success('Sign in successful!')
         _this.$router.push('/home')
       }, 1000)
-      let _this = this
       accountApi.login(this.id, this.password)
         .then(function (response) {
           if (response.data.result === true) {

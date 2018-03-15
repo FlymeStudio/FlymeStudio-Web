@@ -1,12 +1,12 @@
 <template>
-<div id="plan-search">
-search
+<div id="component-home">
+
 </div>
 </template>
 
-<script type="text/javascript">
+<script>
 export default{
-  name: 'plan-search'
+  name: 'component-home'
 }
 </script>
 

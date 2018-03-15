@@ -2,10 +2,10 @@
 <Card>
   <div>
     <div class="card-top">
-      <i-circle class="card-circle" :size="40" v-if="percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
-        <Icon type="ios-checkmark-empty" size="40" color="#5cb85c"></Icon>
+      <i-circle class="card-circle" :size=40 v-if="percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
+        <Icon type="ios-checkmark-empty" size=40 color="#5cb85c"></Icon>
       </i-circle>
-      <i-circle class="card-circle" :size="40" v-else :percent="percent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
+      <i-circle class="card-circle" :size=40 v-else :percent="percent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
         <span class="demo-Circle-inner">{{ percent }}%</span>
       </i-circle>
       <span class="card-date">{{ date }}</span>
@@ -18,10 +18,10 @@
     width="90%" v-model="modalPreview" :mask-closable="false" :ok-text="okText" :cancel-text="cancelText" class-name="vertical-center-modal" @on-ok="modalConfirm = true">
       <div>
         <div class="card-top">
-          <i-circle class="card-circle" :size="40" v-if="percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
-            <Icon type="ios-checkmark-empty" size="40" color="#5cb85c"></Icon>
+          <i-circle class="card-circle" :size=40 v-if="percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
+            <Icon type="ios-checkmark-empty" size=40 color="#5cb85c"></Icon>
           </i-circle>
-          <i-circle class="card-circle" :size="40" v-else :percent="percent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
+          <i-circle class="card-circle" :size=40 v-else :percent="percent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
             <span class="demo-Circle-inner">{{ percent }}%</span>
           </i-circle>
           <span class="card-date">{{ date }}</span>
@@ -69,12 +69,12 @@ export default{
       this.modalPreview = true
     },
     save: function () {
-      this.$Notice.success({
-        title: 'Save successful',
-        desc: ''
-      })
       let _this = this
       setTimeout(() => {
+        _this.$Notice.success({
+          title: 'Save successful',
+          desc: ''
+        })
         _this.modalConfirm = false
         _this.modalPreview = false
       }, 1000)

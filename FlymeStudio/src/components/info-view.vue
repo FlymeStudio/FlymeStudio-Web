@@ -1,16 +1,16 @@
 <template>
-<div id="info">
+<div id="info-view">
   <Menu width="auto">
     <MenuItem class="menu-item" name="tel">
-    <Icon type="ios-telephone" size="18"></Icon>
+    <Icon type="ios-telephone" size=18></Icon>
     {{ tel }}
     </MenuItem>
     <MenuItem class="menu-item" name="email">
-    <Icon type="email" size="18"></Icon>
+    <Icon type="email" size=18></Icon>
     {{ email }}
     </MenuItem>
     <MenuItem class="menu-item" name="login">
-    <Icon type="log-in" size="18"></Icon>
+    <Icon type="log-in" size=18></Icon>
     {{ login }}
     </MenuItem>
   </Menu>

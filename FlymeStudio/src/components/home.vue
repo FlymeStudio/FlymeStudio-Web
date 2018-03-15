@@ -7,15 +7,15 @@
         <div class="layout-title">Flyme Studio</div>
         <div class="layout-nav">
           <MenuItem name="0-1">
-          <Icon class="item-icon" type="person" size="18"></Icon>
+          <Icon class="item-icon" type="person" size=18></Icon>
           {{ name }}
           </MenuItem>
           <MenuItem name="0-2">
-          <Icon class="item-icon" type="help" size="18"></Icon>
+          <Icon class="item-icon" type="help" size=18></Icon>
           Help
           </MenuItem>
           <MenuItem name="0-3">
-          <Icon class="item-icon" type="log-out" size="18"></Icon>
+          <Icon class="item-icon" type="log-out" size=18></Icon>
           Sign out
           </MenuItem>
         </div>
@@ -26,7 +26,7 @@
         <Menu class="menu" theme="light" width="auto" @on-select="clickLeftNav">
           <Submenu name="0">
             <template slot="title">
-              <Icon type="person" size="18"></Icon>
+              <Icon type="person" size=18></Icon>
                 Info
             </template>
             <MenuItem name="1">View</MenuItem>
@@ -34,7 +34,7 @@
           </Submenu>
           <Submenu name="10">
             <template slot="title">
-              <Icon type="clipboard" size="18"></Icon>
+              <Icon type="clipboard" size=18></Icon>
                 Plan
             </template>
             <MenuItem name="11">Overview</MenuItem>
@@ -43,7 +43,7 @@
           </Submenu>
           <Submenu name="20">
             <template slot="title">
-              <Icon type="document-text" size="18"></Icon>
+              <Icon type="document-text" size=18></Icon>
                 Achieve
             </template>
             <MenuItem name="21">Overview</MenuItem>
@@ -54,29 +54,30 @@
       </Sider>
       <Layout :style="{padding: '0 24px'}">
         <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
+          <componentHome v-show="componentId == 0"></componentHome>
           <transition name="component-fade" mode="out-in">
-          <componentInfoView v-show="componentId == 1"></componentInfoView>
+            <componentInfoView v-show="componentId == 1"></componentInfoView>
           </transition>
-            <transition name="component-fade" mode="out-in">
+          <transition name="component-fade" mode="out-in">
             <componentInfoModify v-show="componentId == 2"></componentInfoModify>
-            </transition>
-            <transition name="component-fade" mode="out-in">
-          <componentPlanOverview v-show="componentId == 11"></componentPlanOverview>
           </transition>
-            <transition name="component-fade" mode="out-in">
-          <componentPlanWrite v-show="componentId == 12"></componentPlanWrite>
+          <transition name="component-fade" mode="out-in">
+            <componentPlanOverview v-show="componentId == 11"></componentPlanOverview>
           </transition>
-            <transition name="component-fade" mode="out-in">
-          <componentPlanSearch v-show="componentId == 13"></componentPlanSearch>
+          <transition name="component-fade" mode="out-in">
+            <componentPlanWrite v-show="componentId == 12"></componentPlanWrite>
           </transition>
-            <transition name="component-fade" mode="out-in">
-          <componentAchieveOverview v-show="componentId == 21"></componentAchieveOverview>
+          <transition name="component-fade" mode="out-in">
+            <componentPlanSearch v-show="componentId == 13"></componentPlanSearch>
           </transition>
-            <transition name="component-fade" mode="out-in">
-          <componentAchieveWrite v-show="componentId == 22"></componentAchieveWrite>
+          <transition name="component-fade" mode="out-in">
+            <componentAchieveOverview v-show="componentId == 21"></componentAchieveOverview>
           </transition>
-            <transition name="component-fade" mode="out-in">
-          <componentAchieveSearch v-show="componentId == 23"></componentAchieveSearch>
+          <transition name="component-fade" mode="out-in">
+            <componentAchieveWrite v-show="componentId == 22"></componentAchieveWrite>
+          </transition>
+          <transition name="component-fade" mode="out-in">
+            <componentAchieveSearch v-show="componentId == 23"></componentAchieveSearch>
           </transition>
         </Content>
       </Layout>
@@ -88,6 +89,7 @@
 </template>
 
 <script>
+import componentHome from './component-home.vue'
 import componentInfoView from './info-view.vue'
 import componentInfoModify from './info-modify.vue'
 import componentPlanOverview from './plan-overview.vue'
@@ -117,6 +119,7 @@ export default {
     }
   },
   components: {
+    componentHome,
     componentInfoView,
     componentInfoModify,
     componentPlanOverview,

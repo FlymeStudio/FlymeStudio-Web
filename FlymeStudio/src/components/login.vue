@@ -7,11 +7,11 @@
         <div class="layout-title">Flyme Studio</div>
         <div class="layout-nav">
           <MenuItem name="0-1">
-          <Icon class="item-icon" type="person-add" size="18"></Icon>
+          <Icon class="item-icon" type="person-add" size=18></Icon>
           Sign up
           </MenuItem>
           <MenuItem name="0-2">
-          <Icon type="unlocked" size="18"></Icon>
+          <Icon type="unlocked" size=18></Icon>
           Retrieve
           </MenuItem>
         </div>
@@ -21,12 +21,12 @@
       <Form class="form" ref="formItem" :model="formItem" :rules="ruleItem">
         <FormItem class="form-item" prop="id">
           <Input type="text" v-model="formItem.id" placeholder="Tel or email" size="large" clearable>
-          <Icon type="person" slot="prepend" size="18"></Icon>
+          <Icon type="person" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item" prop="password">
           <Input type="password" v-model="formItem.password" placeholder="Password" size="large" clearable>
-          <Icon type="android-lock" slot="prepend" size="18"></Icon>
+          <Icon type="android-lock" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item-btn">

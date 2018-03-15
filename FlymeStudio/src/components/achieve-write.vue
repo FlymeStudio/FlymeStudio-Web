@@ -5,7 +5,9 @@ write
 </template>
 
 <script type="text/javascript">
-
+export default{
+  name: 'achieve-write'
+}
 </script>
 
 <style scoped>

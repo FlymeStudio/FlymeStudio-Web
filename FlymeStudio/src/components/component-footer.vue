@@ -6,7 +6,7 @@
     </FormItem>
     <FormItem>
       <a href="https://github.com/flymestudio" target="_blank" style="color:black;">
-        <Icon type="social-github" size="16"></Icon>
+        <Icon type="social-github" size=16></Icon>
         FlymeStudio
       </a>
     </FormItem>

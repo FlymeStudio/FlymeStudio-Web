@@ -7,11 +7,11 @@
         <div class="layout-title">Flyme Studio</div>
         <div class="layout-nav">
           <MenuItem name="0-1">
-          <Icon type="log-in" size="18"></Icon>
+          <Icon type="log-in" size=18></Icon>
           Sign in
           </MenuItem>
           <MenuItem name="0-2">
-          <Icon type="unlocked" size="18"></Icon>
+          <Icon type="unlocked" size=18></Icon>
           Retrieve
           </MenuItem>
         </div>
@@ -21,27 +21,27 @@
       <Form class="form" ref="formItem" :model="formItem" :rules="ruleItem" v-show="isResultView == false">
         <FormItem class="form-item" prop="name">
           <Input type="text" v-model="formItem.name" placeholder="Username" size="large" clearable>
-          <Icon type="person" slot="prepend" size="18"></Icon>
+          <Icon type="person" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item" prop="tel">
           <Input type="text" v-model="formItem.tel" placeholder="Telephone" size="large" clearable>
-          <Icon type="ios-telephone" slot="prepend" size="18"></Icon>
+          <Icon type="ios-telephone" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item" prop="email">
           <Input type="text" v-model="formItem.email" placeholder="Email" size="large" clearable>
-          <Icon type="email" slot="prepend" size="18"></Icon>
+          <Icon type="email" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item" prop="password">
           <Input type="password" v-model="formItem.password" placeholder="Password" size="large" clearable>
-          <Icon type="android-lock" slot="prepend" size="18"></Icon>
+          <Icon type="android-lock" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item" prop="confirm">
           <Input type="password" v-model="formItem.confirm" placeholder="Confirm" size="large" clearable>
-          <Icon type="checkmark" slot="prepend" size="18"></Icon>
+          <Icon type="checkmark" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
         <FormItem class="form-item-btn">

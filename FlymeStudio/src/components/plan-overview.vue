@@ -2,28 +2,31 @@
 <div id="plan-overview">
   <Menu class="menu" mode="horizontal" theme="light" @on-select="clickTag">
     <MenuItem class="menu-item" name="1">
-    <Icon type="bookmark" size="18"></Icon>
+    <Icon type="bookmark" size=18></Icon>
     All
     </MenuItem>
     <MenuItem class="menu-item" name="2">
-    <Icon type="bookmark" size="18"></Icon>
+    <Icon type="bookmark" size=18></Icon>
     Yearly
     </MenuItem>
     <MenuItem class="menu-item" name="3">
-    <Icon type="bookmark" size="18"></Icon>
+    <Icon type="bookmark" size=18></Icon>
     Monthly
     </MenuItem>
     <MenuItem class="menu-item" name="4">
-    <Icon type="bookmark" size="18"></Icon>
+    <Icon type="bookmark" size=18></Icon>
     Weekly
     </MenuItem>
     <MenuItem class="menu-item" name="5">
-    <Icon type="bookmark" size="18"></Icon>
+    <Icon type="bookmark" size=18></Icon>
     Daily
     </MenuItem>
   </Menu>
   <Layout>
     <Content :style="{padding: '15px 0', minHeight: '280px', background: '#fff'}">
+      <Spin fix v-if="spinShow">
+        <Icon class="icon-spin" type="load-c" size=50></Icon>
+      </Spin>
       <Collapse>
         <Panel name="Total" size="large">
           <span class="card-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
@@ -130,7 +133,8 @@ export default {
           content: '内容',
           show: true
         }
-      ]
+      ],
+      spinShow: true
     }
   },
   components: {
@@ -138,6 +142,7 @@ export default {
   },
   methods: {
     clickTag: function (name) {
+      this.spinShow = true
       let _total = 0
       let _done = 0
       let _doing = 0
@@ -171,18 +176,40 @@ export default {
         done: _done,
         doing: _doing
       }
+      let _this = this
+      setTimeout(() => {
+        _this.spinShow = false
+      }, 1000)
     }
   }
 }
 </script>
 
 <style scoped>
+@keyframes ani-demo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .menu {
   z-index: 5;
 }
 
 .menu-item {
   text-align: center;
+}
+
+.icon-spin {
+  animation: ani-demo-spin 1s linear infinite;
 }
 
 .card-count {

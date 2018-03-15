@@ -5,7 +5,9 @@ search
 </template>
 
 <script type="text/javascript">
-
+export default{
+  name: 'achieve-search'
+}
 </script>
 
 <style scoped>

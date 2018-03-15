@@ -5,7 +5,9 @@ overview
 </template>
 
 <script type="text/javascript">
-
+export default{
+  name: 'achieve-overview'
+}
 </script>
 
 <style scoped>

@@ -60,13 +60,13 @@
       <Button class="btn-item" @click="handleReset('formItem')" size="large">Reset</Button>
     </FormItem>
 
-    <Modal class="modal-confirm" v-model="modalUpload" title="Warning" :closable="false" :ok-text="okUpload" :cancel-text="cancel" :loading="loadingUpload" @on-ok="upload()">
+    <Modal class="modal-confirm" v-model="modalUpload" title="Warning" :mask-closable="false" :closable="false" :ok-text="okUpload" :cancel-text="cancel" :loading="loadingUpload" @on-ok="upload()">
       <input class="input-chooser" type="file" accept=".md" id="chooser">
       <p>The content you upload will cover the origin content.</p>
       <p>Are you sure to upload?</p>
     </Modal>
 
-    <Modal class="modal-confirm" v-model="modalSave" title="Confirm" :closable="false" :ok-text="okSave" :cancel-text="cancel" :loading="loadingSave" @on-ok="save()">
+    <Modal class="modal-confirm" v-model="modalSave" title="Confirm" :mask-closable="false" :closable="false" :ok-text="okSave" :cancel-text="cancel" :loading="loadingSave" @on-ok="save()">
       <p>Are you sure to save?</p>
     </Modal>
   </Form>

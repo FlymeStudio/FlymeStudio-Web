@@ -19,13 +19,13 @@ export default {
       withCredentials: true
     })
   },
-  modify (name, tel, email, oldPassword, newPassword) {
+  modify (name, tel, email, newPassword, password) {
     var data = qs.stringify({
       name: name,
       tel: tel,
       email: email,
-      oldPassword: oldPassword,
-      newPassword: newPassword
+      newPassword: newPassword,
+      password: password
     })
     return axios({
       method: 'post',

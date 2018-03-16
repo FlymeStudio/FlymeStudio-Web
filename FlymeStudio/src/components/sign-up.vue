@@ -189,7 +189,6 @@ export default {
             desc: ''
           })
           _this.isResultView = false
-          _this.isRegisterCallback = true
         }
       })
     },

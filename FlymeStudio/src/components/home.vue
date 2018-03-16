@@ -54,7 +54,7 @@
       </Sider>
       <Layout :style="{padding: '0 24px'}">
         <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
-          <Spin fix v-if="spinShow">
+          <Spin style="z-index:10;" fix v-if="spinShow">
             <Icon class="icon-spin" type="load-c" size=50></Icon>
           </Spin>
           <Home v-show="componentId == 0"></Home>

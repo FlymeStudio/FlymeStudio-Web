@@ -1,17 +1,17 @@
 <template>
 <div id="information-overview">
-  <Menu width="auto">
+  <Menu class="menu" width="auto">
+    <MenuItem class="menu-item" name="record">
+    <Icon class="icon-item" type="log-in" size=18></Icon>
+    {{ record }}
+    </MenuItem>
     <MenuItem class="menu-item" name="tel">
-    <Icon type="ios-telephone" size=18></Icon>
+    <Icon class="icon-item" type="ios-telephone" size=18></Icon>
     {{ tel }}
     </MenuItem>
     <MenuItem class="menu-item" name="email">
-    <Icon type="email" size=18></Icon>
+    <Icon class="icon-item" type="email" size=18></Icon>
     {{ email }}
-    </MenuItem>
-    <MenuItem class="menu-item" name="login">
-    <Icon type="log-in" size=18></Icon>
-    {{ login }}
     </MenuItem>
   </Menu>
 </div>
@@ -27,21 +27,32 @@ export default {
     return {
       tel: '',
       email: '',
-      login: ''
+      record: ''
     }
   },
   methods: {
     getInfo () {
       this.tel = '13608089849'
       this.email = '1213814232@qq.com'
-      this.login = '' + new Date()
+      this.record = '' + new Date()
     }
   }
 }
 </script>
 
 <style scoped>
+.menu {
+  z-index: 5;
+}
+
 .menu-item {
   cursor: default;
 }
+
+.icon-item{
+ width: 18px;
+ text-align: center;
+ margin-right: 10px;
+}
+
 </style>

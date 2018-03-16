@@ -14,7 +14,7 @@
     <p class="card-title" slot="title">{{ dataSrc.title }}</p>
     <mavon-editor class="card-content" v-model="dataSrc.content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ dataSrc.content }}</mavon-editor>
   </div>
-  <Modal type="info" class="preview-modal" width="90%" v-model="modalPreview" :mask-closable="false" :ok-text="okText" :cancel-text="cancelText" class-name="vertical-center-modal">
+  <Modal type="info" class="preview-modal" width="90%" v-model="modalPreview" :closable="false" :mask-closable="false" :ok-text="okText" :cancel-text="cancelText" class-name="vertical-center-modal">
     <div>
       <div class="card-top">
         <i-circle class="card-circle" :size=40 v-if="dataPercent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
@@ -166,7 +166,7 @@ export default{
   color        : #1788e8;
   margin-bottom: 10px;
   margin-right : -40px;
-  display: block;
+  display      : block;
 }
 
 .tag-tag {

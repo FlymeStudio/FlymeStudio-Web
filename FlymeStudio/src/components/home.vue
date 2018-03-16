@@ -35,8 +35,8 @@
                 <span class="span-menu-item">Information</span>
             </template>
             <MenuItem name="1">Overview</MenuItem>
-            <MenuItem name="2">Modify</MenuItem>
-            <MenuItem name="3">Teamwork</MenuItem>
+            <MenuItem name="2">Teamwork</MenuItem>
+            <MenuItem name="3">Modify</MenuItem>
           </Submenu>
           <Submenu name="10">
             <template slot="title">
@@ -63,15 +63,17 @@
           <Spin style="z-index:10;" fix v-if="spinShow">
             <Icon class="icon-spin" type="load-c" size=50></Icon>
           </Spin>
-          <Home v-show="componentId == 0"></Home>
+          <transition name="component-fade" mode="out-in">
+            <Home v-show="componentId == 0"></Home>
+          </transition>
           <transition name="component-fade" mode="out-in">
             <InformationOverview v-show="componentId == 1"></InformationOverview>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <InformationModify v-show="componentId == 2"></InformationModify>
+            <InformationTeamwork v-show="componentId == 2"></InformationTeamwork>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <InformationTeamwork v-show="componentId == 3"></InformationTeamwork>
+            <InformationModify v-show="componentId == 3"></InformationModify>
           </transition>
           <transition name="component-fade" mode="out-in">
             <ProjectOverview v-show="componentId == 11"></ProjectOverview>
@@ -132,7 +134,7 @@ export default {
           {
             messageId: '1',
             from: '13600000001',
-            teamName: 'Support system',
+            teamName: 'System support',
             teamId: '00001'
           },
           {
@@ -185,7 +187,7 @@ export default {
     clickTopNav: function (name) {
       switch (name) {
         case '1':
-          this.componentId = 1
+          this.componentId = '1'
           break
         case '2':
           this.clickHelp()
@@ -207,17 +209,17 @@ export default {
       let _this = this
       setTimeout(() => {
         _this.spinShow = false
-        _this.$Message.success('Sign out successful!')
+        _this.$Message.success('Sign out successful.')
         _this.$router.push('/signIn')
       }, 1000)
       accountApi.signOut(this.info.tel).then(function (response) {
         setTimeout(() => {
           _this.spinShow = false
           if (response.data.result === true) {
-            _this.$Message.success('Sign out successful!')
+            _this.$Message.success('Sign out successful.')
             _this.$router.push('/signIn')
           } else {
-            _this.$Message.error('Sign out failed!')
+            _this.$Message.error('Sign out failed.')
           }
         }, 1000)
       })

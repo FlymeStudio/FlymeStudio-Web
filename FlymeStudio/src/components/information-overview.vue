@@ -47,7 +47,7 @@ export default {
           {
             messageId: '1',
             from: '13600000001',
-            teamName: 'Support system',
+            teamName: 'System support',
             teamId: '00001'
           },
           {
@@ -64,6 +64,15 @@ export default {
     getInfo () {
       this.info.name = '曾宇' // test
       this.info.email = '1213814232@qq.com' // test
+    },
+    clickTeam (teamId) {
+      //
+    },
+    accept (messageId) {
+      //
+    },
+    refuse (messageId) {
+      //
     }
   }
 }
@@ -80,15 +89,15 @@ export default {
   font-size: 16px;
 }
 
-.div-message{
-  margin-top:10px;
+.alert-information {
+  margin-bottom: 10px;
 }
 
-.alert-information{
+.div-message {
   margin-top: 10px;
 }
 
-.btn-message{
+.btn-message {
   margin-right: 10px;
 }
 </style>

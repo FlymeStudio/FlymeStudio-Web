@@ -100,7 +100,7 @@ export default {
       let _this = this
       setTimeout(() => {
         _this.$Notice.success({
-          title: 'Sign in successful!',
+          title: 'Sign in successful.',
           desc: ''
         })
         _this.$router.push('/home')
@@ -109,7 +109,7 @@ export default {
         .then(function (response) {
           if (response.data.result === true) {
             _this.$Notice.success({
-              title: 'Sign in successful!',
+              title: 'Sign in successful.',
               desc: ''
             })
             // let signInInfo = {
@@ -121,7 +121,7 @@ export default {
           } else {
             _this.loading = true
             _this.$Notice.error({
-              title: 'Sign in failed!',
+              title: 'Sign in failed.',
               desc: ''
             })
           }
@@ -133,7 +133,7 @@ export default {
           this.signIn()
         } else {
           this.$Notice.error({
-            title: 'Information is incorrect!',
+            title: 'Information is incorrect.',
             desc: ''
           })
         }

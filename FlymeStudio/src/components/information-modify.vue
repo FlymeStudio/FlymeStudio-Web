@@ -89,7 +89,7 @@ export default {
           {
             type: 'string',
             pattern: /^[\u4E00-\u9FA5]{2,4}$/,
-            message: 'Illegal username!',
+            message: 'Illegal username.',
             trigger: 'blur'
           }
         ],
@@ -154,7 +154,7 @@ export default {
       let _this = this
       setTimeout(() => {
         _this.$Notice.success({
-          title: 'Sign up successful!',
+          title: 'Sign up successful.',
           desc: ''
         })
         _this.modalModify = false
@@ -162,13 +162,13 @@ export default {
       informationApi.modify(this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.newPassword, this.password).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
-            title: 'Modify successful!',
+            title: 'Modify successful.',
             desc: ''
           })
           _this.modalModify = false
         } else {
           _this.$Notice.error({
-            title: 'Modify failed!',
+            title: 'Modify failed.',
             desc: ''
           })
           _this.modalModify = false
@@ -182,14 +182,14 @@ export default {
             this.modalModify = true
           } else {
             this.$Notice.error({
-              title: 'Please reconfirm password!',
+              title: 'Please reconfirm password.',
               desc: ''
             })
             this.formItem.confirm = ''
           }
         } else {
           this.$Notice.error({
-            title: 'Information is incorrect!',
+            title: 'Information is incorrect.',
             desc: ''
           })
         }

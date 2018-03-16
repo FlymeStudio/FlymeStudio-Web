@@ -196,13 +196,13 @@ export default {
         reader.onload = function (event) {
           _this.formItem.content = event.target.result
           _this.$Notice.success({
-            title: 'Upload successful!',
+            title: 'Upload successful.',
             desc: ''
           })
         }
         reader.onerror = function (event) {
           _this.$Notice.error({
-            title: 'Upload failed!',
+            title: 'Upload failed.',
             desc: ''
           })
         }
@@ -246,7 +246,7 @@ export default {
           this.modalSave = true
         } else {
           this.$Notice.error({
-            title: 'Information is incorrect!',
+            title: 'Information is incorrect.',
             desc: ''
           })
         }
@@ -256,7 +256,7 @@ export default {
       let _this = this
       setTimeout(() => {
         _this.$Notice.success({
-          title: 'Save successful!',
+          title: 'Save successful.',
           desc: ''
         })
         _this.handleReset('formItem')
@@ -265,14 +265,14 @@ export default {
       projectApi.create(this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
-            title: 'Save successful!',
+            title: 'Save successful.',
             desc: ''
           })
           _this.handleReset('formItem')
           _this.modalSave = false
         } else {
           _this.$Notice.error({
-            title: 'Save failed!',
+            title: 'Save failed.',
             desc: ''
           })
           _this.modalSave = false

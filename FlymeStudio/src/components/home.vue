@@ -181,17 +181,26 @@ export default {
       let _this = this
       setTimeout(() => {
         _this.spinShow = false
-        _this.$Message.success('Sign out successful!')
+        _this.$Notice.success({
+          title: 'Sign out successful!',
+          desc: ''
+        })
         _this.$router.push('/login')
       }, 1000)
       accountApi.quit(this.tel).then(function (response) {
         setTimeout(() => {
           _this.spinShow = false
           if (response.data.result === true) {
-            _this.$Message.success('Sign out successful!')
+            _this.$Notice.success({
+              title: 'Sign out successful!',
+              desc: ''
+            })
             _this.$router.push('/login')
           } else {
-            _this.$Message.error('Sign out failed!')
+            _this.$Notice.error({
+              title: 'Sign out failed!',
+              desc: ''
+            })
           }
         }, 1000)
       })

@@ -2,7 +2,7 @@
 <div id="plan-write">
   <Form ref="formItem" :model="formItem" :rules="ruleItem">
     <FormItem>
-      <Icon style="width:18px;" type="bookmark" size=18></Icon>
+      <Icon style="width:18px;text-align:center;" type="bookmark" size=18></Icon>
       <span class="span-item">Set type</span>
     </FormItem>
     <FormItem prop="type">
@@ -11,33 +11,33 @@
       </select>
     </FormItem>
     <FormItem>
-      <Icon style="width:18px;" type="calendar" size=18></Icon>
+      <Icon style="width:18px;text-align:center;" type="calendar" size=18></Icon>
       <span class="span-item">Set date</span>
     </FormItem>
     <FormItem prop="date">
       <DatePicker class="datePicker" type="date" size="large" v-model="formItem.date" placeholder="Date" confirm/>
     </FormItem>
     <FormItem>
-      <Icon style="width:18px;" type="pin" size=18></Icon>
+      <Icon style="width:18px;text-align:center;" type="pin" size=18></Icon>
       <span class="span-item">Set title</span>
     </FormItem>
     <FormItem prop="title">
       <Input class="input-title" type="text" v-model="formItem.title" placeholder="Title" clearable size="large" />
     </FormItem>
     <FormItem>
-      <Icon style="width:18px;" type="social-markdown" size=18></Icon>
+      <Icon style="width:18px;text-align:center;" type="social-markdown" size=18></Icon>
       <span class="span-item">Set content</span>
-      <Button class="btn-edit" style="margin-left:40px;" @click="modalConfirm = true"><Icon type="upload" size=18></Icon><span class="span-btn">Upload</span></Button>
+      <Button class="btn-edit" style="margin-left:40px;" @click="modalUpload = true"><Icon type="upload" size=18></Icon><span class="span-btn">Upload</span></Button>
     </FormItem>
     <FormItem prop="content">
       <mavon-editor class="mavonEditor" v-model="formItem.content" :subfield="subfield" :defaultOpen="defaultOpen" :placeholder="placeholder" :toolbarsFlag="toolbarsFlag" :toolbars="toolbars"></mavon-editor>
     </FormItem>
     <FormItem>
-      <Icon style="width:18px;" type="flag" size=18></Icon>
+      <Icon style="width:18px;text-align:center;" type="flag" size=18></Icon>
       <span class="span-item">Set goals</span>
     </FormItem>
     <FormItem>
-      <Alert v-for="item in formItem.plans" :key="item.index">
+      <Alert type="success" v-for="item in formItem.plans" :key="item.index">
         <Tag type="dot" color="blue" style="width:100px;text-align:center;">{{ item.tag }}</Tag>
         <Tag type="dot" color="yellow" style="width:300px;">{{ item.goal }}</Tag>
         <Button type="ghost" shape="circle" icon="minus" @click="deletePlan(item.index)"></Button>
@@ -52,14 +52,18 @@
     <br>
     <br>
     <FormItem>
-      <Button type="primary" class="btn-item" @click="handleSubmit('formItem')" size="large" :loading="loadingSave">Save</Button>
+      <Button type="primary" class="btn-item" @click="handleSubmit('formItem')" size="large">Save</Button>
       <Button class="btn-item" @click="handleReset('formItem')" size="large">Reset</Button>
     </FormItem>
 
-    <Modal class="modal-confirm" v-model="modalConfirm" title="Warning" :ok-text="okText" :cancel-text="cancelText" :loading="loadingUpload" @on-ok="upload()">
+    <Modal class="modal-confirm" v-model="modalUpload" title="Warning" :closable="false" :ok-text="okUpload" :cancel-text="cancel" :loading="loadingUpload" @on-ok="upload()">
       <input class="input-chooser" type="file" accept=".md" id="chooser">
       <p>The content you upload will cover the origin content.</p>
       <p>Are you sure to upload?</p>
+    </Modal>
+
+    <Modal class="modal-confirm" v-model="modalSave" title="Confirm" :closable="false" :ok-text="okSave" :cancel-text="cancel" :loading="loadingSave" @on-ok="save()">
+      <p>Are you sure to save?</p>
     </Modal>
   </Form>
 </div>
@@ -173,11 +177,13 @@ export default {
       planIndex: '',
       editTag: '',
       editGoal: '',
-      modalConfirm: false,
+      modalUpload: false,
       loadingUpload: true,
-      okText: 'Upload',
-      cancelText: 'Cancel',
-      loadingSave: false
+      okUpload: 'Upload',
+      cancel: 'Cancel',
+      modalSave: false,
+      loadingSave: true,
+      okSave: 'Save',
     }
   },
   methods: {
@@ -189,32 +195,26 @@ export default {
         let _this = this
         reader.onload = function (event) {
           _this.formItem.content = event.target.result
-          _this.uploadSuccess(true)
+          _this.$Notice.success({
+            title: 'Upload successful!',
+            desc: ''
+          })
         }
         reader.onerror = function (event) {
-          _this.uploadError(true)
+          _this.$Notice.error({
+            title: 'Upload failed!',
+            desc: ''
+          })
         }
         reader.onloadend = function (event) {
           setTimeout(() => {
-            _this.modalConfirm = false
+            _this.modalUpload = false
           }, 1000)
         }
         reader.readAsText(file, 'utf-8')
       } else {
-        this.modalConfirm = false
+        this.modalUpload = false
       }
-    },
-    uploadSuccess (nodesc) {
-      this.$Notice.success({
-        title: 'Upload successful',
-        desc: nodesc ? '' : 'Upload successful. '
-      })
-    },
-    uploadError (nodesc) {
-      this.$Notice.error({
-        title: 'Upload failed',
-        desc: nodesc ? '' : 'Upload failed. '
-      })
     },
     deletePlan (index) {
       for (var i = 0; i < this.formItem.plans.length; i++) {
@@ -244,25 +244,39 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.save()
+          this.modalSave = true
         } else {
-          this.$Message.error('Information is incorrect!')
+          this.$Notice.error({
+            title: 'Information is incorrect!',
+            desc: ''
+          })
         }
       })
     },
     save () {
-      this.loadingSave = true
       let _this = this
       setTimeout(() => {
-        _this.$Message.success('Save successful!')
+        _this.$Notice.success({
+          title: 'Save successful!',
+          desc: ''
+        })
         _this.handleReset('formItem')
+        _this.modalSave = false
       }, 1000)
-      planApi.submit(this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content).then(function (response) {
+      planApi.submit(this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
         if (response.data.result === true) {
-          _this.$Message.success('Save successful!')
+          _this.$Notice.success({
+            title: 'Save successful!',
+            desc: ''
+          })
           _this.handleReset('formItem')
+          _this.modalSave = false
         } else {
-          _this.$Message.error('Save failed!')
+          _this.$Notice.error({
+            title: 'Save failed!',
+            desc: ''
+          })
+          _this.modalSave = false
         }
       })
     }
@@ -309,7 +323,6 @@ export default {
   height: auto;
   width: auto;
   padding: 3px 10px;
-
   align-items: center;
 }
 

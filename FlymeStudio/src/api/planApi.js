@@ -19,12 +19,13 @@ export default {
       withCredentials: true
     })
   },
-  submit (type, date, title, content) {
+  submit (type, date, title, content, plans) {
     var data = qs.stringify({
       type: type,
       date: date,
       title: title,
-      content: content
+      content: content,
+      plans: plans
     })
     return axios({
       method: 'post',

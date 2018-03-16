@@ -1,6 +1,6 @@
 <template>
 <div id="plan-overview">
-  <Menu class="menu" mode="horizontal" theme="light" @on-select="clickTag">
+  <Menu class="menu" mode="horizontal" theme="light" @on-select="clickTag" active-name="1">
     <MenuItem class="menu-item" name="1">
     <Icon type="bookmark" size=18></Icon>
     All
@@ -30,21 +30,21 @@
       <Collapse>
         <Panel name="Total" size="large">
           <span class="card-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
-          <div class="card-div" slot="content" v-for="card in computedCards" v-if="card.show == true" :key="card.key">
+          <div class="card-div" slot="content" v-for="card in cards" v-if="card.show == true" :key="card.timestamp">
             <componentCard :cardData="card"></componentCard>
           </div>
         </Panel>
 
         <Panel name="Done">
           <span class="card-count" style="color:#19be6b;"> Done ({{ count.done }})</span>
-          <div class="card-div" slot="content" v-for="card in computedCards" v-if="card.show == true && card.percent == 100"  :key="card.key">
+          <div class="card-div" slot="content" v-for="card in cards" v-if="card.show == true && card.percent == 100" :key="card.timestamp">
             <componentCard :cardData="card"></componentCard>
           </div>
         </Panel>
 
         <Panel name="Doing">
           <span class="card-count" style="color:#ed3f14;"> Doing ({{ count.doing }})</span>
-          <div class="card-div" slot="content" v-for="card in computedCards" v-if="card.show == true && card.percent != 100"  :key="card.key">
+          <div class="card-div" slot="content" v-for="card in cards" v-if="card.show == true && card.percent != 100" :key="card.timestamp">
             <componentCard :cardData="card"></componentCard>
           </div>
         </Panel>
@@ -72,7 +72,7 @@ export default {
       },
       cards: [
         {
-          key: 1,
+          timestamp: 1,
           show: true,
           type: '2',
           percent: 0,
@@ -81,19 +81,19 @@ export default {
           content: '内容。。。',
           plans: [
             {
-              index: 0,
+              timestamp: 0,
               tag: 'plan',
               goal: '健身',
               percent: 20
             },
             {
-              index: 1,
+              timestamp: 1,
               tag: 'plan',
               goal: '考驾照',
               percent: 100
             },
             {
-              index: 2,
+              timestamp: 2,
               tag: 'plan',
               goal: '秋招',
               percent: 100
@@ -101,7 +101,7 @@ export default {
           ]
         },
         {
-          key: 2,
+          timestamp: 2,
           show: true,
           type: '3',
           percent: 0,
@@ -110,13 +110,13 @@ export default {
           content: '内容。。。\nddddddddddd\naaaaaaaaa',
           plans: [
             {
-              index: 0,
+              timestamp: 3,
               tag: '秋招',
               goal: '复习',
               percent: 70
             },
             {
-              index: 1,
+              timestamp: 4,
               tag: '开学',
               goal: '选班委',
               percent: 100
@@ -124,7 +124,7 @@ export default {
           ]
         },
         {
-          key: 3,
+          timestamp: 3,
           show: true,
           type: '4',
           percent: 0,
@@ -133,13 +133,13 @@ export default {
           content: '内容。。。',
           plans: [
             {
-              index: 0,
+              timestamp: 5,
               tag: '旅游',
               goal: '深圳',
               percent: 100
             },
             {
-              index: 1,
+              timestamp: 6,
               tag: '旅游',
               goal: '香港',
               percent: 100
@@ -147,7 +147,7 @@ export default {
           ]
         },
         {
-          key: 4,
+          timestamp: 4,
           show: true,
           type: '3',
           percent: 0,
@@ -156,7 +156,7 @@ export default {
           content: '内容',
           plans: [
             {
-              index: 0,
+              timestamp: 7,
               tag: '实习',
               goal: '初期报告',
               percent: 0
@@ -164,7 +164,7 @@ export default {
           ]
         },
         {
-          key: 5,
+          timestamp: 5,
           show: true,
           type: '3',
           percent: 0,
@@ -173,13 +173,13 @@ export default {
           content: '## 1.\n- plans1\n- plans2\n- plans3\n- plans4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
           plans: [
             {
-              index: 0,
+              timestamp: 8,
               tag: '年前',
               goal: '在家休息',
               percent: 100
             },
             {
-              index: 1,
+              timestamp: 9,
               tag: '年后',
               goal: '出行游玩',
               percent: 100
@@ -187,7 +187,7 @@ export default {
           ]
         },
         {
-          key: 6,
+          timestamp: 6,
           show: true,
           type: '3',
           percent: 0,
@@ -197,7 +197,7 @@ export default {
           plans: []
         },
         {
-          key: 7,
+          timestamp: 7,
           show: true,
           type: '5',
           percent: 0,
@@ -211,21 +211,12 @@ export default {
       spinShow: false
     }
   },
-  computed: {
-    computedCards: {
-      get: function () {
-        this.computePercent()
-        this.clickTag(this.currentType)
-        return this.cards
-      }
-    }
-  },
   components: {
     componentCard
   },
   methods: {
     computePercent () {
-      console.log('computePercent:')
+      console.log('computePercent()')
       for (var i = 0; i < this.cards.length; i++) {
         if (this.cards[i].plans.length === 0) {
           this.cards[i].percent = 0

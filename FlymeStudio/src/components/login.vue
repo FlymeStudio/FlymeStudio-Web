@@ -102,13 +102,19 @@ export default {
       this.loading = true
       let _this = this
       setTimeout(() => {
-        _this.$Message.success('Sign in successful!')
+        _this.$Notice.success({
+          title: 'Sign in successful!',
+          desc: ''
+        })
         _this.$router.push('/home')
       }, 1000)
       accountApi.login(this.id, this.password)
         .then(function (response) {
           if (response.data.result === true) {
-            _this.$Message.success('Sign in successful!')
+            _this.$Notice.success({
+              title: 'Sign in successful!',
+              desc: ''
+            })
             // let loginInfo = {
             //   id: _this.id,
             //   password: _this.password
@@ -117,7 +123,10 @@ export default {
             _this.$router.push('/home')
           } else {
             _this.loading = true
-            _this.$Message.error('Sign in failed!')
+            _this.$Notice.error({
+              title: 'Sign in failed!',
+              desc: ''
+            })
           }
         })
     },
@@ -126,7 +135,10 @@ export default {
         if (valid) {
           this.login()
         } else {
-          this.$Message.error('Information is incorrect!')
+          this.$Notice.error({
+            title: 'Information is incorrect!',
+            desc: ''
+          })
         }
       })
     },

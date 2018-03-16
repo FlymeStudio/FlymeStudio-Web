@@ -171,17 +171,26 @@ export default {
     register: function () {
       this.loading = true
       setTimeout(() => {
-        this.$Message.success('Sign up successful!')
+        this.$Notice.success({
+          title: 'Sign up successful!',
+          desc: ''
+        })
         this.isResultView = true
       }, 1000)
       let _this = this
       accountApi.register(this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.password).then(function (response) {
         if (response.data.result === true) {
-          _this.$Message.success('Sign up successful!')
+          _this.$Notice.success({
+            title: 'Sign up successful!',
+            desc: ''
+          })
           _this.isResultView = true
         } else {
           _this.loading = true
-          _this.$Message.error('Sign up failed!')
+          _this.$Notice.error({
+            title: 'Sign up failed!',
+            desc: ''
+          })
           _this.isResultView = false
           _this.isRegisterCallback = true
         }
@@ -193,11 +202,17 @@ export default {
           if (this.formItem.password === this.formItem.confirm) {
             this.register()
           } else {
-            this.$Message.error('Please reconfirm password!')
+            this.$Notice.error({
+              title: 'Please reconfirm password!',
+              desc: ''
+            })
             this.formItem.confirm = ''
           }
         } else {
-          this.$Message.error('Information is incorrect!')
+          this.$Notice.error({
+            title: 'Information is incorrect!',
+            desc: ''
+          })
         }
       })
     },

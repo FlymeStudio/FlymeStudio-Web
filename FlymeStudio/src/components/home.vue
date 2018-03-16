@@ -8,15 +8,20 @@
         <div class="layout-nav">
           <MenuItem name="1">
           <Icon class="item-icon" type="person" size=18></Icon>
-          {{ name }}
+          <span v-if="info.messages.length == 0" class="span-item">
+            {{ info.name }}
+          </span>
+          <span v-else class="span-item">
+            <Badge dot>{{ info.name }}</Badge>
+          </span>
           </MenuItem>
           <MenuItem name="2">
           <Icon class="item-icon" type="help" size=18></Icon>
-          Help
+          <span class="span-item">Help</span>
           </MenuItem>
           <MenuItem name="3">
           <Icon class="item-icon" type="log-out" size=18></Icon>
-          Sign out
+          <span class="span-item">Sign out</span>
           </MenuItem>
         </div>
       </Menu>
@@ -31,6 +36,7 @@
             </template>
             <MenuItem name="1">Overview</MenuItem>
             <MenuItem name="2">Modify</MenuItem>
+            <MenuItem name="3">Teamwork</MenuItem>
           </Submenu>
           <Submenu name="10">
             <template slot="title">
@@ -65,6 +71,9 @@
             <InformationModify v-show="componentId == 2"></InformationModify>
           </transition>
           <transition name="component-fade" mode="out-in">
+            <InformationTeamwork v-show="componentId == 3"></InformationTeamwork>
+          </transition>
+          <transition name="component-fade" mode="out-in">
             <ProjectOverview v-show="componentId == 11"></ProjectOverview>
           </transition>
           <transition name="component-fade" mode="out-in">
@@ -95,6 +104,7 @@
 import Home from './component-home.vue'
 import InformationOverview from './information-overview.vue'
 import InformationModify from './information-modify.vue'
+import InformationTeamwork from './information-teamwork.vue'
 import ProjectOverview from './project-overview.vue'
 import ProjectCreate from './project-create.vue'
 import ProjectModify from './project-modify.vue'
@@ -114,9 +124,25 @@ export default {
   },
   data () {
     return {
-      tel: '13608089849',
-      name: 'user',
-      email: '1213814232@qq.com',
+      info: {
+        tel: '13608089849',
+        name: 'user',
+        email: '',
+        messages: [
+          {
+            messageId: '1',
+            from: '13600000001',
+            teamName: 'Support system',
+            teamId: '00001'
+          },
+          {
+            messageId: '2',
+            from: '13600000002',
+            teamName: 'Overseas firmware',
+            teamId: '00002'
+          }
+        ]
+      },
       tagId: 0,
       componentId: 0,
       spinShow: false
@@ -126,6 +152,7 @@ export default {
     Home,
     InformationOverview,
     InformationModify,
+    InformationTeamwork,
     ProjectOverview,
     ProjectCreate,
     ProjectModify,
@@ -136,23 +163,22 @@ export default {
   },
   methods: {
     getInfo () {
-      this.name = '曾宇' // test
-      this.email = '1213814232@qq.com' // test
+      this.info.name = '曾宇' // test
+      this.info.email = '1213814232@qq.com' // test
       let _this = this
-      informationApi.information(this.tel).then(function (response) {
+      informationApi.information(this.info.tel).then(function (response) {
         if (response.data.result === true) {
-          _this.name = response.data.name
-          _this.email = response.data.email
+          _this.info = response.data.info
         }
       })
-      projectApi.project(this.tel).then(function (response) {
+      projectApi.project(this.info.tel).then(function (response) {
         if (response.data.result === true) {
-          _this.project = response.data.project
+          // save in store
         }
       })
-      summaryApi.summary(this.tel).then(function (response) {
+      summaryApi.summary(this.info.tel).then(function (response) {
         if (response.data.result === true) {
-          _this.summary = response.data.summary
+          // save in store
         }
       })
     },
@@ -184,7 +210,7 @@ export default {
         _this.$Message.success('Sign out successful!')
         _this.$router.push('/signIn')
       }, 1000)
-      accountApi.signOut(this.tel).then(function (response) {
+      accountApi.signOut(this.info.tel).then(function (response) {
         setTimeout(() => {
           _this.spinShow = false
           if (response.data.result === true) {
@@ -244,4 +270,9 @@ export default {
   font-weight: bold;
   font-size: 16px;
 }
+
+.span-item {
+  font-size: 16px;
+}
+
 </style>

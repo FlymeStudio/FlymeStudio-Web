@@ -1,19 +1,33 @@
 <template>
 <div id="information-overview">
-  <Menu class="menu" width="auto">
-    <MenuItem class="menu-item" name="record">
-    <Icon class="icon-item" type="log-in" size=18></Icon>
-    {{ record }}
-    </MenuItem>
-    <MenuItem class="menu-item" name="tel">
-    <Icon class="icon-item" type="ios-telephone" size=18></Icon>
-    {{ tel }}
-    </MenuItem>
-    <MenuItem class="menu-item" name="email">
-    <Icon class="icon-item" type="email" size=18></Icon>
-    {{ email }}
-    </MenuItem>
-  </Menu>
+  <Alert class="alert-information" show-icon>
+    <Icon class="icon-item" type="ios-telephone" slot="icon" size=30></Icon>
+    <template slot="desc">
+      <div>
+        <span class="span-item">{{ info.tel }}</span>
+      </div>
+    </template>
+  </Alert>
+
+  <Alert class="alert-information" show-icon>
+    <Icon class="icon-item" type="email" slot="icon" size=30></Icon>
+    <template slot="desc">
+      <div>
+        <span class="span-item">{{ info.email }}</span>
+      </div>
+    </template>
+  </Alert>
+
+  <Alert class="alert-information" show-icon v-for="item in info.messages" :key="item.messageId">
+    <span class="span-item"><Tag color="#80848f">{{ item.from }}</Tag> invite you to join <Tag color="blue">{{ item.teamName }}</Tag></span>
+    <Icon class="icon-item" type="ios-people" slot="icon" size=30></Icon>
+    <template slot="desc">
+      <div class="div-message">
+        <Button class="btn-message" type="success">Accept</Button>
+        <Button class="btn-message" type="error">Refuse</Button>
+      </div>
+    </template>
+  </Alert>
 </div>
 </template>
 
@@ -25,34 +39,56 @@ export default {
   },
   data () {
     return {
-      tel: '',
-      email: '',
-      record: ''
+      info: {
+        tel: '13608089849',
+        name: 'user',
+        email: '',
+        messages: [
+          {
+            messageId: '1',
+            from: '13600000001',
+            teamName: 'Support system',
+            teamId: '00001'
+          },
+          {
+            messageId: '2',
+            from: '13600000002',
+            teamName: 'Overseas firmware',
+            teamId: '00002'
+          }
+        ]
+      }
     }
   },
   methods: {
     getInfo () {
-      this.tel = '13608089849'
-      this.email = '1213814232@qq.com'
-      this.record = '' + new Date()
+      this.info.name = '曾宇' // test
+      this.info.email = '1213814232@qq.com' // test
     }
   }
 }
 </script>
 
 <style scoped>
-.menu {
-  z-index: 5;
+.icon-item {
+  width       : 18px;
+  text-align  : center;
+  margin-right: 10px;
 }
 
-.menu-item {
-  cursor: default;
+.span-item {
+  font-size: 16px;
 }
 
-.icon-item{
- width: 18px;
- text-align: center;
- margin-right: 10px;
+.div-message{
+  margin-top:10px;
 }
 
+.alert-information{
+  margin-top: 10px;
+}
+
+.btn-message{
+  margin-right: 10px;
+}
 </style>

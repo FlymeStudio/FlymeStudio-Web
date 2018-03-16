@@ -1,6 +1,7 @@
 <template>
 <div id="information-modify">
   <Form class="form" ref="formItem" :model="formItem" :rules="ruleItem">
+    <Alert type="info">
     <FormItem class="form-item">
       <Icon class="icon-item" style="margin:auto 10px;" type="person" size=18></Icon>
       <span class="span-item">{{ name }}</span>
@@ -10,7 +11,8 @@
       <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
       </Input>
     </FormItem>
-    <hr><br>
+  </Alert>
+  <Alert type="info">
     <FormItem class="form-item">
       <Icon class="icon-item" style="margin:auto 10px;" type="ios-telephone" size=18></Icon>
       <span class="span-item">{{ tel }}</span>
@@ -20,7 +22,8 @@
       <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
       </Input>
     </FormItem>
-    <hr><br>
+  </Alert>
+  <Alert type="info">
     <FormItem class="form-item">
       <Icon class="icon-item" style="margin:auto 10px;" type="email" size=18></Icon>
       <span class="span-item">{{ email }}</span>
@@ -30,7 +33,8 @@
       <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
       </Input>
     </FormItem>
-    <hr><br>
+  </Alert>
+  <Alert type="info">
     <FormItem class="form-item" prop="newPassword">
       <Input type="password" v-model="formItem.newPassword" size="large" placeholder="New password" clearable>
       <Icon class="icon-item" type="android-lock" slot="prepend" size=18></Icon>
@@ -41,7 +45,7 @@
       <Icon class="icon-item" type="checkmark" slot="prepend" size=18></Icon>
       </Input>
     </FormItem>
-    <hr><br>
+  </Alert>
     <FormItem class="form-item-btn">
       <Button class="btn-item" type="primary" @click="handleSubmit('formItem')" style="margin-right:15px;">Submit</Button>
       <Button class="btn-item" @click="handleReset('formItem')" style="margin-left:15px;">Reset</Button>
@@ -199,12 +203,17 @@ export default {
 </script>
 
 <style scoped>
+.form {}
+
 .form-item {
-  width: 300px;
+  margin-left: 3%;
+  width      : 300px;
+  color      : #1c2438;
+  font-weight: bold;
 }
 
 .form-item-btn {
-  text-align: center;
+  margin-left: 3%;
 }
 
 .btn-item {
@@ -213,12 +222,12 @@ export default {
   font-size : 15px;
 }
 
-.icon-item{
- width: 18px;
- text-align: center;
+.icon-item {
+  width     : 18px;
+  text-align: center;
 }
 
-.span-item{
+.span-item {
   font-size: 16px;
 }
 

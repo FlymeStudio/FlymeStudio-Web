@@ -1,12 +1,12 @@
 <template>
-<div id="info-modify">
-Unfinished function
+<div id="project-modify">
+search
 </div>
 </template>
 
 <script type="text/javascript">
-export default {
-  name: 'info-modify'
+export default{
+  name: 'project-modify'
 }
 </script>
 

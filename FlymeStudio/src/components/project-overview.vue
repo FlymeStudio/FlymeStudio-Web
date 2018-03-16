@@ -1,5 +1,5 @@
 <template>
-<div id="plan-overview">
+<div id="project-overview">
   <Menu class="menu" mode="horizontal" theme="light" @on-select="clickTag" active-name="1">
     <MenuItem class="menu-item" name="1">
     <Icon type="bookmark" size=18></Icon>
@@ -29,23 +29,23 @@
       </Spin>
       <Collapse>
         <Panel name="Total" size="large">
-          <span class="card-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
-          <div class="card-div" slot="content" v-for="card in cards" v-if="card.show == true" :key="card.timestamp">
-            <componentCard :cardData="card"></componentCard>
+          <span class="data-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
+          <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true" :key="data.timestamp">
+            <componentCard :dataRes="data"></componentCard>
           </div>
         </Panel>
 
         <Panel name="Done">
-          <span class="card-count" style="color:#19be6b;"> Done ({{ count.done }})</span>
-          <div class="card-div" slot="content" v-for="card in cards" v-if="card.show == true && card.percent == 100" :key="card.timestamp">
-            <componentCard :cardData="card"></componentCard>
+          <span class="data-count" style="color:#19be6b;"> Done ({{ count.done }})</span>
+          <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent == 100" :key="data.timestamp">
+            <componentCard :dataRes="data"></componentCard>
           </div>
         </Panel>
 
         <Panel name="Doing">
-          <span class="card-count" style="color:#ed3f14;"> Doing ({{ count.doing }})</span>
-          <div class="card-div" slot="content" v-for="card in cards" v-if="card.show == true && card.percent != 100" :key="card.timestamp">
-            <componentCard :cardData="card"></componentCard>
+          <span class="data-count" style="color:#ed3f14;"> Doing ({{ count.doing }})</span>
+          <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent != 100" :key="data.timestamp">
+            <componentCard :dataRes="data"></componentCard>
           </div>
         </Panel>
       </Collapse>
@@ -58,7 +58,7 @@
 import componentCard from './component-card.vue'
 
 export default {
-  name: 'plan-overview',
+  name: 'project-overview',
   created () {
     this.computePercent()
     this.clickTag('1')
@@ -70,7 +70,7 @@ export default {
         done: 0,
         doing: 0
       },
-      cards: [
+      datas: [
         {
           timestamp: 1,
           show: true,
@@ -82,19 +82,19 @@ export default {
           plans: [
             {
               timestamp: 0,
-              tag: 'plan',
+              tag: 'project',
               goal: '健身',
               percent: 20
             },
             {
               timestamp: 1,
-              tag: 'plan',
+              tag: 'project',
               goal: '考驾照',
               percent: 100
             },
             {
               timestamp: 2,
-              tag: 'plan',
+              tag: 'project',
               goal: '秋招',
               percent: 100
             }
@@ -170,7 +170,7 @@ export default {
           percent: 0,
           date: '2018.1.12',
           title: '放假安排',
-          content: '## 1.\n- plans1\n- plans2\n- plans3\n- plans4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
+          content: '## 1.\n- projects1\n- projects2\n- projects3\n- projects4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
           plans: [
             {
               timestamp: 8,
@@ -216,15 +216,15 @@ export default {
   },
   methods: {
     computePercent () {
-      for (var i = 0; i < this.cards.length; i++) {
-        if (this.cards[i].plans.length === 0) {
-          this.cards[i].percent = 0
+      for (var i = 0; i < this.datas.length; i++) {
+        if (this.datas[i].plans.length === 0) {
+          this.datas[i].percent = 0
         } else {
           var percent = 0
-          for (var j = 0; j < this.cards[i].plans.length; j++) {
-            percent += this.cards[i].plans[j].percent
+          for (var j = 0; j < this.datas[i].plans.length; j++) {
+            percent += this.datas[i].plans[j].percent
           }
-          this.cards[i].percent = Math.round(percent / this.cards[i].plans.length)
+          this.datas[i].percent = Math.round(percent / this.datas[i].plans.length)
         }
       }
     },
@@ -235,27 +235,27 @@ export default {
       var _done = 0
       var _doing = 0
       if (name === '1') {
-        _total = this.cards.length
-        for (let i = 0; i < this.cards.length; i++) {
-          this.cards[i].show = true
-          if (this.cards[i].percent === 100) {
+        _total = this.datas.length
+        for (let i = 0; i < this.datas.length; i++) {
+          this.datas[i].show = true
+          if (this.datas[i].percent === 100) {
             _done++
           } else {
             _doing++
           }
         }
       } else {
-        for (let i = 0; i < this.cards.length; i++) {
-          if (this.cards[i].type === name) {
+        for (let i = 0; i < this.datas.length; i++) {
+          if (this.datas[i].type === name) {
             _total++
-            this.cards[i].show = true
-            if (this.cards[i].percent === 100) {
+            this.datas[i].show = true
+            if (this.datas[i].percent === 100) {
               _done++
             } else {
               _doing++
             }
           } else {
-            this.cards[i].show = false
+            this.datas[i].show = false
           }
         }
       }
@@ -282,20 +282,20 @@ export default {
   text-align: center;
 }
 
-.card-count {
+.data-count {
   font-size  : 14px;
   margin-left: 10px;
   font-weight: bold;
 }
 
-.card-div {
+.data-div {
   height : auto;
   width  : 270px;
   display: inline-block;
   margin : 10px;
 }
 
-.card-top {
+.data-top {
   width      : 100%;
   align-items: center;
   margin     : auto 0;
@@ -303,26 +303,26 @@ export default {
   display    : -webkit-flex;
 }
 
-.card-circle {
+.data-circle {
   font-size  : 14px;
   font-weight: bold;
   display    : inline-block;
 }
 
-.card-date {
+.data-date {
   width      : auto;
   margin-left: 20px;
   font-size  : 16px;
 }
 
-.card-detail {
+.data-detail {
   float   : right;
   position: relative;
   margin  : auto 0 auto auto;
   cursor  : pointer;
 }
 
-.card-title {
+.data-title {
   width      : 100%;
   text-align : center;
   border-top : 1px solid #ccc;
@@ -332,7 +332,7 @@ export default {
   font-size  : 18px;
 }
 
-.card-content {
+.data-content {
   min-width : 100px;
   min-height: 100px;
   width     : auto;

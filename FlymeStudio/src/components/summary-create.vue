@@ -1,12 +1,12 @@
 <template>
-<div id="achieve-overview">
-overview
+<div id="summary-create">
+write
 </div>
 </template>
 
 <script type="text/javascript">
 export default{
-  name: 'achieve-overview'
+  name: 'summary-create'
 }
 </script>
 

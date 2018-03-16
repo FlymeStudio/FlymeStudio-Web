@@ -1,29 +1,23 @@
-export const loginApi = {
-  loginUrl: () => ''
-}
-
-export const registerApi = {
-  registerUrl: () => ''
-}
-
-export const retrieveApi = {
+export const accountApi = {
+  signInUrl: () => '',
+  signUpUrl: () => '',
+  signOutUrl: () => '',
   retrieveUrl: () => ''
 }
 
-export const quitApi = {
-  quitUrl: () => ''
+export const informationApi = {
+  informationUrl: () => '',
+  modifyUrl: () => ''
 }
 
-export const infoApi = {
-  infoUrl: () => ''
+export const projectApi = {
+  projectUrl: () => '',
+  createUrl: () => '',
+  modifyUrl: () => ''
 }
 
-export const planApi = {
-  planUrl: () => '',
-  submitUrl: () => ''
-}
-
-export const achieveApi = {
-  achieveUrl: () => '',
-  submitUrl: () => ''
+export const summaryApi = {
+  summaryUrl: () => '',
+  createUrl: () => '',
+  modifyUrl: () => ''
 }

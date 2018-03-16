@@ -1,12 +1,12 @@
 <template>
-<div id="achieve-modify">
+<div id="summary-modify">
 search
 </div>
 </template>
 
 <script type="text/javascript">
 export default{
-  name: 'achieve-modify'
+  name: 'summary-modify'
 }
 </script>
 

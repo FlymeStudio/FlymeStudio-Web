@@ -2,36 +2,36 @@
 <Card>
   <div>
     <div class="card-top">
-      <i-circle v-if="cardPercent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
+      <i-circle v-if="dataPercent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
         <Icon type="ios-checkmark-empty" size=40 color="#5cb85c"></Icon>
       </i-circle>
-      <i-circle v-else class="card-circle" :size=40 :percent="cardPercent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
-        <span class="demo-Circle-inner">{{ cardPercent }}%</span>
+      <i-circle v-else class="card-circle" :size=40 :percent="dataPercent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
+        <span class="demo-Circle-inner">{{ dataPercent }}%</span>
       </i-circle>
-      <span class="card-date">{{ cardSrc.date }}</span>
+      <span class="card-date">{{ dataSrc.date }}</span>
       <span class="card-detail" @click="modalPreview = true"><Icon type="more" size="24"></Icon></span>
     </div>
-    <p class="card-title" slot="title">{{ cardSrc.title }}</p>
-    <mavon-editor class="card-content" v-model="cardSrc.content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ cardSrc.content }}</mavon-editor>
+    <p class="card-title" slot="title">{{ dataSrc.title }}</p>
+    <mavon-editor class="card-content" v-model="dataSrc.content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ dataSrc.content }}</mavon-editor>
   </div>
   <Modal type="info" class="preview-modal" width="90%" v-model="modalPreview" :mask-closable="false" :ok-text="okText" :cancel-text="cancelText" class-name="vertical-center-modal">
     <div>
       <div class="card-top">
-        <i-circle class="card-circle" :size=40 v-if="cardPercent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
+        <i-circle class="card-circle" :size=40 v-if="dataPercent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
           <Icon type="ios-checkmark-empty" size=40 color="#5cb85c"></Icon>
         </i-circle>
-        <i-circle class="card-circle" :size=40 v-else :percent="cardPercent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
-          <span class="demo-Circle-inner">{{ cardPercent }}%</span>
+        <i-circle class="card-circle" :size=40 v-else :percent="dataPercent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
+          <span class="demo-Circle-inner">{{ dataPercent }}%</span>
         </i-circle>
-        <span class="card-date">{{ cardSrc.date }}</span>
+        <span class="card-date">{{ dataSrc.date }}</span>
       </div>
-      <p class="preview-title" slot="title">{{ cardSrc.title }}</p>
-      <mavon-editor class="preview-content" v-model="cardSrc.content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ cardSrc.content }}</mavon-editor>
-      <div class="div-plans">
-        <Alert class="alert-plans" v-for="item in cardSrc.plans" :key="item.timestamp">
+      <p class="preview-title" slot="title">{{ dataSrc.title }}</p>
+      <mavon-editor class="preview-content" v-model="dataSrc.content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ dataSrc.content }}</mavon-editor>
+      <div class="div-projects">
+        <Alert class="alert-projects" v-for="item in dataSrc.plans" :key="item.timestamp">
           <Progress class="preview-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
           <Progress class="preview-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
-          <div class="div-plan">
+          <div class="div-project">
             <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
             <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
           </div>
@@ -46,11 +46,11 @@
 export default{
   name: 'component-card',
   props: [
-    'cardData'
+    'dataRes'
   ],
   data () {
     return {
-      cardSrc: this.cardData,
+      dataSrc: this.dataRes,
       subfield: false,
       defaultOpen: 'preview',
       toolbarsFlag: false,
@@ -60,15 +60,15 @@ export default{
     }
   },
   computed: {
-    cardPercent: function () {
+    dataPercent: function () {
       let _percent = 0
-      for (var i = 0; i < this.cardSrc.plans.length; i++) {
-        _percent += this.cardSrc.plans[i].percent
+      for (var i = 0; i < this.dataSrc.plans.length; i++) {
+        _percent += this.dataSrc.plans[i].percent
       }
-      if (this.cardSrc.plans.length === 0) {
+      if (this.dataSrc.plans.length === 0) {
         return 0
       } else {
-        return Math.round(_percent / this.cardSrc.plans.length)
+        return Math.round(_percent / this.dataSrc.plans.length)
       }
     }
   },
@@ -149,15 +149,15 @@ export default{
   z-index   : 7;
 }
 
-.div-plans {
+.div-projects {
   margin-top: 20px;
 }
 
-.alert-plans {
+.alert-projects {
   padding-right: 5px;
 }
 
-.div-plan {
+.div-project {
   display: flex;
 }
 

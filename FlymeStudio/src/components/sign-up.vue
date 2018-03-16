@@ -64,7 +64,7 @@ import componentFooter from './component-footer.vue'
 import accountApi from '../api/accountApi'
 
 export default {
-  name: 'register',
+  name: 'signUp',
   data () {
     return {
       isResultView: false,
@@ -148,7 +148,7 @@ export default {
     clickTopNav: function (name) {
       switch (name) {
         case '0-1':
-          this.clickLogin()
+          this.clickSignIn()
           break
         case '0-2':
           this.clickRetrieve()
@@ -159,16 +159,13 @@ export default {
     clickFlyme: function () {
       window.open('https://www.flyme.cn/')
     },
-    clickLogin: function () {
-      this.$router.push('/login')
+    clickSignIn: function () {
+      this.$router.push('/signIn')
     },
     clickRetrieve: function () {
       this.$router.push('/retrieve')
     },
-    github: function () {
-      window.open('https://github.com/frogfans')
-    },
-    register: function () {
+    signUp: function () {
       this.loading = true
       setTimeout(() => {
         this.$Notice.success({
@@ -178,7 +175,7 @@ export default {
         this.isResultView = true
       }, 1000)
       let _this = this
-      accountApi.register(this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.password).then(function (response) {
+      accountApi.signUp(this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.password).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Sign up successful!',
@@ -200,7 +197,7 @@ export default {
       this.$refs[name].validate((valid) => {
         if (valid) {
           if (this.formItem.password === this.formItem.confirm) {
-            this.register()
+            this.signUp()
           } else {
             this.$Notice.error({
               title: 'Please reconfirm password!',

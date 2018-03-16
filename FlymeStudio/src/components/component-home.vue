@@ -1,6 +1,6 @@
 <template>
 <div id="component-home">
-
+home
 </div>
 </template>
 

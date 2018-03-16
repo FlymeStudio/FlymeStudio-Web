@@ -45,7 +45,7 @@ import componentFooter from './component-footer.vue'
 import accountApi from '../api/accountApi'
 
 export default {
-  name: 'login',
+  name: 'signIn',
   data () {
     return {
       formItem: {
@@ -90,15 +90,12 @@ export default {
       window.open('https://www.flyme.cn/')
     },
     clickRegister: function () {
-      this.$router.push('/register')
+      this.$router.push('/signUp')
     },
     clickRetrieve: function () {
       this.$router.push('/retrieve')
     },
-    github: function () {
-      window.open('https://github.com/frogfans')
-    },
-    login: function () {
+    signIn: function () {
       this.loading = true
       let _this = this
       setTimeout(() => {
@@ -108,18 +105,18 @@ export default {
         })
         _this.$router.push('/home')
       }, 1000)
-      accountApi.login(this.id, this.password)
+      accountApi.signIn(this.id, this.password)
         .then(function (response) {
           if (response.data.result === true) {
             _this.$Notice.success({
               title: 'Sign in successful!',
               desc: ''
             })
-            // let loginInfo = {
+            // let signInInfo = {
             //   id: _this.id,
             //   password: _this.password
             // }
-            // _this.$store.dispatch('doLogin', loginInfo)
+            // _this.$store.dispatch('doLogin', signInInfo)
             _this.$router.push('/home')
           } else {
             _this.loading = true
@@ -133,7 +130,7 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.login()
+          this.signIn()
         } else {
           this.$Notice.error({
             title: 'Information is incorrect!',

@@ -1,14 +1,11 @@
 import {
-  loginApi,
-  registerApi,
-  retrieveApi,
-  quitApi
+  accountApi
 } from './urlApi'
 import axios from 'axios'
 import qs from 'qs'
 
 export default {
-  login (id, password) {
+  signIn (id, password) {
     var data = qs.stringify({
       id: id,
       password: password
@@ -18,12 +15,12 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: loginApi.loginUrl(),
+      url: accountApi.signInUrl(),
       data: data,
       withCredentials: true
     })
   },
-  register (name, tel, email, password) {
+  signUp (name, tel, email, password) {
     var data = qs.stringify({
       name: name,
       tel: tel,
@@ -35,7 +32,21 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: registerApi.registerUrl(),
+      url: accountApi.signUpUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
+  signOut (tel) {
+    var data = qs.stringify({
+      tel: tel
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: accountApi.signOutUrl(),
       data: data,
       withCredentials: true
     })
@@ -51,21 +62,7 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: retrieveApi.retrieveUrl(),
-      data: data,
-      withCredentials: true
-    })
-  },
-  quit (tel) {
-    var data = qs.stringify({
-      tel: tel
-    })
-    return axios({
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      url: quitApi.quitUrl(),
+      url: accountApi.retrieveUrl(),
       data: data,
       withCredentials: true
     })

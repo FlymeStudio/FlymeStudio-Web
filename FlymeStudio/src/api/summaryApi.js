@@ -1,11 +1,11 @@
 import {
-  infoApi
+  summaryApi
 } from './urlApi'
 import axios from 'axios'
 import qs from 'qs'
 
 export default {
-  info (tel) {
+  summary (tel) {
     var data = qs.stringify({
       tel: tel
     })
@@ -14,7 +14,7 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: infoApi.infoUrl(),
+      url: summaryApi.summaryUrl(),
       data: data,
       withCredentials: true
     })

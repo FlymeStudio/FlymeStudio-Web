@@ -1,5 +1,5 @@
 <template>
-<div id="plan-create">
+<div id="project-create">
   <Form ref="formItem" :model="formItem" :rules="ruleItem">
     <FormItem>
       <Icon class="icon-item" type="bookmark" size=18></Icon>
@@ -37,15 +37,15 @@
       <span class="span-item">Set goals</span>
     </FormItem>
     <FormItem>
-      <Alert class="alert-plans" type="success" v-for="item in formItem.plans" :key="item.index">
-        <div class="div-plan">
+      <Alert class="alert-projects" type="success" v-for="item in formItem.plans" :key="item.index">
+        <div class="div-project">
           <Tag class="tag-tag" type="dot" color="blue" >{{ item.tag }}</Tag>
           <Input class="input-goal" type="text" :readonly="true"  v-model="item.goal"></Input>
           <Button class="btn-edit" type="ghost" shape="circle" icon="minus" @click="deletePlan(item.index)"></Button>
         </div>
       </Alert>
-      <Alert class="alert-plans">
-        <div class="div-plan">
+      <Alert class="alert-projects">
+        <div class="div-project">
         <Input class="edit-tag" type="text" clearable placeholder="Tag" v-model="editTag"></Input>
         <Input class="edit-goal" type="text" clearable placeholder="Goal" v-model="editGoal"></Input>
         <Button class="btn-edit" type="ghost" shape="circle" icon="plus" @click="addPlan()"></Button>
@@ -74,13 +74,10 @@
 </template>
 
 <script type="text/javascript">
-import planApi from '../api/planApi'
+import projectApi from '../api/projectApi'
 
 export default {
-  name: 'plan-create',
-  created () {
-    this.planIndex = this.formItem.plans.length
-  },
+  name: 'project-create',
   data () {
     return {
       types: [
@@ -178,7 +175,6 @@ export default {
         subfield: true, // 单双栏模式
         preview: true // 预览
       },
-      planIndex: '',
       editTag: '',
       editGoal: '',
       modalUpload: false,
@@ -230,14 +226,13 @@ export default {
     },
     addPlan () {
       var plan = {
-        index: this.planIndex,
+        index: new Date().getTime(),
         tag: this.editTag,
         goal: this.editGoal
       }
       this.formItem.plans.push(plan)
       this.editTag = ''
       this.editGoal = ''
-      this.planIndex++
     },
     handleReset (name) {
       this.$refs[name].resetFields()
@@ -267,7 +262,7 @@ export default {
         _this.handleReset('formItem')
         _this.modalSave = false
       }, 1000)
-      planApi.submit(this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
+      projectApi.create(this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Save successful!',
@@ -341,11 +336,11 @@ export default {
   margin-bottom: 10px;
 }
 
-.alert-plans {
+.alert-projects {
   padding-right: 16px;
 }
 
-.div-plan{
+.div-project{
   display: flex;
 }
 

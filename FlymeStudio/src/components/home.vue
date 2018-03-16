@@ -6,15 +6,15 @@
         <div class="layout-logo" @click="clickFlyme"></div>
         <div class="layout-title">Flyme Studio</div>
         <div class="layout-nav">
-          <MenuItem name="0-1">
+          <MenuItem name="1">
           <Icon class="item-icon" type="person" size=18></Icon>
           {{ name }}
           </MenuItem>
-          <MenuItem name="0-2">
+          <MenuItem name="2">
           <Icon class="item-icon" type="help" size=18></Icon>
           Help
           </MenuItem>
-          <MenuItem name="0-3">
+          <MenuItem name="3">
           <Icon class="item-icon" type="log-out" size=18></Icon>
           Sign out
           </MenuItem>
@@ -57,30 +57,30 @@
           <Spin fix v-if="spinShow">
             <Icon class="icon-spin" type="load-c" size=50></Icon>
           </Spin>
-          <componentHome v-show="componentId == 0"></componentHome>
+          <Home v-show="componentId == 0"></Home>
           <transition name="component-fade" mode="out-in">
-            <componentInfoOverview v-show="componentId == 1"></componentInfoOverview>
+            <InformationOverview v-show="componentId == 1"></InformationOverview>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <componentInfoModify v-show="componentId == 2"></componentInfoModify>
+            <InformationModify v-show="componentId == 2"></InformationModify>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <componentPlanOverview v-show="componentId == 11"></componentPlanOverview>
+            <ProjectOverview v-show="componentId == 11"></ProjectOverview>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <componentPlanCreate v-show="componentId == 12"></componentPlanCreate>
+            <ProjectCreate v-show="componentId == 12"></ProjectCreate>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <componentPlanModify v-show="componentId == 13"></componentPlanModify>
+            <ProjectModify v-show="componentId == 13"></ProjectModify>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <componentAchieveOverview v-show="componentId == 21"></componentAchieveOverview>
+            <SummaryOverview v-show="componentId == 21"></SummaryOverview>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <componentAchieveCreate v-show="componentId == 22"></componentAchieveCreate>
+            <SummaryCreate v-show="componentId == 22"></SummaryCreate>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <componentAchieveModify v-show="componentId == 23"></componentAchieveModify>
+            <SummaryModify v-show="componentId == 23"></SummaryModify>
           </transition>
         </Content>
       </Layout>
@@ -92,20 +92,20 @@
 </template>
 
 <script>
-import componentHome from './component-home.vue'
-import componentInfoOverview from './info-overview.vue'
-import componentInfoModify from './info-modify.vue'
-import componentPlanOverview from './plan-overview.vue'
-import componentPlanCreate from './plan-create.vue'
-import componentPlanModify from './plan-modify.vue'
-import componentAchieveOverview from './achieve-overview.vue'
-import componentAchieveCreate from './achieve-create.vue'
-import componentAchieveModify from './achieve-modify.vue'
+import Home from './component-home.vue'
+import InformationOverview from './information-overview.vue'
+import InformationModify from './information-modify.vue'
+import ProjectOverview from './project-overview.vue'
+import ProjectCreate from './project-create.vue'
+import ProjectModify from './project-modify.vue'
+import SummaryOverview from './summary-overview.vue'
+import SummaryCreate from './summary-create.vue'
+import SummaryModify from './summary-modify.vue'
 import componentFooter from './component-footer.vue'
 import accountApi from '../api/accountApi'
-import infoApi from '../api/infoApi'
-import planApi from '../api/planApi'
-import achieveApi from '../api/achieveApi'
+import informationApi from '../api/informationApi'
+import projectApi from '../api/projectApi'
+import summaryApi from '../api/summaryApi'
 
 export default {
   name: 'home',
@@ -123,15 +123,15 @@ export default {
     }
   },
   components: {
-    componentHome,
-    componentInfoOverview,
-    componentInfoModify,
-    componentPlanOverview,
-    componentPlanCreate,
-    componentPlanModify,
-    componentAchieveOverview,
-    componentAchieveCreate,
-    componentAchieveModify,
+    Home,
+    InformationOverview,
+    InformationModify,
+    ProjectOverview,
+    ProjectCreate,
+    ProjectModify,
+    SummaryOverview,
+    SummaryCreate,
+    SummaryModify,
     componentFooter
   },
   methods: {
@@ -139,33 +139,33 @@ export default {
       this.name = '曾宇' // test
       this.email = '1213814232@qq.com' // test
       let _this = this
-      infoApi.info(this.tel).then(function (response) {
+      informationApi.information(this.tel).then(function (response) {
         if (response.data.result === true) {
           _this.name = response.data.name
           _this.email = response.data.email
         }
       })
-      planApi.plan(this.tel).then(function (response) {
+      projectApi.project(this.tel).then(function (response) {
         if (response.data.result === true) {
-          _this.plan = response.data.plan
+          _this.project = response.data.project
         }
       })
-      achieveApi.achieve(this.tel).then(function (response) {
+      summaryApi.summary(this.tel).then(function (response) {
         if (response.data.result === true) {
-          _this.achieve = response.data.achieve
+          _this.summary = response.data.summary
         }
       })
     },
     clickTopNav: function (name) {
       switch (name) {
-        case '0-1':
+        case '1':
           this.componentId = 1
           break
-        case '0-2':
+        case '2':
           this.clickHelp()
           break
-        case '0-3':
-          this.clickQuit()
+        case '3':
+          this.clickSignOut()
           break
         default:
       }
@@ -174,22 +174,22 @@ export default {
       window.open('https://www.flyme.cn/')
     },
     clickHelp: function () {
-      window.open('https://github.com/flymestudio/FlymeStudio-web')
+      window.open('https://github.com/FlymeStudio/FlymeStudio-Doc/blob/master/introduce.md')
     },
-    clickQuit: function () {
+    clickSignOut: function () {
       this.spinShow = true
       let _this = this
       setTimeout(() => {
         _this.spinShow = false
         _this.$Message.success('Sign out successful!')
-        _this.$router.push('/login')
+        _this.$router.push('/signIn')
       }, 1000)
-      accountApi.quit(this.tel).then(function (response) {
+      accountApi.signOut(this.tel).then(function (response) {
         setTimeout(() => {
           _this.spinShow = false
           if (response.data.result === true) {
             _this.$Message.success('Sign out successful!')
-            _this.$router.push('/login')
+            _this.$router.push('/signIn')
           } else {
             _this.$Message.error('Sign out failed!')
           }

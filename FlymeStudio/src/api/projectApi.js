@@ -1,11 +1,11 @@
 import {
-  planApi
+  projectApi
 } from './urlApi'
 import axios from 'axios'
 import qs from 'qs'
 
 export default {
-  plan (tel) {
+  project (tel) {
     var data = qs.stringify({
       tel: tel
     })
@@ -14,12 +14,12 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: planApi.planUrl(),
+      url: projectApi.projectUrl(),
       data: data,
       withCredentials: true
     })
   },
-  submit (type, date, title, content, plans) {
+  create (type, date, title, content, plans) {
     var data = qs.stringify({
       type: type,
       date: date,
@@ -32,7 +32,25 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: planApi.submitUrl(),
+      url: projectApi.createUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
+  modify (type, date, title, content, plans) {
+    var data = qs.stringify({
+      type: type,
+      date: date,
+      title: title,
+      content: content,
+      plans: plans
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: projectApi.modifyUrl(),
       data: data,
       withCredentials: true
     })

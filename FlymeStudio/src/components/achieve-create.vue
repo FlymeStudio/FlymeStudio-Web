@@ -1,12 +1,12 @@
 <template>
-<div id="achieve-search">
-search
+<div id="achieve-create">
+write
 </div>
 </template>
 
 <script type="text/javascript">
 export default{
-  name: 'achieve-search'
+  name: 'achieve-create'
 }
 </script>
 

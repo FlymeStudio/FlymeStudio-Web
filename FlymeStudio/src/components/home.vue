@@ -27,28 +27,28 @@
           <Submenu name="0">
             <template slot="title">
               <Icon type="person" size=18></Icon>
-                Info
+                <span class="span-menu-item">Information</span>
             </template>
-            <MenuItem name="1">View</MenuItem>
+            <MenuItem name="1">Overview</MenuItem>
             <MenuItem name="2">Modify</MenuItem>
           </Submenu>
           <Submenu name="10">
             <template slot="title">
               <Icon type="clipboard" size=18></Icon>
-                Plan
+                <span class="span-menu-item">Project</span>
             </template>
             <MenuItem name="11">Overview</MenuItem>
-            <MenuItem name="12">Write</MenuItem>
-            <MenuItem name="13">Search</MenuItem>
+            <MenuItem name="12">Create</MenuItem>
+            <MenuItem name="13">Modify</MenuItem>
           </Submenu>
           <Submenu name="20">
             <template slot="title">
               <Icon type="document-text" size=18></Icon>
-                Achieve
+                <span class="span-menu-item">Summary</span>
             </template>
             <MenuItem name="21">Overview</MenuItem>
-            <MenuItem name="22">Write</MenuItem>
-            <MenuItem name="23">Search</MenuItem>
+            <MenuItem name="22">Create</MenuItem>
+            <MenuItem name="23">Modify</MenuItem>
           </Submenu>
         </Menu>
       </Sider>
@@ -59,7 +59,7 @@
           </Spin>
           <componentHome v-show="componentId == 0"></componentHome>
           <transition name="component-fade" mode="out-in">
-            <componentInfoView v-show="componentId == 1"></componentInfoView>
+            <componentInfoOverview v-show="componentId == 1"></componentInfoOverview>
           </transition>
           <transition name="component-fade" mode="out-in">
             <componentInfoModify v-show="componentId == 2"></componentInfoModify>
@@ -68,19 +68,19 @@
             <componentPlanOverview v-show="componentId == 11"></componentPlanOverview>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <componentPlanWrite v-show="componentId == 12"></componentPlanWrite>
+            <componentPlanCreate v-show="componentId == 12"></componentPlanCreate>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <componentPlanSearch v-show="componentId == 13"></componentPlanSearch>
+            <componentPlanModify v-show="componentId == 13"></componentPlanModify>
           </transition>
           <transition name="component-fade" mode="out-in">
             <componentAchieveOverview v-show="componentId == 21"></componentAchieveOverview>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <componentAchieveWrite v-show="componentId == 22"></componentAchieveWrite>
+            <componentAchieveCreate v-show="componentId == 22"></componentAchieveCreate>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <componentAchieveSearch v-show="componentId == 23"></componentAchieveSearch>
+            <componentAchieveModify v-show="componentId == 23"></componentAchieveModify>
           </transition>
         </Content>
       </Layout>
@@ -93,14 +93,14 @@
 
 <script>
 import componentHome from './component-home.vue'
-import componentInfoView from './info-view.vue'
+import componentInfoOverview from './info-overview.vue'
 import componentInfoModify from './info-modify.vue'
 import componentPlanOverview from './plan-overview.vue'
-import componentPlanWrite from './plan-write.vue'
-import componentPlanSearch from './plan-search.vue'
+import componentPlanCreate from './plan-create.vue'
+import componentPlanModify from './plan-modify.vue'
 import componentAchieveOverview from './achieve-overview.vue'
-import componentAchieveWrite from './achieve-write.vue'
-import componentAchieveSearch from './achieve-search.vue'
+import componentAchieveCreate from './achieve-create.vue'
+import componentAchieveModify from './achieve-modify.vue'
 import componentFooter from './component-footer.vue'
 import accountApi from '../api/accountApi'
 import infoApi from '../api/infoApi'
@@ -124,14 +124,14 @@ export default {
   },
   components: {
     componentHome,
-    componentInfoView,
+    componentInfoOverview,
     componentInfoModify,
     componentPlanOverview,
-    componentPlanWrite,
-    componentPlanSearch,
+    componentPlanCreate,
+    componentPlanModify,
     componentAchieveOverview,
-    componentAchieveWrite,
-    componentAchieveSearch,
+    componentAchieveCreate,
+    componentAchieveModify,
     componentFooter
   },
   methods: {
@@ -181,26 +181,17 @@ export default {
       let _this = this
       setTimeout(() => {
         _this.spinShow = false
-        _this.$Notice.success({
-          title: 'Sign out successful!',
-          desc: ''
-        })
+        _this.$Message.success('Sign out successful!')
         _this.$router.push('/login')
       }, 1000)
       accountApi.quit(this.tel).then(function (response) {
         setTimeout(() => {
           _this.spinShow = false
           if (response.data.result === true) {
-            _this.$Notice.success({
-              title: 'Sign out successful!',
-              desc: ''
-            })
+            _this.$Message.success('Sign out successful!')
             _this.$router.push('/login')
           } else {
-            _this.$Notice.error({
-              title: 'Sign out failed!',
-              desc: ''
-            })
+            _this.$Message.error('Sign out failed!')
           }
         }, 1000)
       })
@@ -247,5 +238,10 @@ export default {
 
 .menu {
   z-index: 5;
+}
+
+.span-menu-item{
+  font-weight: bold;
+  font-size: 16px;
 }
 </style>

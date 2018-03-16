@@ -1,12 +1,12 @@
 <template>
-<div id="plan-search">
+<div id="plan-modify">
 search
 </div>
 </template>
 
 <script type="text/javascript">
 export default{
-  name: 'plan-search'
+  name: 'plan-modify'
 }
 </script>
 

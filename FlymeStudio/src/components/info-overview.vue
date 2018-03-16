@@ -1,5 +1,5 @@
 <template>
-<div id="info-view">
+<div id="info-overview">
   <Menu width="auto">
     <MenuItem class="menu-item" name="tel">
     <Icon type="ios-telephone" size=18></Icon>
@@ -19,7 +19,7 @@
 
 <script type="text/javascript">
 export default {
-  name: 'info-view',
+  name: 'info-overview',
   created () {
     this.getInfo()
   },

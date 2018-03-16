@@ -1,8 +1,8 @@
 <template>
-<div id="plan-write">
+<div id="plan-create">
   <Form ref="formItem" :model="formItem" :rules="ruleItem">
     <FormItem>
-      <Icon style="width:18px;text-align:center;" type="bookmark" size=18></Icon>
+      <Icon class="icon-item" type="bookmark" size=18></Icon>
       <span class="span-item">Set type</span>
     </FormItem>
     <FormItem prop="type">
@@ -11,41 +11,45 @@
       </select>
     </FormItem>
     <FormItem>
-      <Icon style="width:18px;text-align:center;" type="calendar" size=18></Icon>
+      <Icon class="icon-item" type="calendar" size=18></Icon>
       <span class="span-item">Set date</span>
     </FormItem>
     <FormItem prop="date">
       <DatePicker class="datePicker" type="date" size="large" v-model="formItem.date" placeholder="Date" confirm/>
     </FormItem>
     <FormItem>
-      <Icon style="width:18px;text-align:center;" type="pin" size=18></Icon>
+      <Icon class="icon-item" type="pin" size=18></Icon>
       <span class="span-item">Set title</span>
     </FormItem>
     <FormItem prop="title">
       <Input class="input-title" type="text" v-model="formItem.title" placeholder="Title" clearable size="large" />
     </FormItem>
     <FormItem>
-      <Icon style="width:18px;text-align:center;" type="social-markdown" size=18></Icon>
+      <Icon class="icon-item" type="social-markdown" size=18></Icon>
       <span class="span-item">Set content</span>
-      <Button class="btn-edit" style="margin-left:40px;" @click="modalUpload = true"><Icon type="upload" size=18></Icon><span class="span-btn">Upload</span></Button>
+      <Button class="btn-upload" style="margin-left:40px;" @click="modalUpload = true"><Icon type="upload" size=18></Icon><span class="span-btn">Upload</span></Button>
     </FormItem>
     <FormItem prop="content">
       <mavon-editor class="mavonEditor" v-model="formItem.content" :subfield="subfield" :defaultOpen="defaultOpen" :placeholder="placeholder" :toolbarsFlag="toolbarsFlag" :toolbars="toolbars"></mavon-editor>
     </FormItem>
     <FormItem>
-      <Icon style="width:18px;text-align:center;" type="flag" size=18></Icon>
+      <Icon class="icon-item" type="flag" size=18></Icon>
       <span class="span-item">Set goals</span>
     </FormItem>
     <FormItem>
-      <Alert type="success" v-for="item in formItem.plans" :key="item.index">
-        <Tag type="dot" color="blue" style="width:100px;text-align:center;">{{ item.tag }}</Tag>
-        <Tag type="dot" color="yellow" style="width:300px;">{{ item.goal }}</Tag>
-        <Button type="ghost" shape="circle" icon="minus" @click="deletePlan(item.index)"></Button>
+      <Alert class="alert-plans" type="success" v-for="item in formItem.plans" :key="item.index">
+        <div class="div-plan">
+          <Tag class="tag-tag" type="dot" color="blue" >{{ item.tag }}</Tag>
+          <Input class="input-goal" type="text" :readonly="true"  v-model="item.goal"></Input>
+          <Button class="btn-edit" type="ghost" shape="circle" icon="minus" @click="deletePlan(item.index)"></Button>
+        </div>
       </Alert>
-      <Alert>
-        <Input type="text" clearable placeholder="Tag" style="width:100px;" v-model="editTag"></Input>
-        <Input type="text" clearable placeholder="Goal" style="width:300px;margin:auto 4px;" v-model="editGoal"></Input>
-        <Button type="ghost" shape="circle" icon="plus" @click="addPlan()"></Button>
+      <Alert class="alert-plans">
+        <div class="div-plan">
+        <Input class="edit-tag" type="text" clearable placeholder="Tag" v-model="editTag"></Input>
+        <Input class="edit-goal" type="text" clearable placeholder="Goal" v-model="editGoal"></Input>
+        <Button class="btn-edit" type="ghost" shape="circle" icon="plus" @click="addPlan()"></Button>
+      </div>
       </Alert>
     </FormItem>
     <br>
@@ -73,7 +77,7 @@
 import planApi from '../api/planApi'
 
 export default {
-  name: 'plan-write',
+  name: 'plan-create',
   created () {
     this.planIndex = this.formItem.plans.length
   },
@@ -183,7 +187,7 @@ export default {
       cancel: 'Cancel',
       modalSave: false,
       loadingSave: true,
-      okSave: 'Save',
+      okSave: 'Save'
     }
   },
   methods: {
@@ -285,9 +289,14 @@ export default {
 </script>
 
 <style scoped>
-.span-item{
-  margin-left:10px;
-  font-size:16px;
+.icon-item {
+  width     : 18px;
+  text-align: center;
+}
+
+.span-item {
+  margin-left: 10px;
+  font-size  : 16px;
 }
 
 .select-type {
@@ -309,8 +318,8 @@ export default {
 }
 
 .span-btn {
-  margin-left:5px;
-  font-size:16px;
+  margin-left: 5px;
+  font-size  : 16px;
 }
 
 .mavonEditor {
@@ -319,10 +328,10 @@ export default {
   z-index: 5;
 }
 
-.btn-edit {
-  height: auto;
-  width: auto;
-  padding: 3px 10px;
+.btn-upload {
+  height     : auto;
+  width      : auto;
+  padding    : 3px 10px;
   align-items: center;
 }
 
@@ -332,8 +341,42 @@ export default {
   margin-bottom: 10px;
 }
 
-.btn-goal{
-  float : right;
+.alert-plans {
+  padding-right: 16px;
+}
+
+.div-plan{
+  display: flex;
+}
+
+.tag-tag {
+  width     : 100px;
+  display: inline-block;
+}
+
+.input-goal {
+  width    : 100%;
+  flex: 1;
+  margin: auto 20px auto 5px;
+  display: inline-block;
+}
+
+.btn-edit {
+  float: right;
+  display: inline-block;
+}
+
+.edit-tag {
+  width    : 100px;
+  margin-right: 4px;
+  display: inline-block;
+}
+
+.edit-goal {
+  width    : 100%;
+  flex: 1;
+  margin: auto 20px auto 5px;
+  display: inline-block;
 }
 
 .btn-item {

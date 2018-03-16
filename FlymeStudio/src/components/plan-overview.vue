@@ -216,7 +216,6 @@ export default {
   },
   methods: {
     computePercent () {
-      console.log('computePercent()')
       for (var i = 0; i < this.cards.length; i++) {
         if (this.cards[i].plans.length === 0) {
           this.cards[i].percent = 0
@@ -231,7 +230,6 @@ export default {
     },
     clickTag: function (name) {
       this.currentType = name
-      console.log('clickTag:' + name)
       this.spinShow = true
       var _total = 0
       var _done = 0

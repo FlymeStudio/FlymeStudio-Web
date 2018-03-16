@@ -1,12 +1,12 @@
 <template>
-<div id="achieve-write">
-write
+<div id="achieve-modify">
+search
 </div>
 </template>
 
 <script type="text/javascript">
 export default{
-  name: 'achieve-write'
+  name: 'achieve-modify'
 }
 </script>
 

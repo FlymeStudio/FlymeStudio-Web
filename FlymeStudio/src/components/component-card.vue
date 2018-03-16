@@ -2,10 +2,10 @@
 <Card>
   <div>
     <div class="card-top">
-      <i-circle class="card-circle" :size=40 v-if="cardPercent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
+      <i-circle v-if="cardPercent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
         <Icon type="ios-checkmark-empty" size=40 color="#5cb85c"></Icon>
       </i-circle>
-      <i-circle class="card-circle" :size=40 v-else :percent="cardPercent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
+      <i-circle v-else class="card-circle" :size=40 :percent="cardPercent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
         <span class="demo-Circle-inner">{{ cardPercent }}%</span>
       </i-circle>
       <span class="card-date">{{ cardSrc.date }}</span>
@@ -28,11 +28,13 @@
       <p class="preview-title" slot="title">{{ cardSrc.title }}</p>
       <mavon-editor class="preview-content" v-model="cardSrc.content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ cardSrc.content }}</mavon-editor>
       <div class="div-plans">
-        <Alert v-for="item in cardSrc.plans" :key="item.timestamp">
+        <Alert class="alert-plans" v-for="item in cardSrc.plans" :key="item.timestamp">
           <Progress class="preview-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
           <Progress class="preview-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
-          <Tag type="dot" color="blue" style="width:100px;text-align:center;">{{ item.tag }}</Tag>
-          <Tag type="dot" color="yellow" style="width:300px;">{{ item.goal }}</Tag>
+          <div class="div-plan">
+            <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
+            <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
+          </div>
         </Alert>
       </div>
     </div>
@@ -151,12 +153,32 @@ export default{
   margin-top: 20px;
 }
 
-.preview-plans {}
+.alert-plans {
+  padding-right: 5px;
+}
+
+.div-plan {
+  display: flex;
+}
 
 .preview-progress {
   font-size    : 16px;
   color        : #1788e8;
   margin-bottom: 10px;
+  margin-right : -40px;
+  display: block;
+}
+
+.tag-tag {
+  width  : 100px;
+  display: inline-block;
+}
+
+.input-goal {
+  width  : 100%;
+  flex   : 1;
+  margin : auto 10px auto 5px;
+  display: inline-block;
 }
 
 .vertical-center-modal {

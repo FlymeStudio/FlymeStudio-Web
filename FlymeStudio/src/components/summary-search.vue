@@ -1,12 +1,12 @@
 <template>
-<div id="project-modify">
-search
+<div id="summary-search">
+Function not available
 </div>
 </template>
 
 <script type="text/javascript">
 export default{
-  name: 'project-modify'
+  name: 'summary-search'
 }
 </script>
 

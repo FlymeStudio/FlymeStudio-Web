@@ -289,10 +289,13 @@ export default {
 }
 
 .data-div {
-  height : auto;
-  width  : 270px;
-  display: inline-block;
-  margin : 10px;
+  height          : auto;
+  width           : 280px;
+  display         : inline-block;
+  margin          : 20px;
+  background-color: #dddee1;
+  padding         : 5px;
+  border-radius   : 5px;
 }
 
 .data-top {

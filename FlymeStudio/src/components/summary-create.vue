@@ -1,6 +1,6 @@
 <template>
 <div id="summary-create">
-write
+Function not available
 </div>
 </template>
 

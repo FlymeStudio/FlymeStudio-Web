@@ -34,7 +34,7 @@
     </FormItem>
     <FormItem>
       <Icon class="icon-item" type="flag" size=18></Icon>
-      <span class="span-item">Set goals</span>
+      <span class="span-item">Set plans</span>
     </FormItem>
     <FormItem>
       <Alert class="alert-projects" type="success" v-for="item in formItem.plans" :key="item.index">

@@ -1,6 +1,6 @@
 <template>
 <div id="summary-overview">
-overview
+Function not available
 </div>
 </template>
 

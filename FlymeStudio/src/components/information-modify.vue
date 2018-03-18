@@ -2,50 +2,57 @@
 <div id="information-modify">
   <Form class="form" ref="formItem" :model="formItem" :rules="ruleItem">
     <Alert type="info">
-    <FormItem class="form-item">
-      <Icon class="icon-item" style="margin:auto 10px;" type="person" size=18></Icon>
-      <span class="span-item">{{ name }}</span>
-    </FormItem>
-    <FormItem class="form-item" prop="name">
-      <Input type="text" v-model="formItem.name" size="large" placeholder="New name" clearable>
-      <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
-      </Input>
-    </FormItem>
-  </Alert>
-  <Alert type="info">
-    <FormItem class="form-item">
-      <Icon class="icon-item" style="margin:auto 10px;" type="ios-telephone" size=18></Icon>
-      <span class="span-item">{{ tel }}</span>
-    </FormItem>
-    <FormItem class="form-item" prop="tel">
-      <Input type="text" v-model="formItem.tel" size="large" placeholder="New tel" clearable>
-      <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
-      </Input>
-    </FormItem>
-  </Alert>
-  <Alert type="info">
-    <FormItem class="form-item">
-      <Icon class="icon-item" style="margin:auto 10px;" type="email" size=18></Icon>
-      <span class="span-item">{{ email }}</span>
-    </FormItem>
-    <FormItem class="form-item" prop="email">
-      <Input type="text" v-model="formItem.email" size="large" placeholder="New email" clearable>
-      <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
-      </Input>
-    </FormItem>
-  </Alert>
-  <Alert type="info">
-    <FormItem class="form-item" prop="newPassword">
-      <Input type="password" v-model="formItem.newPassword" size="large" placeholder="New password" clearable>
-      <Icon class="icon-item" type="android-lock" slot="prepend" size=18></Icon>
-      </Input>
-    </FormItem>
-    <FormItem class="form-item" prop="confirm">
-      <Input type="password" v-model="formItem.confirm" size="large" placeholder="Confirm" clearable>
-      <Icon class="icon-item" type="checkmark" slot="prepend" size=18></Icon>
-      </Input>
-    </FormItem>
-  </Alert>
+      <FormItem class="form-item">
+        <Icon class="icon-item" style="margin:auto 10px;" type="person" size=18></Icon>
+        <span class="span-item">{{ name }}</span>
+      </FormItem>
+      <FormItem class="form-item" prop="name">
+        <Input type="text" v-model="formItem.name" size="large" placeholder="New name" clearable>
+        <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
+        </Input>
+      </FormItem>
+    </Alert>
+    <Alert type="info">
+      <FormItem class="form-item">
+        <Icon class="icon-item" style="margin:auto 10px;" type="ios-telephone" size=18></Icon>
+        <span class="span-item">{{ tel }}</span>
+      </FormItem>
+      <FormItem class="form-item" prop="tel">
+        <Input type="text" v-model="formItem.tel" size="large" placeholder="New tel" clearable>
+        <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
+        </Input>
+      </FormItem>
+    </Alert>
+    <Alert type="info">
+      <FormItem class="form-item">
+        <Icon class="icon-item" style="margin:auto 10px;" type="email" size=18></Icon>
+        <span class="span-item">{{ email }}</span>
+      </FormItem>
+      <FormItem class="form-item" prop="email">
+        <Input type="text" v-model="formItem.email" size="large" placeholder="New email" clearable>
+        <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
+        </Input>
+      </FormItem>
+    </Alert>
+    <Alert type="info">
+      <FormItem class="form-item" prop="newPassword">
+        <Input type="password" v-model="formItem.newPassword" size="large" placeholder="New password" clearable>
+        <Icon class="icon-item" type="android-lock" slot="prepend" size=18></Icon>
+        </Input>
+      </FormItem>
+      <FormItem class="form-item" prop="confirm">
+        <div v-if="formItem.newPassword == ''">
+          <Input type="password" v-model="formItem.confirm" size="large" placeholder="Confirm" disabled>
+          <Icon class="icon-item" type="checkmark" slot="prepend" size=18></Icon>
+          </Input>
+        </div>
+        <div v-else>
+          <Input type="password" v-model="formItem.confirm" size="large" placeholder="Confirm" clearable>
+          <Icon class="icon-item" type="checkmark" slot="prepend" size=18></Icon>
+          </Input>
+        </div>
+      </FormItem>
+    </Alert>
     <FormItem class="form-item-btn">
       <Button class="btn-item" type="primary" @click="handleSubmit('formItem')" style="margin-right:15px;">Submit</Button>
       <Button class="btn-item" @click="handleReset('formItem')" style="margin-left:15px;">Reset</Button>
@@ -53,7 +60,7 @@
   </Form>
   <Modal class="modal-confirm" v-model="modalModify" title="Confirm" :mask-closable="false" :closable="false" :ok-text="okModify" :cancel-text="cancel" :loading="loadingModify" @on-ok="modify()">
     <p>Input the password to check your identity:</p>
-    <Input style="margin-top:20px;" type="password" v-model="password" size="large" placeholder="Confirm" clearable>
+    <Input style="margin-top:20px;" type="password" v-model="password" size="large" placeholder="Password" clearable>
     </Input>
   </Modal>
 </div>
@@ -154,7 +161,7 @@ export default {
       let _this = this
       setTimeout(() => {
         _this.$Notice.success({
-          title: 'Sign up successful.',
+          title: 'Modify successful.',
           desc: ''
         })
         _this.modalModify = false

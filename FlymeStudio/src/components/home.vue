@@ -45,7 +45,7 @@
             </template>
             <MenuItem name="11">Overview</MenuItem>
             <MenuItem name="12">Create</MenuItem>
-            <MenuItem name="13">Modify</MenuItem>
+            <MenuItem name="13">Search</MenuItem>
           </Submenu>
           <Submenu name="20">
             <template slot="title">
@@ -54,7 +54,7 @@
             </template>
             <MenuItem name="21">Overview</MenuItem>
             <MenuItem name="22">Create</MenuItem>
-            <MenuItem name="23">Modify</MenuItem>
+            <MenuItem name="23">Search</MenuItem>
           </Submenu>
         </Menu>
       </Sider>
@@ -82,7 +82,7 @@
             <ProjectCreate v-show="componentId == 12"></ProjectCreate>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <ProjectModify v-show="componentId == 13"></ProjectModify>
+            <ProjectSearch v-show="componentId == 13"></ProjectSearch>
           </transition>
           <transition name="component-fade" mode="out-in">
             <SummaryOverview v-show="componentId == 21"></SummaryOverview>
@@ -91,7 +91,7 @@
             <SummaryCreate v-show="componentId == 22"></SummaryCreate>
           </transition>
           <transition name="component-fade" mode="out-in">
-            <SummaryModify v-show="componentId == 23"></SummaryModify>
+            <SummarySearch v-show="componentId == 23"></SummarySearch>
           </transition>
         </Content>
       </Layout>
@@ -109,10 +109,10 @@ import InformationModify from './information-modify.vue'
 import InformationTeamwork from './information-teamwork.vue'
 import ProjectOverview from './project-overview.vue'
 import ProjectCreate from './project-create.vue'
-import ProjectModify from './project-modify.vue'
+import ProjectSearch from './project-search.vue'
 import SummaryOverview from './summary-overview.vue'
 import SummaryCreate from './summary-create.vue'
-import SummaryModify from './summary-modify.vue'
+import SummarySearch from './summary-search.vue'
 import componentFooter from './component-footer.vue'
 import accountApi from '../api/accountApi'
 import informationApi from '../api/informationApi'
@@ -157,10 +157,10 @@ export default {
     InformationTeamwork,
     ProjectOverview,
     ProjectCreate,
-    ProjectModify,
+    ProjectSearch,
     SummaryOverview,
     SummaryCreate,
-    SummaryModify,
+    SummarySearch,
     componentFooter
   },
   methods: {
@@ -276,5 +276,4 @@ export default {
 .span-item {
   font-size: 16px;
 }
-
 </style>

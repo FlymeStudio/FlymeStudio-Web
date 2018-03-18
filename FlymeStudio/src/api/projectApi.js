@@ -37,7 +37,7 @@ export default {
       withCredentials: true
     })
   },
-  modify (type, date, title, content, plans) {
+  search (type, date, title, content, plans) {
     var data = qs.stringify({
       type: type,
       date: date,
@@ -50,7 +50,7 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: projectApi.modifyUrl(),
+      url: projectApi.searchUrl(),
       data: data,
       withCredentials: true
     })

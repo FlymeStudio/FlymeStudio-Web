@@ -1,4 +1,4 @@
-<template>
+detail<template>
 <Card>
   <div>
     <div class="card-top">
@@ -9,12 +9,12 @@
         <span class="demo-Circle-inner">{{ dataPercent }}%</span>
       </i-circle>
       <span class="card-date">{{ dataSrc.date }}</span>
-      <span class="card-detail" @click="modalPreview = true"><Icon type="more" size="24"></Icon></span>
+      <span class="card-detail" @click="modalDetail = true"><Icon type="more" size="24"></Icon></span>
     </div>
     <p class="card-title" slot="title">{{ dataSrc.title }}</p>
-    <mavon-editor class="card-content" v-model="dataSrc.content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ dataSrc.content }}</mavon-editor>
+    <!-- <mavon-editor class="card-content" v-model="dataSrc.content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ dataSrc.content }}</mavon-editor> -->
   </div>
-  <Modal type="info" class="preview-modal" width="90%" v-model="modalPreview" :closable="false" :mask-closable="false" :ok-text="okText" :cancel-text="cancelText" class-name="vertical-center-modal">
+  <Modal class-name="vertical-center-modal" class="modal-detail" width="90%" :mask-closable="false" v-model="modalDetail" :ok-text="okDetail" :cancel-text="cancelDetail" @on-ok="modalModify = true">
     <div>
       <div class="card-top">
         <i-circle class="card-circle" :size=40 v-if="dataPercent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
@@ -25,12 +25,12 @@
         </i-circle>
         <span class="card-date">{{ dataSrc.date }}</span>
       </div>
-      <p class="preview-title" slot="title">{{ dataSrc.title }}</p>
-      <mavon-editor class="preview-content" v-model="dataSrc.content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ dataSrc.content }}</mavon-editor>
-      <div class="div-projects">
-        <Alert class="alert-projects" v-for="item in dataSrc.plans" :key="item.timestamp">
-          <Progress class="preview-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
-          <Progress class="preview-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
+      <p class="detail-title" slot="title">{{ dataSrc.title }}</p>
+      <mavon-editor class="detail-content" v-model="dataSrc.content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ dataSrc.content }}</mavon-editor>
+      <div class="div-plans">
+        <Alert class="alert-plans" v-for="item in dataSrc.plans" :key="item.timestamp">
+          <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
+          <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
           <div class="div-project">
             <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
             <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
@@ -39,12 +39,20 @@
       </div>
     </div>
   </Modal>
+  <Modal class-name="vertical-center-modal" class="modal-modify" width="90%" :mask-closable="false" v-model="modalModify" :ok-text="okModify" :cancel-text="cancelModify" @on-cancel="modifyCancel" @on-ok="modifyOk">
+    <modifyProject :dataRes="dataSrc"></modifyProject>
+  </Modal>
 </Card>
 </template>
 
 <script>
+import modifyProject from './component-modify-project.vue'
+
 export default{
   name: 'component-card',
+  components: {
+    modifyProject
+  },
   props: [
     'dataRes'
   ],
@@ -54,9 +62,12 @@ export default{
       subfield: false,
       defaultOpen: 'preview',
       toolbarsFlag: false,
-      modalPreview: false,
-      okText: 'Ok',
-      cancelText: 'Close'
+      modalDetail: false,
+      modalModify: false,
+      okDetail: 'Modify',
+      cancelDetail: 'Close',
+      okModify: 'Modify',
+      cancelModify: 'Cancel'
     }
   },
   computed: {
@@ -73,6 +84,14 @@ export default{
     }
   },
   methods: {
+    modifyOk () {
+      this.modalDetail = true
+    },
+    modifyCancel () {
+      this.modalDetail = true
+    },
+    modify () {
+    }
   }
 }
 </script>
@@ -125,11 +144,11 @@ export default{
   z-index   : 5;
 }
 
-.preview-modal {
+.modal-detail {
   z-index: 7;
 }
 
-.preview-title {
+.detail-title {
   width      : 100%;
   text-align : center;
   border-top : 1px solid #ccc;
@@ -139,7 +158,7 @@ export default{
   font-size  : 22px;
 }
 
-.preview-content {
+.detail-content {
   min-width : 100px;
   min-height: 50px;
   width     : auto;
@@ -149,11 +168,11 @@ export default{
   z-index   : 7;
 }
 
-.div-projects {
+.div-plans {
   margin-top: 20px;
 }
 
-.alert-projects {
+.alert-plans {
   padding-right: 5px;
 }
 
@@ -161,7 +180,7 @@ export default{
   display: flex;
 }
 
-.preview-progress {
+.detail-progress {
   font-size    : 16px;
   color        : #1788e8;
   margin-bottom: 10px;
@@ -190,4 +209,9 @@ export default{
     top: 0;
   }
 }
+
+.modal-modify{
+  z-index: 7;
+}
+
 </style>

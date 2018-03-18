@@ -1,6 +1,6 @@
 <template>
 <div id="information-teamwork">
-teamwork
+Function not available
 </div>
 </template>
 

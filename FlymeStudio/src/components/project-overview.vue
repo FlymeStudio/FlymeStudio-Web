@@ -41,28 +41,156 @@
               <Spin fix v-if="spinShow">
                 <Icon class="icon-spin" type="load-c" size=50></Icon>
               </Spin>
+
               <Collapse>
-                <Panel name="Total" size="large">
-                  <span class="data-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
-                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true" :key="data.timestamp">
-                    <componentCard :dataRes="data"></componentCard>
+              <Panel name="Total" size="large">
+                <span class="data-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
+                <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true" :key="data.timestamp">
+                <Card>
+                  <div>
+                    <div class="card-top">
+                      <i-circle v-if="data.percent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
+                        <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
+                      </i-circle>
+                      <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
+                        <span class="demo-Circle-inner">{{ data.percent }}%</span>
+                      </i-circle>
+                      <span class="card-date">{{ data.date }}</span>
+                      <span class="card-detail" @click="modify(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
+                      <span class="card-detail" @click="detail(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                    </div>
+                    <p class="card-title" slot="title">{{ data.title }}</p>
                   </div>
-                </Panel>
+                  </Card>
+                </div>
+              </Panel>
 
-                <Panel name="Done">
-                  <span class="data-count" style="color:#19be6b;"> Done ({{ count.done }})</span>
-                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent == 100" :key="data.timestamp">
-                    <componentCard :dataRes="data"></componentCard>
-                  </div>
-                </Panel>
+              <Panel name="Done">
+                <span class="data-count" style="color:#19be6b;"> Done ({{ count.done }})</span>
+                <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent == 100" :key="data.timestamp">
+                  <Card>
+                    <div>
+                      <div class="card-top">
+                        <i-circle v-if="data.percent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
+                          <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
+                        </i-circle>
+                        <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
+                          <span class="demo-Circle-inner">{{ data.percent }}%</span>
+                        </i-circle>
+                        <span class="card-date">{{ data.date }}</span>
+                        <span class="card-detail" @click="modify(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
+                        <span class="card-detail" @click="detail(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                      </div>
+                      <p class="card-title" slot="title">{{ data.title }}</p>
+                    </div>
+                    </Card>
+                </div>
+              </Panel>
 
-                <Panel name="Doing">
-                  <span class="data-count" style="color:#ed3f14;"> Doing ({{ count.doing }})</span>
-                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent != 100" :key="data.timestamp">
-                    <componentCard :dataRes="data"></componentCard>
-                  </div>
-                </Panel>
+              <Panel name="Doing">
+                <span class="data-count" style="color:#ed3f14;"> Doing ({{ count.doing }})</span>
+                <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent != 100" :key="data.timestamp">
+                  <Card>
+                    <div>
+                      <div class="card-top">
+                        <i-circle v-if="data.percent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
+                          <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
+                        </i-circle>
+                        <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
+                          <span class="demo-Circle-inner">{{ data.percent }}%</span>
+                        </i-circle>
+                        <span class="card-date">{{ data.date }}</span>
+                        <span class="card-detail" @click="modify(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
+                        <span class="card-detail" @click="detail(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                      </div>
+                      <p class="card-title" slot="title">{{ data.title }}</p>
+                    </div>
+                    </Card>
+                </div>
+              </Panel>
               </Collapse>
+
+              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="false" :mask-closable="false" v-model="detailModal">
+                <div>
+                  <div class="card-top">
+                    <i-circle class="card-circle" :size=40 v-if="dataCopy.percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
+                      <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
+                    </i-circle>
+                    <i-circle class="card-circle" :size=40 v-else :percent="dataCopy.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
+                      <span class="demo-Circle-inner">{{ dataCopy.percent }}%</span>
+                    </i-circle>
+                    <span class="card-date">{{ dataCopy.date }}</span>
+                  </div>
+                  <p class="detail-title" slot="title">{{ dataCopy.title }}</p>
+                  <mavon-editor class="detail-content" v-model="dataCopy.content" :subfield="subfieldDetail" :defaultOpen="defaultOpenDetail" :toolbarsFlag="toolbarsFlagDetail">{{ dataCopy.content }}</mavon-editor>
+                  <div class="div-plans">
+                    <Alert class="alert-plans" v-for="item in dataCopy.plans" :key="item.timestamp">
+                      <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
+                      <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
+                      <div class="div-plan">
+                        <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
+                        <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
+                      </div>
+                    </Alert>
+                  </div>
+                </div>
+              </Modal>
+
+              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="false" :mask-closable="false" v-model="modifyModal">
+                <Form ref="formItem" :model="formItem">
+                  <FormItem>
+                    <Icon class="icon-item" type="bookmark" size=18></Icon>
+                    <span class="span-form">Set type</span>
+                  </FormItem>
+                  <FormItem prop="type">
+                    <Select class="select-type" v-model="formItem.type" size="large" placeholder="Type">
+                        <Option v-for="item in types" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                      </select>
+                  </FormItem>
+                  <FormItem>
+                    <Icon class="icon-item" type="calendar" size=18></Icon>
+                    <span class="span-form">Set date</span>
+                  </FormItem>
+                  <FormItem prop="date">
+                    <DatePicker class="datePicker" type="date" size="large" v-model="formItem.date" placeholder="Date" confirm/>
+                  </FormItem>
+                  <FormItem>
+                    <Icon class="icon-item" type="pin" size=18></Icon>
+                    <span class="span-form">Set title</span>
+                  </FormItem>
+                  <FormItem prop="title">
+                    <Input class="input-title" type="text" v-model="formItem.title" placeholder="Title" clearable size="large" />
+                  </FormItem>
+                  <FormItem>
+                    <Icon class="icon-item" type="social-markdown" size=18></Icon>
+                    <span class="span-form">Set content</span>
+                  </FormItem>
+                  <FormItem prop="content">
+                    <mavon-editor class="mavonEditor" v-model="formItem.content" :subfield="subfieldModify" :defaultOpen="defaultOpenModify" :placeholder="placeholder" :toolbarsFlag="toolbarsFlagModify" :toolbars="toolbarsModify"></mavon-editor>
+                  </FormItem>
+                  <FormItem>
+                    <Icon class="icon-item" type="flag" size=18></Icon>
+                    <span class="span-form">Set plans</span>
+                  </FormItem>
+                  <FormItem>
+                    <Alert class="alert-projects" type="success" v-for="item in formItem.plans" :key="item.timestamp">
+                      <div class="div-project">
+                        <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
+                        <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
+                        <Button class="btn-edit" type="ghost" shape="circle" icon="minus" @click="deletePlan(item.timestamp)"></Button>
+                      </div>
+                    </Alert>
+                    <Alert class="alert-projects">
+                      <div class="div-project">
+                        <Input class="edit-tag" type="text" clearable placeholder="Tag" v-model="editTag"></Input>
+                        <Input class="edit-goal" type="text" clearable placeholder="Goal" v-model="editGoal"></Input>
+                        <Button class="btn-edit" type="ghost" shape="circle" icon="plus" @click="addPlan()"></Button>
+                      </div>
+                    </Alert>
+                  </FormItem>
+                </Form>
+              </Modal>
+
             </Content>
           </Layout>
         </Content>
@@ -78,7 +206,6 @@
 import topNav from './component-topnav.vue'
 import leftNav from './component-leftnav.vue'
 import componentFooter from './component-footer.vue'
-import componentCard from './component-card.vue'
 
 export default{
   name: 'project-overview',
@@ -230,14 +357,86 @@ export default{
           plans: []
         }
       ],
-      currentType: '0'
+      currentType: '0',
+      spinShow: false,
+      detailModal: false,
+      dataCopy: {},
+      subfieldDetail: false,
+      defaultOpenDetail: 'preview',
+      toolbarsFlagDetail: false,
+      modifyModal: false,
+      types: [
+        {
+          value: '0',
+          label: 'Yearly'
+        },
+        {
+          value: '1',
+          label: 'Monthly'
+        },
+        {
+          value: '2',
+          label: 'Weekly'
+        },
+        {
+          value: '3',
+          label: 'Daily'
+        }
+      ],
+      formItem: {
+        type: '',
+        date: '',
+        title: '',
+        content: '',
+        plans: []
+      },
+      subfieldModify: true,
+      defaultOpenModify: '',
+      placeholder: 'Content',
+      toolbarsFlagModify: true,
+      toolbarsModify: {
+        bold: true, // 粗体
+        italic: true, // 斜体
+        header: true, // 标题
+        underline: true, // 下划线
+        strikethrough: true, // 中划线
+        mark: true, // 标记
+        superscript: true, // 上角标
+        subscript: true, // 下角标
+        quote: true, // 引用
+        ol: true, // 有序列表
+        ul: true, // 无序列表
+        link: true, // 链接
+        imagelink: true, // 图片链接
+        code: true, // code
+        table: true, // 表格
+        fullscreen: true, // 全屏编辑
+        readmodel: true, // 沉浸式阅读
+        htmlcode: true, // 展示html源码
+        help: true, // 帮助
+        /* 1.3.5 */
+        undo: true, // 上一步
+        redo: true, // 下一步
+        trash: true, // 清空
+        save: false, // 保存（触发events中的save事件）
+        /* 1.4.2 */
+        navigation: true, // 导航目录
+        /* 2.1.8 */
+        alignleft: true, // 左对齐
+        aligncenter: true, // 居中
+        alignright: true, // 右对齐
+        /* 2.2.1 */
+        subfield: true, // 单双栏模式
+        preview: true // 预览
+      },
+      editTag: '',
+      editGoal: ''
     }
   },
   components: {
     topNav,
     leftNav,
-    componentFooter,
-    componentCard
+    componentFooter
   },
   methods: {
     computePercent () {
@@ -288,6 +487,42 @@ export default{
         done: _done,
         doing: _doing
       }
+    },
+    modify (timestamp) {
+      for (var i = 0; i < this.datas.length; i++) {
+        if (this.datas[i].timestamp === timestamp) {
+          this.formItem = JSON.parse(JSON.stringify(this.datas[i]))
+          break
+        }
+      }
+      this.modifyModal = true
+    },
+    detail (timestamp) {
+      for (var i = 0; i < this.datas.length; i++) {
+        if (this.datas[i].timestamp === timestamp) {
+          this.dataCopy = JSON.parse(JSON.stringify(this.datas[i]))
+          break
+        }
+      }
+      this.detailModal = true
+    },
+    deletePlan (timestamp) {
+      for (var i = 0; i < this.formItem.plans.length; i++) {
+        if (this.formItem.plans[i].timestamp === timestamp) {
+          this.formItem.plans.splice(i, 1)
+          break
+        }
+      }
+    },
+    addPlan () {
+      var plan = {
+        timestamp: new Date().getTime(),
+        tag: this.editTag,
+        goal: this.editGoal
+      }
+      this.formItem.plans.push(plan)
+      this.editTag = ''
+      this.editGoal = ''
     }
   }
 }
@@ -318,53 +553,187 @@ export default{
   border-radius   : 5px;
 }
 
-.data-top {
+.card-top {
   width      : 100%;
   align-items: center;
-  margin     : auto 0;
+  margin-bottom     : 10px;
+  padding-bottom: 10px;
   display    : flex;
   display    : -webkit-flex;
+  border-bottom : 1px solid #ccc;
 }
 
-.data-circle {
-  font-size  : 14px;
+.card-circle {
+  font-size  : 15px;
   font-weight: bold;
   display    : inline-block;
 }
 
-.data-date {
+.card-date {
   width      : auto;
   margin-left: 20px;
   font-size  : 16px;
 }
 
-.data-detail {
+.card-detail {
+  width: auto;
   float   : right;
   position: relative;
   margin  : auto 0 auto auto;
   cursor  : pointer;
 }
 
-.data-title {
+.card-title {
   width      : 100%;
   text-align : center;
-  border-top : 1px solid #ccc;
   margin-top : 5px;
   padding-top: 5px;
   font-weight: bold;
   font-size  : 18px;
 }
 
-.data-content {
+.card-content {
   min-width : 100px;
   min-height: 100px;
   width     : auto;
-  height    : 200px;
+  height    : 120px;
   margin    : 0;
-  display   : flex;
-  display   : -webkit-flex;
   font-size : 12px;
-  overflow  : hidden;
   z-index   : 5;
 }
+
+.modal {
+  z-index: 7;
+}
+
+.detail-title {
+  width      : 100%;
+  text-align : center;
+  font-weight: bold;
+  font-size  : 22px;
+}
+
+.detail-content {
+  min-width : 100px;
+  min-height: 50px;
+  width     : auto;
+  height    : auto;
+  margin-top: 10px;
+  font-size : 16px;
+  z-index   : 7;
+}
+
+.div-plans {
+  margin-top: 20px;
+}
+
+.alert-plans {
+  padding-right: 5px;
+}
+
+.div-plan {
+  display: flex;
+}
+
+.detail-progress {
+  font-size    : 16px;
+  color        : #1788e8;
+  margin-bottom: 10px;
+  margin-right : -40px;
+  display      : block;
+}
+
+.tag-tag {
+  width  : 100px;
+  display: inline-block;
+}
+
+.input-goal {
+  width  : 100%;
+  flex   : 1;
+  margin : auto 10px auto 5px;
+  display: inline-block;
+}
+
+.vertical-center-modal {
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+
+  .ivu-modal {
+    top: 0;
+  }
+}
+.icon-item {
+  width     : 18px;
+  text-align: center;
+}
+
+.span-form {
+  margin-left: 10px;
+  font-size  : 16px;
+}
+
+.select-type {
+  width       : 160px;
+  margin-right: 20px;
+  z-index     : 7;
+  display     : block;
+}
+
+.datePicker {
+  width  : 160px;
+  z-index: 7;
+  display: block;
+}
+
+.input-title {
+  width  : 240px;
+  display: block;
+}
+
+.mavonEditor {
+  height : 400px;
+  width  : 100%;
+  z-index: 5;
+}
+
+.alert-projects {
+  padding-right: 16px;
+}
+
+.div-project {
+  display: flex;
+}
+
+.tag-tag {
+  width  : 100px;
+  display: inline-block;
+}
+
+.input-goal {
+  width  : 100%;
+  flex   : 1;
+  margin : auto 20px auto 5px;
+  display: inline-block;
+}
+
+.btn-edit {
+  float  : right;
+  display: inline-block;
+}
+
+.edit-tag {
+  width       : 100px;
+  margin-right: 4px;
+  display     : inline-block;
+}
+
+.edit-goal {
+  width  : 100%;
+  flex   : 1;
+  margin : auto 20px auto 5px;
+  display: inline-block;
+}
+
 </style>

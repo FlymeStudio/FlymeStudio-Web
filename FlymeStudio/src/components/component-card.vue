@@ -1,28 +1,27 @@
-detail<template>
+<template>
 <Card>
   <div>
-    <p class="card-date">{{ dataSrc.timestamp }}</p>
-    <div class="card-center">
-      <i-circle v-if="dataPercent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
-        <Icon type="ios-checkmark-empty" size=40 color="#5cb85c"></Icon>
+    <div class="card-top">
+      <i-circle v-if="dataPercent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
+        <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
       </i-circle>
-      <i-circle v-else class="card-circle" :size=40 :percent="dataPercent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
+      <i-circle v-else class="card-circle" :size=40 :percent="dataPercent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
         <span class="demo-Circle-inner">{{ dataPercent }}%</span>
       </i-circle>
       <span class="card-date">{{ dataSrc.date }}</span>
+      <span class="card-detail" @click="modalModify = true"><Icon type="compose" size="24"></Icon></span>
       <span class="card-detail" @click="modalDetail = true"><Icon type="android-open" size="24"></Icon></span>
     </div>
     <p class="card-title" slot="title">{{ dataSrc.title }}</p>
     <!-- <mavon-editor class="card-content" v-model="dataSrc.content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ dataSrc.content }}</mavon-editor> -->
   </div>
-  <Modal class-name="vertical-center-modal" class="modal-detail" width="90%" :mask-closable="false" v-model="modalDetail" :ok-text="okDetail" :cancel-text="cancelDetail" @on-ok="modifyOk">
+  <Modal class-name="vertical-center-modal" class="modal-detail" width="90%" :mask-closable="false" v-model="modalDetail" :ok-text="okDetail" :cancel-text="cancelDetail">
     <div>
-      <p class="card-date">{{ dataSrc.timestamp }}</p>
-      <div class="card-center">
-        <i-circle class="card-circle" :size=40 v-if="dataPercent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
-          <Icon type="ios-checkmark-empty" size=40 color="#5cb85c"></Icon>
+      <div class="card-top">
+        <i-circle class="card-circle" :size=40 v-if="dataPercent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
+          <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
         </i-circle>
-        <i-circle class="card-circle" :size=40 v-else :percent="dataPercent" stroke-color="#2d8cf0" :stroke-width="8" :trail-width="8" style="color:#ed3f14;">
+        <i-circle class="card-circle" :size=40 v-else :percent="dataPercent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
           <span class="demo-Circle-inner">{{ dataPercent }}%</span>
         </i-circle>
         <span class="card-date">{{ dataSrc.date }}</span>
@@ -48,7 +47,9 @@ detail<template>
 export default{
   name: 'component-card',
   props: [
-    'dataRes'
+    'dataRes',
+    'modalDetail',
+    'modalModify'
   ],
   data () {
     return {
@@ -56,8 +57,9 @@ export default{
       subfield: false,
       defaultOpen: 'preview',
       toolbarsFlag: false,
-      modalDetail: false,
-      okDetail: 'Modify',
+      modalDetailShow: this.modalDetail,
+      modalModifyShow: this.modalModify,
+      okDetail: 'Ok',
       cancelDetail: 'Close'
     }
   },
@@ -75,27 +77,23 @@ export default{
     }
   },
   methods: {
-    modifyOk () {
-      this.$router.push({path: '/project/modify', params: {dataSrc: this.dataSrc}})
-    }
   }
 }
 </script>
 
 <style scoped>
-.card-center {
+.card-top {
   width      : 100%;
   align-items: center;
-  margin     : 10px 0;
-  padding: 10px 0;
+  margin-bottom     : 10px;
+  padding-bottom: 10px;
   display    : flex;
   display    : -webkit-flex;
-  border-top : 1px solid #ccc;
   border-bottom : 1px solid #ccc;
 }
 
 .card-circle {
-  font-size  : 14px;
+  font-size  : 15px;
   font-weight: bold;
   display    : inline-block;
 }
@@ -107,6 +105,7 @@ export default{
 }
 
 .card-detail {
+  width: auto;
   float   : right;
   position: relative;
   margin  : auto 0 auto auto;

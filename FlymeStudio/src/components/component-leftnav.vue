@@ -18,7 +18,6 @@
       <MenuItem name="11">Overview</MenuItem>
       <MenuItem name="12">Create</MenuItem>
       <MenuItem name="13">Search</MenuItem>
-      <MenuItem name="14">Modify</MenuItem>
     </Submenu>
     <Submenu name="20">
       <template slot="title">
@@ -28,7 +27,6 @@
       <MenuItem name="21">Overview</MenuItem>
       <MenuItem name="22">Create</MenuItem>
       <MenuItem name="23">Search</MenuItem>
-      <MenuItem name="24">Modify</MenuItem>
     </Submenu>
   </Menu>
 </div>
@@ -69,9 +67,6 @@ export default {
         case '13':
           this.$router.push('/project/search')
           break
-        case '14':
-          this.$router.push('/project/modify')
-          break
         case '21':
           this.$router.push('/summary/overview')
           break
@@ -80,9 +75,6 @@ export default {
           break
         case '23':
           this.$router.push('/summary/search')
-          break
-        case '24':
-          this.$router.push('/summary/modify')
           break
         default:
           this.$router.push('/home')

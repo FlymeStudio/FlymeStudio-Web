@@ -10,11 +10,9 @@ import informationModify from '@/components/information-modify'
 import projectOverview from '@/components/project-overview'
 import projectCreate from '@/components/project-create'
 import projectSearch from '@/components/project-search'
-import projectModify from '@/components/project-modify'
 import summaryOverview from '@/components/summary-overview'
 import summaryCreate from '@/components/summary-create'
 import summarySearch from '@/components/summary-search'
-import summaryModify from '@/components/summary-modify'
 
 Vue.use(Router)
 
@@ -76,11 +74,6 @@ export default new Router({
       component: projectSearch
     },
     {
-      path: '/project/modify',
-      name: 'projectModify',
-      component: projectModify
-    },
-    {
       path: '/summary/overview',
       name: 'summaryOverview',
       component: summaryOverview
@@ -94,11 +87,6 @@ export default new Router({
       path: '/summary/search',
       name: 'summarySearch',
       component: summarySearch
-    },
-    {
-      path: '/summary/modify',
-      name: 'summaryModify',
-      component: summaryModify
     }
   ]
 })

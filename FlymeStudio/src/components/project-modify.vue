@@ -1,170 +1,175 @@
 <template>
-  <div class="layout">
+<div class="layout">
+  <Layout>
+    <Header>
+      <topNav></topNav>
+    </Header>
     <Layout>
-      <Header>
-        <Menu class="menu" mode="horizontal" theme="dark" @on-select="clickTopNav">
-          <div class="layout-logo" @click="clickFlyme"></div>
-          <div class="layout-title">Flyme Studio</div>
-          <div class="layout-nav">
-            <MenuItem name="1">
-            <Icon class="item-icon" type="person" size=18></Icon>
-            <span v-if="info.messages.length == 0" class="span-item">
-              {{ info.name }}
-            </span>
-            <span v-else class="span-item">
-              <Badge dot>{{ info.name }}</Badge>
-            </span>
-            </MenuItem>
-            <MenuItem name="2">
-            <Icon class="item-icon" type="help" size=18></Icon>
-            <span class="span-item">Help</span>
-            </MenuItem>
-            <MenuItem name="3">
-            <Icon class="item-icon" type="log-out" size=18></Icon>
-            <span class="span-item">Sign out</span>
-            </MenuItem>
-          </div>
-        </Menu>
-      </Header>
-      <Layout>
-        <Spin style="z-index:10;" fix v-if="spinShow">
-          <Icon class="icon-spin" type="load-c" size=50></Icon>
-        </Spin>
+      <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
+        <leftNav activeName="14"></leftNav>
+      </Sider>
+      <Layout :style="{padding: '0 24px'}">
+        <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
+          <Spin style="z-index:10;" fix v-if="spinShow">
+            <Icon class="icon-spin" type="load-c" size=50></Icon>
+          </Spin>
 
-        <div class="div-row">
-          <Icon class="icon-item" type="bookmark" size=18></Icon>
-          <span class="span-item">Modify type</span>
-        </div>
-        <div class="div-row">
-          <div class="div-col">
-            <Alert class="alert-item">
-              <Input class="select-type" type="text" placeholder="Title" readonly size="large" v-model="defaultValue.type" />
-            </Alert>
+          <div class="div-row title-row">
+            <Icon class="icon-item" type="archive" size=18></Icon>
+            <span class="span-item">Import project</span>
           </div>
-          <div class="div-col">
-            <Alert class="alert-item" type="error">
-              <Select class="select-type" v-model="modifyValue.type" size="large" placeholder="Type">
-              <Option v-for="item in types" :value="item.value" :key="item.value">{{ item.label }}</Option>
-            </select>
-            </Alert>
+          <div class="div-row">
+            <div class="div-col">
+              <Alert class="alert-item">
+                <Input class="select-type" type="text" placeholder="SearchId" size="large" v-model="searchId" />
+              </Alert>
+            </div>
+            <div class="div-col">
+              <Alert class="alert-item" type="error">
+                <Button type="primary" @click="importProject()" size="large" :loading="loadingImport">Import</Button>
+              </Alert>
+            </div>
           </div>
-        </div>
 
-        <div class="div-row">
-          <Icon class="icon-item" type="calendar" size=18></Icon>
-          <span class="span-item">Modify date</span>
-        </div>
-        <div class="div-row">
-          <div class="div-col">
-            <Alert class="alert-item">
-              <DatePicker class="datePicker" type="date" size="large" v-model="defaultValue.date" format="yyyy-MM-dd" readonly/>
-            </Alert>
+          <div class="div-row title-row">
+            <Icon class="icon-item" type="bookmark" size=18></Icon>
+            <span class="span-item">Modify type</span>
           </div>
-          <div class="div-col">
-            <Alert class="alert-item" type="error">
-              <DatePicker class="datePicker" type="date" size="large" v-model="modifyValue.date" placeholder="Date" confirm/>
-            </Alert>
+          <div class="div-row">
+            <div class="div-col">
+              <Alert class="alert-item">
+                <Input class="select-type" type="text" placeholder="Title" readonly size="large" v-model="defaultValue.type" />
+              </Alert>
+            </div>
+            <div class="div-col">
+              <Alert class="alert-item" type="error">
+                <Select class="select-type" v-model="modifyValue.type" size="large" placeholder="Type" @change>
+                  <Option v-for="item in types" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </select>
+              </Alert>
+            </div>
           </div>
-        </div>
 
-        <div class="div-row">
-          <Icon class="icon-item" type="pin" size=18></Icon>
-          <span class="span-item">Modify title</span>
-        </div>
-        <div class="div-row">
-          <div class="div-col">
-            <Alert class="alert-item">
-              <Input class="input-title" type="text" v-model="defaultValue.title" placeholder="Title" readonly size="large" />
-            </Alert>
+          <div class="div-row title-row">
+            <Icon class="icon-item" type="calendar" size=18></Icon>
+            <span class="span-item">Modify date</span>
           </div>
-          <div class="div-col">
-            <Alert class="alert-item" type="error">
-              <Input class="input-title" type="text" v-model="modifyValue.title" placeholder="Title" clearable size="large" />
-            </Alert>
+          <div class="div-row">
+            <div class="div-col">
+              <Alert class="alert-item">
+                <DatePicker class="datePicker" type="date" size="large" v-model="defaultValue.date" format="yyyy-MM-dd" readonly/>
+              </Alert>
+            </div>
+            <div class="div-col">
+              <Alert class="alert-item" type="error">
+                <DatePicker class="datePicker" type="date" size="large" v-model="modifyValue.date" placeholder="Date" confirm/>
+              </Alert>
+            </div>
           </div>
-        </div>
 
-        <div class="div-row">
-          <Icon class="icon-item" type="social-markdown" size=18></Icon>
-          <span class="span-item">Modify content</span>
-        </div>
-        <div class="div-row">
-          <div class="div-col">
-            <Alert class="alert-item">
-              <mavon-editor class="mavonEditor" v-model="defaultValue.content" :subfield="subfieldDefault" :defaultOpen="defaultOpenDefault" :placeholder="placeholderDefault" :toolbarsFlag="toolbarsFlagDefault" :toolbars="toolbarsDefault" :editable="false"></mavon-editor>
-            </Alert>
+          <div class="div-row title-row">
+            <Icon class="icon-item" type="pin" size=18></Icon>
+            <span class="span-item">Modify title</span>
           </div>
-          <div class="div-col">
-            <Alert class="alert-item" type="error">
-              <mavon-editor class="mavonEditor" v-model="modifyValue.content" :subfield="subfieldModify" :defaultOpen="defaultOpenModify" :placeholder="placeholderModify" :toolbarsFlag="toolbarsFlagModify" :toolbars="toolbarsModify"></mavon-editor>
-            </Alert>
+          <div class="div-row">
+            <div class="div-col">
+              <Alert class="alert-item">
+                <Input class="input-title" type="text" v-model="defaultValue.title" placeholder="Title" readonly size="large" />
+              </Alert>
+            </div>
+            <div class="div-col">
+              <Alert class="alert-item" type="error">
+                <Input class="input-title" type="text" v-model="modifyValue.title" placeholder="Title" clearable size="large" />
+              </Alert>
+            </div>
           </div>
-        </div>
 
-        <div class="div-row">
-          <Icon class="icon-item" type="flag" size=18></Icon>
-          <span class="span-item">Modify plans</span>
-        </div>
-        <div class="div-row">
-          <div class="div-col">
-            <Alert class="alert-plans" type="info" v-for="item in defaultValue.plans" :key="item.timestamp">
-              <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
-              <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
-              <div class="div-plan">
-                <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
-                <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
-              </div>
-            </Alert>
+          <div class="div-row title-row">
+            <Icon class="icon-item" type="social-markdown" size=18></Icon>
+            <span class="span-item">Modify content</span>
           </div>
-          <div class="div-col">
-            <Alert class="alert-plans" type="error" v-for="item in modifyValue.plans" :key="item.timestamp">
-              <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
-              <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
-              <div class="div-plan">
-                <Input class="tag-tag" type="text" v-model="item.tag"></Input>
-                <Input class="input-goal" type="text" v-model="item.goal"></Input>
-                <Button class="btn-edit" type="ghost" shape="circle" icon="minus" @click="deletePlan(item.timestamp)"></Button>
-              </div>
-            </Alert>
-            <Alert class="alert-plans" type="success">
-              <div class="div-plan">
-                <Input class="edit-tag" type="text" clearable placeholder="Tag" v-model="editTag"></Input>
-                <Input class="edit-goal" type="text" clearable placeholder="Goal" v-model="editGoal"></Input>
-                <Button class="btn-edit" type="ghost" shape="circle" icon="plus" @click="addPlan()"></Button>
-              </div>
-            </Alert>
+          <div class="div-row">
+            <div class="div-col">
+              <Alert class="alert-item">
+                <mavon-editor class="mavonEditor" v-model="defaultValue.content" :subfield="subfieldDefault" :defaultOpen="defaultOpenDefault" :placeholder="placeholderDefault" :toolbarsFlag="toolbarsFlagDefault" :toolbars="toolbarsDefault" :editable="false"></mavon-editor>
+              </Alert>
+            </div>
+            <div class="div-col">
+              <Alert class="alert-item" type="error">
+                <mavon-editor class="mavonEditor" v-model="modifyValue.content" :subfield="subfieldModify" :defaultOpen="defaultOpenModify" :placeholder="placeholderModify" :toolbarsFlag="toolbarsFlagModify" :toolbars="toolbarsModify"></mavon-editor>
+              </Alert>
+            </div>
           </div>
-        </div>
 
-        <div class="div-row">
-          <div class="div-btn">
-            <Button class="btn-item" @click="reset()" size="large">Reset</Button>
+          <div class="div-row title-row">
+            <Icon class="icon-item" type="flag" size=18></Icon>
+            <span class="span-item">Modify plans</span>
           </div>
-        </div>
+          <div class="div-row">
+            <div class="div-col">
+              <Alert class="alert-plans" type="info" v-for="item in defaultValue.plans" :key="item.timestamp">
+                <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
+                <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
+                <div class="div-plan">
+                  <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
+                  <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
+                </div>
+              </Alert>
+            </div>
+            <div class="div-col">
+              <Alert class="alert-plans" type="error" v-for="item in modifyValue.plans" :key="item.timestamp">
+                <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
+                <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
+                <div class="div-plan">
+                  <Input class="tag-tag" type="text" v-model="item.tag"></Input>
+                  <Input class="input-goal" type="text" v-model="item.goal"></Input>
+                  <Button class="btn-edit" type="ghost" shape="circle" icon="minus" @click="deletePlan(item.timestamp)"></Button>
+                </div>
+              </Alert>
+              <Alert class="alert-plans" type="success">
+                <div class="div-plan">
+                  <Input class="edit-tag" type="text" clearable placeholder="Tag" v-model="editTag"></Input>
+                  <Input class="edit-goal" type="text" clearable placeholder="Goal" v-model="editGoal"></Input>
+                  <Button class="btn-edit" type="ghost" shape="circle" icon="plus" @click="addPlan()"></Button>
+                </div>
+              </Alert>
+            </div>
+          </div>
+
+          <div class="div-row">
+            <div class="div-col">
+            </div>
+            <div class="div-col">
+              <Button class="btn-item" @click="reset()" size="large">Reset</Button>
+              <Button type="primary" class="btn-item" @click="modify()" size="large">Modify</Button>
+            </div>
+          </div>
+        </Content>
       </Layout>
-      <componentFooter></componentFooter>
-      <BackTop></BackTop>
     </Layout>
-  </div>
+    <componentFooter></componentFooter>
+    <BackTop></BackTop>
+  </Layout>
+</div>
 </template>
 
 <script type="text/javascript">
+import topNav from './component-topnav.vue'
+import leftNav from './component-leftnav.vue'
 import componentFooter from './component-footer.vue'
-import accountApi from '../api/accountApi'
-// import informationApi from '../api/informationApi'
 import projectApi from '../api/projectApi'
 
 export default{
   name: 'project-modify',
   created () {
     this.getInfo()
-    this.initData()
   },
   data () {
     return {
+      searchId: 0,
       info: {
-        tel: '13608089849',
-        name: 'user',
+        name: '',
+        tel: '',
         email: '',
         messages: [
           {
@@ -181,22 +186,21 @@ export default{
           }
         ]
       },
-      dataSrc: {},
       types: [
         {
-          value: '0',
+          value: '1',
           label: 'Yearly'
         },
         {
-          value: '1',
+          value: '2',
           label: 'Monthly'
         },
         {
-          value: '2',
+          value: '3',
           label: 'Weekly'
         },
         {
-          value: '3',
+          value: '4',
           label: 'Daily'
         }
       ],
@@ -266,106 +270,74 @@ export default{
         subfield: true, // 单双栏模式
         preview: true // 预览
       },
+      loadingImport: false,
       editTag: '',
       editGoal: '',
       spinShow: false
     }
   },
   components: {
+    topNav,
+    leftNav,
     componentFooter
   },
   methods: {
     getInfo () {
-      this.info.name = '曾宇' // test
+      this.info.tel = '13608089849'
       this.info.email = '1213814232@qq.com' // test
     },
-    clickTopNav: function (name) {
-      switch (name) {
-        case '1':
-          this.componentId = '1'
-          break
-        case '2':
-          this.clickHelp()
-          break
-        case '3':
-          this.clickSignOut()
-          break
-        default:
-      }
-    },
-    clickFlyme: function () {
-      window.open('https://www.flyme.cn/')
-    },
-    clickHelp: function () {
-      window.open('https://github.com/FlymeStudio/FlymeStudio-Doc/blob/master/introduce.md')
-    },
-    clickSignOut: function () {
-      this.spinShow = true
+    importProject () {
+      this.loadingImport = true
       let _this = this
       setTimeout(() => {
-        _this.spinShow = false
-        _this.$Message.success('Sign out successful.')
-        _this.$router.push('/signIn')
+        _this.defaultValue = {
+          type: '1',
+          date: '2018-3-19',
+          title: '测试标题',
+          content: '测试内容',
+          plans: [
+            {
+              timestamp: 13125125161,
+              tag: '测试tag1',
+              goal: '测试goal1',
+              percent: 80
+
+            },
+            {
+              timestamp: 13125125172,
+              tag: '测试tag2',
+              goal: '测试goal2',
+              percent: 100
+            }
+          ]
+        }
+        _this.modifyValue = JSON.parse(JSON.stringify(_this.defaultValue))
+        _this.defaultValue.type = _this.parseType(_this.defaultValue.type)
+        _this.$Notice.success({
+          title: 'Import successful.',
+          desc: ''
+        })
+        _this.loadingImport = false
       }, 1000)
-      accountApi.signOut(this.info.tel).then(function (response) {
-        setTimeout(() => {
-          _this.spinShow = false
-          if (response.data.result === true) {
-            _this.$Message.success('Sign out successful.')
-            _this.$router.push('/signIn')
-          } else {
-            _this.$Message.error('Sign out failed.')
-          }
-        }, 1000)
+      projectApi.importProject(this.searchId, this.info.tel, this.info.email).then(function (response) {
+        if (response.data.result === true) {
+          _this.defaultValue = response.data.defaultValue
+          _this.$Notice.success({
+            title: 'Import successful.',
+            desc: ''
+          })
+          _this.loadingImport = false
+        } else {
+          _this.$Notice.error({
+            title: 'Import failed.',
+            desc: ''
+          })
+          _this.loadingImport = false
+        }
       })
     },
-    clickLeftNav: function (name) {
-      switch (name) {
-        case '1':
-          this.$router.push('/information/overview')
-          break
-        case '2':
-          this.$router.push('/information/teamwork')
-          break
-        case '3':
-          this.$router.push('/information/modify')
-          break
-        case '11':
-          this.$router.push('/project/overview')
-          break
-        case '12':
-          this.$router.push('/project/create')
-          break
-        case '13':
-          this.$router.push('/project/search')
-          break
-        case '21':
-          this.$router.push('/summary/overview')
-          break
-        case '22':
-          this.$router.push('/summary/create')
-          break
-        case '23':
-          this.$router.push('/summary/search')
-          break
-        default:
-          this.$router.push('/home')
-      }
-    },
-    initData () {
-      this.dataSrc = this.$route.params.dataSrc
-      console.log('param: ' + this.$route.params.dataSrc)
-      this.defaultValue.type = this.parseType()
-      this.defaultValue.date = this.dataSrc.date
-      this.defaultValue.title = this.dataSrc.title
-      this.defaultValue.content = this.dataSrc.content
-      this.defaultValue.plans = this.dataSrc.plans
-      for (var i = 0; i < this.defaultValue.plans.length; i++) {
-        this.modifyValue.plans.push(this.defaultValue.plans[i])
-      }
-    },
-    parseType () {
-      switch (this.dataSrc.type) {
+    parseType (type) {
+      switch (type) {
         case '1':
           return 'Yearly'
         case '2':
@@ -434,15 +406,6 @@ export default{
 </script>
 
 <style scoped>
-.menu {
-  z-index: 5;
-}
-
-.span-menu-item{
-  font-weight: bold;
-  font-size: 16px;
-}
-
 .span-item {
   font-size: 16px;
 }
@@ -452,10 +415,14 @@ export default{
   margin-bottom: 10px;
 }
 
+.title-row {
+  align-items  : center;
+}
+
 .div-col {
-  width  : 50%;
-  display: inline-block;
-  margin : 5px 10px;
+  width     : 50%;
+  display   : inline-block;
+  margin    : 5px 10px;
 }
 
 .icon-item {
@@ -494,6 +461,7 @@ export default{
 .mavonEditor {
   height : 600px;
   width  : 100%;
+  min-width: 50px;
   z-index: 5;
 }
 
@@ -550,13 +518,7 @@ export default{
 }
 
 .btn-item {
-  width : 100px;
-  margin: 0 10px;
-}
-
-.div-btn {
-  width : auto;
-  margin: 20px 0 20px auto;
-  float : right;
+  width     : 100px;
+  margin:30px 10px;
 }
 </style>

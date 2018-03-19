@@ -1,163 +1,93 @@
 <template>
-  <div class="layout">
+<div class="layout">
+  <Layout>
+    <Header>
+      <topNav></topNav>
+    </Header>
     <Layout>
-      <Header>
-        <Menu class="menu" mode="horizontal" theme="dark" @on-select="clickTopNav">
-          <div class="layout-logo" @click="clickFlyme"></div>
-          <div class="layout-title">Flyme Studio</div>
-          <div class="layout-nav">
-            <MenuItem name="1">
-            <Icon class="item-icon" type="person" size=18></Icon>
-            <span v-if="info.messages.length == 0" class="span-item">
-              {{ info.name }}
-            </span>
-            <span v-else class="span-item">
-              <Badge dot>{{ info.name }}</Badge>
-            </span>
+      <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
+        <leftNav activeName="11"></leftNav>
+      </Sider>
+      <Layout :style="{padding: '0 24px'}">
+        <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
+          <Spin style="z-index:10;" fix v-if="spinShow">
+            <Icon class="icon-spin" type="load-c" size=50></Icon>
+          </Spin>
+
+          <Menu class="menu" mode="horizontal" theme="light" @on-select="clickTag" active-name="0">
+            <MenuItem class="menu-item" name="0">
+            <Icon type="bookmark" size=18></Icon>
+            All
             </MenuItem>
-            <MenuItem name="2">
-            <Icon class="item-icon" type="help" size=18></Icon>
-            <span class="span-item">Help</span>
+            <MenuItem class="menu-item" name="1">
+            <Icon type="bookmark" size=18></Icon>
+            Yearly
             </MenuItem>
-            <MenuItem name="3">
-            <Icon class="item-icon" type="log-out" size=18></Icon>
-            <span class="span-item">Sign out</span>
+            <MenuItem class="menu-item" name="2">
+            <Icon type="bookmark" size=18></Icon>
+            Monthly
             </MenuItem>
-          </div>
-        </Menu>
-      </Header>
-      <Layout>
-        <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
-          <Menu class="menu" theme="light" width="auto" @on-select="clickLeftNav" active-name="11" :open-names="['0', '10', '20']">
-            <Submenu name="0">
-              <template slot="title">
-                <Icon type="person" size=18></Icon>
-                  <span class="span-menu-item">Information</span>
-              </template>
-              <MenuItem name="1">Overview</MenuItem>
-              <MenuItem name="2">Teamwork</MenuItem>
-              <MenuItem name="3">Modify</MenuItem>
-            </Submenu>
-            <Submenu name="10">
-              <template slot="title">
-                <Icon type="clipboard" size=18></Icon>
-                  <span class="span-menu-item">Project</span>
-              </template>
-              <MenuItem name="11">Overview</MenuItem>
-              <MenuItem name="12">Create</MenuItem>
-              <MenuItem name="13">Search</MenuItem>
-            </Submenu>
-            <Submenu name="20">
-              <template slot="title">
-                <Icon type="document-text" size=18></Icon>
-                  <span class="span-menu-item">Summary</span>
-              </template>
-              <MenuItem name="21">Overview</MenuItem>
-              <MenuItem name="22">Create</MenuItem>
-              <MenuItem name="23">Search</MenuItem>
-            </Submenu>
+            <MenuItem class="menu-item" name="3">
+            <Icon type="bookmark" size=18></Icon>
+            Weekly
+            </MenuItem>
+            <MenuItem class="menu-item" name="4">
+            <Icon type="bookmark" size=18></Icon>
+            Daily
+            </MenuItem>
           </Menu>
-        </Sider>
-        <Layout :style="{padding: '0 24px'}">
-          <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
-            <Spin style="z-index:10;" fix v-if="spinShow">
-              <Icon class="icon-spin" type="load-c" size=50></Icon>
-            </Spin>
+          <Layout>
+            <Content :style="{padding: '15px 0', minHeight: '280px', background: '#fff'}">
+              <Spin fix v-if="spinShow">
+                <Icon class="icon-spin" type="load-c" size=50></Icon>
+              </Spin>
+              <Collapse>
+                <Panel name="Total" size="large">
+                  <span class="data-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
+                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true" :key="data.timestamp">
+                    <componentCard :dataRes="data"></componentCard>
+                  </div>
+                </Panel>
 
-            <Menu class="menu" mode="horizontal" theme="light" @on-select="clickTag" active-name="0">
-              <MenuItem class="menu-item" name="0">
-              <Icon type="bookmark" size=18></Icon>
-              All
-              </MenuItem>
-              <MenuItem class="menu-item" name="1">
-              <Icon type="bookmark" size=18></Icon>
-              Yearly
-              </MenuItem>
-              <MenuItem class="menu-item" name="2">
-              <Icon type="bookmark" size=18></Icon>
-              Monthly
-              </MenuItem>
-              <MenuItem class="menu-item" name="3">
-              <Icon type="bookmark" size=18></Icon>
-              Weekly
-              </MenuItem>
-              <MenuItem class="menu-item" name="4">
-              <Icon type="bookmark" size=18></Icon>
-              Daily
-              </MenuItem>
-            </Menu>
-            <Layout>
-              <Content :style="{padding: '15px 0', minHeight: '280px', background: '#fff'}">
-                <Spin fix v-if="spinShow">
-                  <Icon class="icon-spin" type="load-c" size=50></Icon>
-                </Spin>
-                <Collapse>
-                  <Panel name="Total" size="large">
-                    <span class="data-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
-                    <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true" :key="data.timestamp">
-                      <componentCard :dataRes="data"></componentCard>
-                    </div>
-                  </Panel>
+                <Panel name="Done">
+                  <span class="data-count" style="color:#19be6b;"> Done ({{ count.done }})</span>
+                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent == 100" :key="data.timestamp">
+                    <componentCard :dataRes="data"></componentCard>
+                  </div>
+                </Panel>
 
-                  <Panel name="Done">
-                    <span class="data-count" style="color:#19be6b;"> Done ({{ count.done }})</span>
-                    <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent == 100" :key="data.timestamp">
-                      <componentCard :dataRes="data"></componentCard>
-                    </div>
-                  </Panel>
-
-                  <Panel name="Doing">
-                    <span class="data-count" style="color:#ed3f14;"> Doing ({{ count.doing }})</span>
-                    <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent != 100" :key="data.timestamp">
-                      <componentCard :dataRes="data"></componentCard>
-                    </div>
-                  </Panel>
-                </Collapse>
-              </Content>
-            </Layout>
-          </Content>
-        </Layout>
+                <Panel name="Doing">
+                  <span class="data-count" style="color:#ed3f14;"> Doing ({{ count.doing }})</span>
+                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent != 100" :key="data.timestamp">
+                    <componentCard :dataRes="data"></componentCard>
+                  </div>
+                </Panel>
+              </Collapse>
+            </Content>
+          </Layout>
+        </Content>
       </Layout>
-      <componentFooter></componentFooter>
-      <BackTop></BackTop>
     </Layout>
-  </div>
+    <componentFooter></componentFooter>
+    <BackTop></BackTop>
+  </Layout>
+</div>
 </template>
 
 <script type="text/javascript">
+import topNav from './component-topnav.vue'
+import leftNav from './component-leftnav.vue'
 import componentFooter from './component-footer.vue'
-import accountApi from '../api/accountApi'
-// import informationApi from '../api/informationApi'
 import componentCard from './component-card.vue'
 
 export default{
   name: 'project-overview',
   created () {
-    this.getInfo()
     this.computePercent()
     this.clickTag('0')
   },
   data () {
     return {
-      info: {
-        tel: '13608089849',
-        name: 'user',
-        email: '',
-        messages: [
-          {
-            messageId: '1',
-            from: '13600000001',
-            teamName: 'System support',
-            teamId: '00001'
-          },
-          {
-            messageId: '2',
-            from: '13600000002',
-            teamName: 'Overseas firmware',
-            teamId: '00002'
-          }
-        ]
-      },
       count: {
         total: 0,
         done: 0,
@@ -300,92 +230,16 @@ export default{
           plans: []
         }
       ],
-      currentType: '0',
-      spinShow: false
+      currentType: '0'
     }
   },
   components: {
+    topNav,
+    leftNav,
     componentFooter,
     componentCard
   },
   methods: {
-    getInfo () {
-      this.info.name = '曾宇' // test
-      this.info.email = '1213814232@qq.com' // test
-    },
-    clickTopNav: function (name) {
-      switch (name) {
-        case '1':
-          this.componentId = '1'
-          break
-        case '2':
-          this.clickHelp()
-          break
-        case '3':
-          this.clickSignOut()
-          break
-        default:
-      }
-    },
-    clickFlyme: function () {
-      window.open('https://www.flyme.cn/')
-    },
-    clickHelp: function () {
-      window.open('https://github.com/FlymeStudio/FlymeStudio-Doc/blob/master/introduce.md')
-    },
-    clickSignOut: function () {
-      this.spinShow = true
-      let _this = this
-      setTimeout(() => {
-        _this.spinShow = false
-        _this.$Message.success('Sign out successful.')
-        _this.$router.push('/signIn')
-      }, 1000)
-      accountApi.signOut(this.info.tel).then(function (response) {
-        setTimeout(() => {
-          _this.spinShow = false
-          if (response.data.result === true) {
-            _this.$Message.success('Sign out successful.')
-            _this.$router.push('/signIn')
-          } else {
-            _this.$Message.error('Sign out failed.')
-          }
-        }, 1000)
-      })
-    },
-    clickLeftNav: function (name) {
-      switch (name) {
-        case '1':
-          this.$router.push('/information/overview')
-          break
-        case '2':
-          this.$router.push('/information/teamwork')
-          break
-        case '3':
-          this.$router.push('/information/modify')
-          break
-        case '11':
-          this.$router.push('/project/overview')
-          break
-        case '12':
-          this.$router.push('/project/create')
-          break
-        case '13':
-          this.$router.push('/project/search')
-          break
-        case '21':
-          this.$router.push('/summary/overview')
-          break
-        case '22':
-          this.$router.push('/summary/create')
-          break
-        case '23':
-          this.$router.push('/summary/search')
-          break
-        default:
-          this.$router.push('/home')
-      }
-    },
     computePercent () {
       for (var i = 0; i < this.datas.length; i++) {
         if (this.datas[i].plans.length === 0) {
@@ -442,15 +296,6 @@ export default{
 <style scoped>
 .menu {
   z-index: 5;
-}
-
-.span-menu-item{
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.span-item {
-  font-size: 16px;
 }
 
 .menu-item {

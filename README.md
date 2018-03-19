@@ -2,6 +2,10 @@
 
 ---
 ## Dependency
+
+- [Vuex](https://vuex.vuejs.org/zh-cn/)
+> npm install vuex --save
+
 - [mavonEditor](https://github.com/hinesboy/mavonEditor)
 > npm install mavon-editor --save
 

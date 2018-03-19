@@ -1,144 +1,91 @@
 <template>
-  <div class="layout">
+<div class="layout">
+  <Layout>
+    <Header>
+      <topNav></topNav>
+    </Header>
     <Layout>
-      <Header>
-        <Menu class="menu" mode="horizontal" theme="dark" @on-select="clickTopNav">
-          <div class="layout-logo" @click="clickFlyme"></div>
-          <div class="layout-title">Flyme Studio</div>
-          <div class="layout-nav">
-            <MenuItem name="1">
-            <Icon class="item-icon" type="person" size=18></Icon>
-            <span v-if="info.messages.length == 0" class="span-item">
-              {{ info.name }}
-            </span>
-            <span v-else class="span-item">
-              <Badge dot>{{ info.name }}</Badge>
-            </span>
-            </MenuItem>
-            <MenuItem name="2">
-            <Icon class="item-icon" type="help" size=18></Icon>
-            <span class="span-item">Help</span>
-            </MenuItem>
-            <MenuItem name="3">
-            <Icon class="item-icon" type="log-out" size=18></Icon>
-            <span class="span-item">Sign out</span>
-            </MenuItem>
-          </div>
-        </Menu>
-      </Header>
-      <Layout>
-        <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
-          <Menu class="menu" theme="light" width="auto" @on-select="clickLeftNav" active-name="3" :open-names="['0', '10', '20']">
-            <Submenu name="0">
-              <template slot="title">
-                <Icon type="person" size=18></Icon>
-                  <span class="span-menu-item">Information</span>
-              </template>
-              <MenuItem name="1">Overview</MenuItem>
-              <MenuItem name="2">Teamwork</MenuItem>
-              <MenuItem name="3">Modify</MenuItem>
-            </Submenu>
-            <Submenu name="10">
-              <template slot="title">
-                <Icon type="clipboard" size=18></Icon>
-                  <span class="span-menu-item">Project</span>
-              </template>
-              <MenuItem name="11">Overview</MenuItem>
-              <MenuItem name="12">Create</MenuItem>
-              <MenuItem name="13">Search</MenuItem>
-            </Submenu>
-            <Submenu name="20">
-              <template slot="title">
-                <Icon type="document-text" size=18></Icon>
-                  <span class="span-menu-item">Summary</span>
-              </template>
-              <MenuItem name="21">Overview</MenuItem>
-              <MenuItem name="22">Create</MenuItem>
-              <MenuItem name="23">Search</MenuItem>
-            </Submenu>
-          </Menu>
-        </Sider>
-        <Layout :style="{padding: '0 24px'}">
-          <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
-            <Spin style="z-index:10;" fix v-if="spinShow">
-              <Icon class="icon-spin" type="load-c" size=50></Icon>
-            </Spin>
-
-            <Form class="form" ref="formItem" :model="formItem" :rules="ruleItem">
-              <Alert type="info">
-                <FormItem class="form-item">
-                  <Icon class="icon-item" style="margin:auto 10px;" type="person" size=18></Icon>
-                  <span class="span-item">{{ info.name }}</span>
-                </FormItem>
-                <FormItem class="form-item" prop="name">
-                  <Input type="text" v-model="formItem.name" size="large" placeholder="New name" clearable>
-                  <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
-                  </Input>
-                </FormItem>
-              </Alert>
-              <Alert type="info">
-                <FormItem class="form-item">
-                  <Icon class="icon-item" style="margin:auto 10px;" type="ios-telephone" size=18></Icon>
-                  <span class="span-item">{{ info.tel }}</span>
-                </FormItem>
-                <FormItem class="form-item" prop="tel">
-                  <Input type="text" v-model="formItem.tel" size="large" placeholder="New tel" clearable>
-                  <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
-                  </Input>
-                </FormItem>
-              </Alert>
-              <Alert type="info">
-                <FormItem class="form-item">
-                  <Icon class="icon-item" style="margin:auto 10px;" type="email" size=18></Icon>
-                  <span class="span-item">{{ info.email }}</span>
-                </FormItem>
-                <FormItem class="form-item" prop="email">
-                  <Input type="text" v-model="formItem.email" size="large" placeholder="New email" clearable>
-                  <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
-                  </Input>
-                </FormItem>
-              </Alert>
-              <Alert type="info">
-                <FormItem class="form-item" prop="newPassword">
-                  <Input type="password" v-model="formItem.newPassword" size="large" placeholder="New password" clearable>
-                  <Icon class="icon-item" type="android-lock" slot="prepend" size=18></Icon>
-                  </Input>
-                </FormItem>
-                <FormItem class="form-item" prop="confirm">
-                  <div v-if="formItem.newPassword == ''">
-                    <Input type="password" v-model="formItem.confirm" size="large" placeholder="Confirm" disabled>
-                    <Icon class="icon-item" type="checkmark" slot="prepend" size=18></Icon>
-                    </Input>
-                  </div>
-                  <div v-else>
-                    <Input type="password" v-model="formItem.confirm" size="large" placeholder="Confirm" clearable>
-                    <Icon class="icon-item" type="checkmark" slot="prepend" size=18></Icon>
-                    </Input>
-                  </div>
-                </FormItem>
-              </Alert>
-              <FormItem class="form-item-btn">
-                <Button class="btn-item" type="primary" @click="handleSubmit('formItem')" style="margin-right:15px;">Submit</Button>
-                <Button class="btn-item" @click="handleReset('formItem')" style="margin-left:15px;">Reset</Button>
+      <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
+        <leftNav activeName="3"></leftNav>
+      </Sider>
+      <Layout :style="{padding: '0 24px'}">
+        <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
+          <Form class="form" ref="formItem" :model="formItem" :rules="ruleItem">
+            <Alert type="info">
+              <FormItem class="form-item">
+                <Icon class="icon-item" style="margin:auto 10px;" type="person" size=18></Icon>
+                <span class="span-item">{{ info.name }}</span>
               </FormItem>
-            </Form>
-            <Modal class="modal-confirm" v-model="modalModify" title="Confirm" :mask-closable="false" :closable="false" :ok-text="okModify" :cancel-text="cancel" :loading="loadingModify" @on-ok="modify()">
-              <p>Input the password to check your identity:</p>
-              <Input style="margin-top:20px;" type="password" v-model="password" size="large" placeholder="Password" clearable>
-              </Input>
-            </Modal>
-          </Content>
-        </Layout>
+              <FormItem class="form-item" prop="name">
+                <Input type="text" v-model="formItem.name" size="large" placeholder="New name" clearable>
+                <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
+                </Input>
+              </FormItem>
+            </Alert>
+            <Alert type="info">
+              <FormItem class="form-item">
+                <Icon class="icon-item" style="margin:auto 10px;" type="ios-telephone" size=18></Icon>
+                <span class="span-item">{{ info.tel }}</span>
+              </FormItem>
+              <FormItem class="form-item" prop="tel">
+                <Input type="text" v-model="formItem.tel" size="large" placeholder="New tel" clearable>
+                <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
+                </Input>
+              </FormItem>
+            </Alert>
+            <Alert type="info">
+              <FormItem class="form-item">
+                <Icon class="icon-item" style="margin:auto 10px;" type="email" size=18></Icon>
+                <span class="span-item">{{ info.email }}</span>
+              </FormItem>
+              <FormItem class="form-item" prop="email">
+                <Input type="text" v-model="formItem.email" size="large" placeholder="New email" clearable>
+                <Icon class="icon-item" type="edit" slot="prepend" size=18></Icon>
+                </Input>
+              </FormItem>
+            </Alert>
+            <Alert type="info">
+              <FormItem class="form-item" prop="newPassword">
+                <Input type="password" v-model="formItem.newPassword" size="large" placeholder="New password" clearable>
+                <Icon class="icon-item" type="android-lock" slot="prepend" size=18></Icon>
+                </Input>
+              </FormItem>
+              <FormItem class="form-item" prop="confirm">
+                <div v-if="formItem.newPassword == ''">
+                  <Input type="password" v-model="formItem.confirm" size="large" placeholder="Confirm" disabled>
+                  <Icon class="icon-item" type="checkmark" slot="prepend" size=18></Icon>
+                  </Input>
+                </div>
+                <div v-else>
+                  <Input type="password" v-model="formItem.confirm" size="large" placeholder="Confirm" clearable>
+                  <Icon class="icon-item" type="checkmark" slot="prepend" size=18></Icon>
+                  </Input>
+                </div>
+              </FormItem>
+            </Alert>
+            <FormItem class="form-item-btn">
+              <Button class="btn-item" type="primary" @click="handleSubmit('formItem')" style="margin-right:15px;">Submit</Button>
+              <Button class="btn-item" @click="handleReset('formItem')" style="margin-left:15px;">Reset</Button>
+            </FormItem>
+          </Form>
+          <Modal class="modal-confirm" v-model="modalModify" title="Confirm" :mask-closable="false" :closable="false" :ok-text="okModify" :cancel-text="cancel" :loading="loadingModify" @on-ok="modify()">
+            <p>Input the password to check your identity:</p>
+            <Input style="margin-top:20px;" type="password" v-model="password" size="large" placeholder="Password" clearable>
+            </Input>
+          </Modal>
+        </Content>
       </Layout>
-      <componentFooter></componentFooter>
-      <BackTop></BackTop>
     </Layout>
-  </div>
+    <componentFooter></componentFooter>
+    <BackTop></BackTop>
+  </Layout>
+</div>
 </template>
 
 <script type="text/javascript">
+import topNav from './component-topnav.vue'
+import leftNav from './component-leftnav.vue'
 import componentFooter from './component-footer.vue'
-import accountApi from '../api/accountApi'
 import informationApi from '../api/informationApi'
 
 export default{
@@ -236,11 +183,12 @@ export default{
       cancel: 'Cancel',
       modalModify: false,
       loadingModify: true,
-      okModify: 'Modify',
-      spinShow: false
+      okModify: 'Modify'
     }
   },
   components: {
+    topNav,
+    leftNav,
     componentFooter
   },
   methods: {
@@ -248,79 +196,6 @@ export default{
       this.info.name = '曾宇' // test
       this.info.tel = '13608089849'
       this.info.email = '1213814232@qq.com' // test
-    },
-    clickTopNav: function (name) {
-      switch (name) {
-        case '1':
-          this.componentId = '1'
-          break
-        case '2':
-          this.clickHelp()
-          break
-        case '3':
-          this.clickSignOut()
-          break
-        default:
-      }
-    },
-    clickFlyme: function () {
-      window.open('https://www.flyme.cn/')
-    },
-    clickHelp: function () {
-      window.open('https://github.com/FlymeStudio/FlymeStudio-Doc/blob/master/introduce.md')
-    },
-    clickSignOut: function () {
-      this.spinShow = true
-      let _this = this
-      setTimeout(() => {
-        _this.spinShow = false
-        _this.$Message.success('Sign out successful.')
-        _this.$router.push('/signIn')
-      }, 1000)
-      accountApi.signOut(this.info.tel).then(function (response) {
-        setTimeout(() => {
-          _this.spinShow = false
-          if (response.data.result === true) {
-            _this.$Message.success('Sign out successful.')
-            _this.$router.push('/signIn')
-          } else {
-            _this.$Message.error('Sign out failed.')
-          }
-        }, 1000)
-      })
-    },
-    clickLeftNav: function (name) {
-      switch (name) {
-        case '1':
-          this.$router.push('/information/overview')
-          break
-        case '2':
-          this.$router.push('/information/teamwork')
-          break
-        case '3':
-          this.$router.push('/information/modify')
-          break
-        case '11':
-          this.$router.push('/project/overview')
-          break
-        case '12':
-          this.$router.push('/project/create')
-          break
-        case '13':
-          this.$router.push('/project/search')
-          break
-        case '21':
-          this.$router.push('/summary/overview')
-          break
-        case '22':
-          this.$router.push('/summary/create')
-          break
-        case '23':
-          this.$router.push('/summary/search')
-          break
-        default:
-          this.$router.push('/home')
-      }
     },
     modify: function () {
       let _this = this
@@ -375,19 +250,6 @@ export default{
 </script>
 
 <style scoped>
-.menu {
-  z-index: 5;
-}
-
-.span-menu-item{
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.span-item {
-  font-size: 16px;
-}
-
 .form {}
 
 .form-item {

@@ -94,6 +94,7 @@
   font-weight: bold;
   font-size  : 18px;
   font-family: 'Microsoft Yahei';
+  cursor     : pointer;
 }
 
 .layout-nav {

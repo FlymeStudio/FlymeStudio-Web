@@ -1,7 +1,8 @@
 detail<template>
 <Card>
   <div>
-    <div class="card-top">
+    <p class="card-date">{{ dataSrc.timestamp }}</p>
+    <div class="card-center">
       <i-circle v-if="dataPercent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
         <Icon type="ios-checkmark-empty" size=40 color="#5cb85c"></Icon>
       </i-circle>
@@ -9,14 +10,15 @@ detail<template>
         <span class="demo-Circle-inner">{{ dataPercent }}%</span>
       </i-circle>
       <span class="card-date">{{ dataSrc.date }}</span>
-      <span class="card-detail" @click="modalDetail = true"><Icon type="more" size="24"></Icon></span>
+      <span class="card-detail" @click="modalDetail = true"><Icon type="android-open" size="24"></Icon></span>
     </div>
     <p class="card-title" slot="title">{{ dataSrc.title }}</p>
     <!-- <mavon-editor class="card-content" v-model="dataSrc.content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ dataSrc.content }}</mavon-editor> -->
   </div>
   <Modal class-name="vertical-center-modal" class="modal-detail" width="90%" :mask-closable="false" v-model="modalDetail" :ok-text="okDetail" :cancel-text="cancelDetail" @on-ok="modifyOk">
     <div>
-      <div class="card-top">
+      <p class="card-date">{{ dataSrc.timestamp }}</p>
+      <div class="card-center">
         <i-circle class="card-circle" :size=40 v-if="dataPercent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
           <Icon type="ios-checkmark-empty" size=40 color="#5cb85c"></Icon>
         </i-circle>
@@ -81,12 +83,15 @@ export default{
 </script>
 
 <style scoped>
-.card-top {
+.card-center {
   width      : 100%;
   align-items: center;
-  margin     : auto 0;
+  margin     : 10px 0;
+  padding: 10px 0;
   display    : flex;
   display    : -webkit-flex;
+  border-top : 1px solid #ccc;
+  border-bottom : 1px solid #ccc;
 }
 
 .card-circle {
@@ -111,7 +116,6 @@ export default{
 .card-title {
   width      : 100%;
   text-align : center;
-  border-top : 1px solid #ccc;
   margin-top : 5px;
   padding-top: 5px;
   font-weight: bold;
@@ -135,9 +139,6 @@ export default{
 .detail-title {
   width      : 100%;
   text-align : center;
-  border-top : 1px solid #ccc;
-  margin-top : 10px;
-  padding-top: 10px;
   font-weight: bold;
   font-size  : 22px;
 }

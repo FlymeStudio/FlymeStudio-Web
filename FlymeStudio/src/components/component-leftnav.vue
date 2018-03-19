@@ -1,10 +1,10 @@
 <template>
 <div>
-  <Menu class="menu" theme="light" width="auto" @on-select="clickLeftNav" :active-name="componentId">
+  <Menu class="menu" theme="light" width="auto" @on-select="clickLeftNav" :active-name="componentId" :open-names="['0', '10', '20']">
     <Submenu name="0">
       <template slot="title">
         <Icon type="person" size=18></Icon>
-          <span class="span-menu-item">Information</span>
+        <span class="span-menu-item">Information</span>
       </template>
       <MenuItem name="1">Overview</MenuItem>
       <MenuItem name="2">Teamwork</MenuItem>
@@ -13,20 +13,22 @@
     <Submenu name="10">
       <template slot="title">
         <Icon type="clipboard" size=18></Icon>
-          <span class="span-menu-item">Project</span>
+        <span class="span-menu-item">Project</span>
       </template>
       <MenuItem name="11">Overview</MenuItem>
       <MenuItem name="12">Create</MenuItem>
       <MenuItem name="13">Search</MenuItem>
+      <MenuItem name="14">Modify</MenuItem>
     </Submenu>
     <Submenu name="20">
       <template slot="title">
         <Icon type="document-text" size=18></Icon>
-          <span class="span-menu-item">Summary</span>
+        <span class="span-menu-item">Summary</span>
       </template>
       <MenuItem name="21">Overview</MenuItem>
       <MenuItem name="22">Create</MenuItem>
       <MenuItem name="23">Search</MenuItem>
+      <MenuItem name="24">Modify</MenuItem>
     </Submenu>
   </Menu>
 </div>
@@ -37,20 +39,54 @@ export default {
   name: 'left-nav',
   created () {
     this.componentId = this.activeName
-    console.log('activeName:' + this.activeName)
-    console.log('componentId:' + this.componentId)
   },
   props: [
     'activeName'
   ],
   data () {
     return {
-      componentId: 1
+      componentId: '1'
     }
   },
   methods: {
     clickLeftNav: function (name) {
-      this.componentId = name
+      switch (name) {
+        case '1':
+          this.$router.push('/information/overview')
+          break
+        case '2':
+          this.$router.push('/information/teamwork')
+          break
+        case '3':
+          this.$router.push('/information/modify')
+          break
+        case '11':
+          this.$router.push('/project/overview')
+          break
+        case '12':
+          this.$router.push('/project/create')
+          break
+        case '13':
+          this.$router.push('/project/search')
+          break
+        case '14':
+          this.$router.push('/project/modify')
+          break
+        case '21':
+          this.$router.push('/summary/overview')
+          break
+        case '22':
+          this.$router.push('/summary/create')
+          break
+        case '23':
+          this.$router.push('/summary/search')
+          break
+        case '24':
+          this.$router.push('/summary/modify')
+          break
+        default:
+          this.$router.push('/home')
+      }
     }
   }
 }
@@ -61,9 +97,9 @@ export default {
   z-index: 5;
 }
 
-.span-menu-item{
+.span-menu-item {
   font-weight: bold;
-  font-size: 16px;
+  font-size  : 16px;
 }
 
 .span-item {

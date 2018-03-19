@@ -28,7 +28,7 @@
     </Header>
     <Layout>
       <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
-        <Menu class="menu" theme="light" width="auto" @on-select="clickLeftNav">
+        <Menu class="menu" theme="light" width="auto" @on-select="clickLeftNav" :active-name="componentId">
           <Submenu name="0">
             <template slot="title">
               <Icon type="person" size=18></Icon>
@@ -145,8 +145,7 @@ export default {
           }
         ]
       },
-      tagId: 0,
-      componentId: 0,
+      componentId: '0',
       spinShow: false
     }
   },
@@ -232,20 +231,6 @@ export default {
 </script>
 
 <style scoped>
-.slide-fade-enter-active {
-  transition: all 0.5s ease;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-
-.slide-fade-enter,
-.slide-fade-leave-to {
-  transform: translateX(-180px);
-  opacity  : 0;
-}
-
 .component-fade-enter-active {
   transition: 0.5s ease;
 }

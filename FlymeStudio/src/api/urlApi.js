@@ -14,6 +14,7 @@ export const informationApi = {
 export const projectApi = {
   projectUrl: () => '',
   createUrl: () => '',
+  modifyUrl: () => '',
   searchUrl: () => ''
 }
 

@@ -14,7 +14,7 @@ detail<template>
     <p class="card-title" slot="title">{{ dataSrc.title }}</p>
     <!-- <mavon-editor class="card-content" v-model="dataSrc.content" :subfield="subfield" :defaultOpen="defaultOpen" :toolbarsFlag="toolbarsFlag">{{ dataSrc.content }}</mavon-editor> -->
   </div>
-  <Modal class-name="vertical-center-modal" class="modal-detail" width="90%" :mask-closable="false" v-model="modalDetail" :ok-text="okDetail" :cancel-text="cancelDetail" @on-ok="modalModify = true">
+  <Modal class-name="vertical-center-modal" class="modal-detail" width="90%" :mask-closable="false" v-model="modalDetail" :ok-text="okDetail" :cancel-text="cancelDetail" @on-ok="modifyOk">
     <div>
       <div class="card-top">
         <i-circle class="card-circle" :size=40 v-if="dataPercent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="8" :trail-width="8">
@@ -31,7 +31,7 @@ detail<template>
         <Alert class="alert-plans" v-for="item in dataSrc.plans" :key="item.timestamp">
           <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
           <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
-          <div class="div-project">
+          <div class="div-plan">
             <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
             <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
           </div>
@@ -39,20 +39,12 @@ detail<template>
       </div>
     </div>
   </Modal>
-  <Modal class-name="vertical-center-modal" class="modal-modify" width="90%" :mask-closable="false" v-model="modalModify" :ok-text="okModify" :cancel-text="cancelModify" @on-cancel="modifyCancel" @on-ok="modifyOk">
-    <modifyProject :dataRes="dataSrc"></modifyProject>
-  </Modal>
 </Card>
 </template>
 
 <script>
-import modifyProject from './component-modify-project.vue'
-
 export default{
   name: 'component-card',
-  components: {
-    modifyProject
-  },
   props: [
     'dataRes'
   ],
@@ -63,11 +55,8 @@ export default{
       defaultOpen: 'preview',
       toolbarsFlag: false,
       modalDetail: false,
-      modalModify: false,
       okDetail: 'Modify',
-      cancelDetail: 'Close',
-      okModify: 'Modify',
-      cancelModify: 'Cancel'
+      cancelDetail: 'Close'
     }
   },
   computed: {
@@ -85,12 +74,7 @@ export default{
   },
   methods: {
     modifyOk () {
-      this.modalDetail = true
-    },
-    modifyCancel () {
-      this.modalDetail = true
-    },
-    modify () {
+      this.$router.push({path: '/project/modify', params: {dataSrc: this.dataSrc}})
     }
   }
 }
@@ -176,7 +160,7 @@ export default{
   padding-right: 5px;
 }
 
-.div-project {
+.div-plan {
   display: flex;
 }
 
@@ -208,10 +192,6 @@ export default{
   .ivu-modal {
     top: 0;
   }
-}
-
-.modal-modify{
-  z-index: 7;
 }
 
 </style>

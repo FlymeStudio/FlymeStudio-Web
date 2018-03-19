@@ -37,6 +37,25 @@ export default {
       withCredentials: true
     })
   },
+  modify (timestamp, type, date, title, content, plans) {
+    var data = qs.stringify({
+      timestamp: timestamp,
+      type: type,
+      date: date,
+      title: title,
+      content: content,
+      plans: plans
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: projectApi.modifyUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
   search (type, date, title, content, plans) {
     var data = qs.stringify({
       type: type,

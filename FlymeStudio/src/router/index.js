@@ -4,6 +4,17 @@ import signIn from '@/components/sign-in'
 import signUp from '@/components/sign-up'
 import retrieve from '@/components/retrieve'
 import home from '@/components/home'
+import informationOverview from '@/components/information-overview'
+import informationTeamwork from '@/components/information-teamwork'
+import informationModify from '@/components/information-modify'
+import projectOverview from '@/components/project-overview'
+import projectCreate from '@/components/project-create'
+import projectSearch from '@/components/project-search'
+import projectModify from '@/components/project-modify'
+import summaryOverview from '@/components/summary-overview'
+import summaryCreate from '@/components/summary-create'
+import summarySearch from '@/components/summary-search'
+import summaryModify from '@/components/summary-modify'
 
 Vue.use(Router)
 
@@ -33,6 +44,61 @@ export default new Router({
       path: '/home',
       name: 'home',
       component: home
+    },
+    {
+      path: '/information/overview',
+      name: 'informationOverview',
+      component: informationOverview
+    },
+    {
+      path: '/information/teamwork',
+      name: 'informationTeamwork',
+      component: informationTeamwork
+    },
+    {
+      path: '/information/modify',
+      name: 'informationModify',
+      component: informationModify
+    },
+    {
+      path: '/project/overview',
+      name: 'projectOverview',
+      component: projectOverview
+    },
+    {
+      path: '/project/create',
+      name: 'projectCreate',
+      component: projectCreate
+    },
+    {
+      path: '/project/search',
+      name: 'projectSearch',
+      component: projectSearch
+    },
+    {
+      path: '/project/modify',
+      name: 'projectModify',
+      component: projectModify
+    },
+    {
+      path: '/summary/overview',
+      name: 'summaryOverview',
+      component: summaryOverview
+    },
+    {
+      path: '/summary/create',
+      name: 'summaryCreate',
+      component: summaryCreate
+    },
+    {
+      path: '/summary/search',
+      name: 'summarySearch',
+      component: summarySearch
+    },
+    {
+      path: '/summary/modify',
+      name: 'summaryModify',
+      component: summaryModify
     }
   ]
 })

@@ -107,19 +107,19 @@ export default{
     return {
       types: [
         {
-          value: '0',
+          value: '1',
           label: 'Yearly'
         },
         {
-          value: '1',
+          value: '2',
           label: 'Monthly'
         },
         {
-          value: '2',
+          value: '3',
           label: 'Weekly'
         },
         {
-          value: '3',
+          value: '4',
           label: 'Daily'
         }
       ],

@@ -55,22 +55,6 @@ export default {
       withCredentials: true
     })
   },
-  importProject (timestamp, tel, email) {
-    var data = qs.stringify({
-      timestamp: timestamp,
-      tel: tel,
-      email: email
-    })
-    return axios({
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      url: projectApi.importUrl(),
-      data: data,
-      withCredentials: true
-    })
-  },
   modify (timestamp, type, date, title, content, plans) {
     var data = qs.stringify({
       timestamp: timestamp,

@@ -10,10 +10,6 @@
       </Sider>
       <Layout :style="{padding: '0 24px'}">
         <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
-          <Spin style="z-index:10;" fix v-if="spinShow">
-            <Icon class="icon-spin" type="load-c" size=50></Icon>
-          </Spin>
-
           <Menu class="menu" mode="horizontal" theme="light" @on-select="clickTag" active-name="0">
             <MenuItem class="menu-item" name="0">
             <Icon type="bookmark" size=18></Icon>
@@ -53,11 +49,11 @@
                         <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
                       </i-circle>
                       <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
-                        <span class="demo-Circle-inner">{{ data.percent }}%</span>
+                        <span>{{ data.percent }}%</span>
                       </i-circle>
-                      <span class="card-date">{{ data.date }}</span>
-                      <span class="card-detail" @click="modify(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
-                      <span class="card-detail" @click="detail(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                      <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd"/>
+                      <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
+                      <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
                     </div>
                     <p class="card-title" slot="title">{{ data.title }}</p>
                   </div>
@@ -75,11 +71,11 @@
                           <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
                         </i-circle>
                         <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
-                          <span class="demo-Circle-inner">{{ data.percent }}%</span>
+                          <span>{{ data.percent }}%</span>
                         </i-circle>
-                        <span class="card-date">{{ data.date }}</span>
-                        <span class="card-detail" @click="modify(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
-                        <span class="card-detail" @click="detail(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                        <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd"/>
+                        <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
+                        <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
                       </div>
                       <p class="card-title" slot="title">{{ data.title }}</p>
                     </div>
@@ -97,11 +93,11 @@
                           <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
                         </i-circle>
                         <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
-                          <span class="demo-Circle-inner">{{ data.percent }}%</span>
+                          <span>{{ data.percent }}%</span>
                         </i-circle>
-                        <span class="card-date">{{ data.date }}</span>
-                        <span class="card-detail" @click="modify(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
-                        <span class="card-detail" @click="detail(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                        <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd"/>
+                        <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
+                        <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
                       </div>
                       <p class="card-title" slot="title">{{ data.title }}</p>
                     </div>
@@ -110,16 +106,17 @@
               </Panel>
               </Collapse>
 
-              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="false" :mask-closable="false" v-model="detailModal">
+              <!-- modal-detail -->
+              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="detailModal">
                 <div>
                   <div class="card-top">
                     <i-circle class="card-circle" :size=40 v-if="dataCopy.percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
                       <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
                     </i-circle>
                     <i-circle class="card-circle" :size=40 v-else :percent="dataCopy.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
-                      <span class="demo-Circle-inner">{{ dataCopy.percent }}%</span>
+                      <span>{{ dataCopy.percent }}%</span>
                     </i-circle>
-                    <span class="card-date">{{ dataCopy.date }}</span>
+                    <DatePicker class="card-date" type="date" size="large" v-model="dataCopy.date" readonly format="yyyy-MM-dd"/>
                   </div>
                   <p class="detail-title" slot="title">{{ dataCopy.title }}</p>
                   <mavon-editor class="detail-content" v-model="dataCopy.content" :subfield="subfieldDetail" :defaultOpen="defaultOpenDetail" :toolbarsFlag="toolbarsFlagDetail">{{ dataCopy.content }}</mavon-editor>
@@ -136,8 +133,9 @@
                 </div>
               </Modal>
 
-              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="false" :mask-closable="false" v-model="modifyModal">
-                <Form ref="formItem" :model="formItem">
+              <!-- modal-modify -->
+              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modifyModal" @on-ok="submitModify" :loading="loadingModify">
+                <Form class="form" ref="formItem" :model="formItem">
                   <FormItem>
                     <Icon class="icon-item" type="bookmark" size=18></Icon>
                     <span class="span-form">Set type</span>
@@ -152,7 +150,7 @@
                     <span class="span-form">Set date</span>
                   </FormItem>
                   <FormItem prop="date">
-                    <DatePicker class="datePicker" type="date" size="large" v-model="formItem.date" placeholder="Date" confirm/>
+                    <DatePicker class="card-date" type="date" size="large" v-model="formItem.date" placeholder="Date" confirm/>
                   </FormItem>
                   <FormItem>
                     <Icon class="icon-item" type="pin" size=18></Icon>
@@ -174,9 +172,10 @@
                   </FormItem>
                   <FormItem>
                     <Alert class="alert-projects" type="success" v-for="item in formItem.plans" :key="item.timestamp">
+                      <Slider class="slider" v-model="item.percent" show-input></Slider>
                       <div class="div-project">
-                        <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
-                        <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
+                        <Input class="edit-tag" type="text" clearable placeholder="Tag" v-model="item.tag"></Input>
+                        <Input class="edit-goal" type="text" clearable placeholder="Goal" v-model="item.goal"></Input>
                         <Button class="btn-edit" type="ghost" shape="circle" icon="minus" @click="deletePlan(item.timestamp)"></Button>
                       </div>
                     </Alert>
@@ -206,6 +205,7 @@
 import topNav from './component-topnav.vue'
 import leftNav from './component-leftnav.vue'
 import componentFooter from './component-footer.vue'
+import projectApi from '../api/projectApi'
 
 export default{
   name: 'project-overview',
@@ -367,19 +367,19 @@ export default{
       modifyModal: false,
       types: [
         {
-          value: '0',
+          value: '1',
           label: 'Yearly'
         },
         {
-          value: '1',
+          value: '2',
           label: 'Monthly'
         },
         {
-          value: '2',
+          value: '3',
           label: 'Weekly'
         },
         {
-          value: '3',
+          value: '4',
           label: 'Daily'
         }
       ],
@@ -430,7 +430,8 @@ export default{
         preview: true // 预览
       },
       editTag: '',
-      editGoal: ''
+      editGoal: '',
+      loadingModify: true
     }
   },
   components: {
@@ -469,6 +470,9 @@ export default{
         }
       } else {
         for (let i = 0; i < this.datas.length; i++) {
+          console.log('--------------')
+          console.log('type:' + this.datas[i].type)
+          console.log('title:' + this.datas[i].title)
           if (this.datas[i].type === name) {
             _total++
             this.datas[i].show = true
@@ -488,23 +492,36 @@ export default{
         doing: _doing
       }
     },
-    modify (timestamp) {
+    showModifyModal (timestamp) {
+      this.spinShow = true
       for (var i = 0; i < this.datas.length; i++) {
         if (this.datas[i].timestamp === timestamp) {
+          // 此拷贝方式破坏了date对象的结构，其中包含的时区设置丢失，所以必须采用date重新创建一次
+          // 参考文献[使用JSON序列化实现伪深克隆时Date对象时区问题的解决方案](http://blog.csdn.net/zy13608089849/article/details/79625403)
           this.formItem = JSON.parse(JSON.stringify(this.datas[i]))
+          this.formItem.date = new Date(this.formItem.date)
           break
         }
       }
-      this.modifyModal = true
+      let _this = this
+      setTimeout(() => {
+        _this.modifyModal = true
+        _this.spinShow = false
+      }, 1000)
     },
-    detail (timestamp) {
+    showDetailModal (timestamp) {
+      this.spinShow = true
       for (var i = 0; i < this.datas.length; i++) {
         if (this.datas[i].timestamp === timestamp) {
-          this.dataCopy = JSON.parse(JSON.stringify(this.datas[i]))
+          this.dataCopy = this.datas[i]
           break
         }
       }
-      this.detailModal = true
+      let _this = this
+      setTimeout(() => {
+        _this.detailModal = true
+        _this.spinShow = false
+      }, 1000)
     },
     deletePlan (timestamp) {
       for (var i = 0; i < this.formItem.plans.length; i++) {
@@ -518,11 +535,69 @@ export default{
       var plan = {
         timestamp: new Date().getTime(),
         tag: this.editTag,
-        goal: this.editGoal
+        goal: this.editGoal,
+        percent: 0
       }
       this.formItem.plans.push(plan)
       this.editTag = ''
       this.editGoal = ''
+    },
+    submitModify () {
+      let _this = this
+      setTimeout(() => {
+        _this.$Notice.success({
+          title: 'Modify successful.',
+          desc: ''
+        })
+        for (var i = 0; i < _this.datas.length; i++) {
+          if (_this.datas[i].timestamp === _this.formItem.timestamp) {
+            _this.datas[i] = _this.formItem
+            if (_this.datas[i].plans.length === 0) {
+              _this.datas[i].percent = 0
+            } else {
+              var percent = 0
+              for (var j = 0; j < _this.datas[i].plans.length; j++) {
+                percent += _this.datas[i].plans[j].percent
+              }
+              _this.datas[i].percent = Math.round(percent / _this.datas[i].plans.length)
+            }
+            break
+          }
+        }
+        _this.clickTag(_this.currentType)
+        _this.modifyModal = false
+      }, 1000)
+      projectApi.modify(this.formItem.timestamp, this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
+        if (response.data.result === true) {
+          _this.$Notice.success({
+            title: 'Modify successful.',
+            desc: ''
+          })
+          for (var i = 0; i < _this.datas.length; i++) {
+            if (_this.datas[i].timestamp === _this.formItem.timestamp) {
+              _this.datas[i] = _this.formItem
+              if (_this.datas[i].plans.length === 0) {
+                _this.datas[i].percent = 0
+              } else {
+                var percent = 0
+                for (var j = 0; j < _this.datas[i].plans.length; j++) {
+                  percent += _this.datas[i].plans[j].percent
+                }
+                _this.datas[i].percent = Math.round(percent / _this.datas[i].plans.length)
+              }
+              break
+            }
+          }
+          _this.clickTag(_this.currentType)
+          _this.modifyModal = false
+        } else {
+          _this.$Notice.error({
+            title: 'Modify failed.',
+            desc: ''
+          })
+          _this.loadingModify = false
+        }
+      })
     }
   }
 }
@@ -545,21 +620,21 @@ export default{
 
 .data-div {
   height          : auto;
-  width           : 280px;
+  width           : auto;
   display         : inline-block;
   margin          : 20px;
   background-color: #dddee1;
-  padding         : 5px;
+  padding         : 3px;
   border-radius   : 5px;
 }
-
+/** card **/
 .card-top {
-  width      : 100%;
-  align-items: center;
-  margin-bottom     : 10px;
+  width         : 100%;
+  align-items   : center;
+  margin-bottom : 10px;
   padding-bottom: 10px;
-  display    : flex;
-  display    : -webkit-flex;
+  display       : flex;
+  display       : -webkit-flex;
   border-bottom : 1px solid #ccc;
 }
 
@@ -571,15 +646,15 @@ export default{
 
 .card-date {
   width      : auto;
-  margin-left: 20px;
-  font-size  : 16px;
+  margin-left: 5px;
+  display    : flex;
 }
 
-.card-detail {
-  width: auto;
+.card-btn {
+  width   : auto;
   float   : right;
   position: relative;
-  margin  : auto 0 auto auto;
+  margin  : auto 0 auto 10px;
   cursor  : pointer;
 }
 
@@ -601,7 +676,7 @@ export default{
   font-size : 12px;
   z-index   : 5;
 }
-
+/** detail **/
 .modal {
   z-index: 7;
 }
@@ -664,12 +739,18 @@ export default{
     top: 0;
   }
 }
+/** modify **/
+.form {
+  padding: 10px;
+}
+
 .icon-item {
   width     : 18px;
   text-align: center;
 }
 
 .span-form {
+  width      : auto;
   margin-left: 10px;
   font-size  : 16px;
 }
@@ -681,7 +762,7 @@ export default{
   display     : block;
 }
 
-.datePicker {
+.card-date {
   width  : 160px;
   z-index: 7;
   display: block;
@@ -706,15 +787,12 @@ export default{
   display: flex;
 }
 
-.tag-tag {
-  width  : 100px;
-  display: inline-block;
+.slider{
+  margin-bottom:20px;
 }
 
-.input-goal {
-  width  : 100%;
-  flex   : 1;
-  margin : auto 20px auto 5px;
+.tag-tag {
+  width  : 100px;
   display: inline-block;
 }
 
@@ -735,5 +813,4 @@ export default{
   margin : auto 20px auto 5px;
   display: inline-block;
 }
-
 </style>

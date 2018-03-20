@@ -14,7 +14,6 @@ export const informationApi = {
 export const projectApi = {
   projectUrl: () => '',
   createUrl: () => '',
-  importUrl: () => '',
   modifyUrl: () => '',
   searchUrl: () => ''
 }
@@ -22,5 +21,6 @@ export const projectApi = {
 export const summaryApi = {
   summaryUrl: () => '',
   createUrl: () => '',
+  modifyUrl: () => '',
   searchUrl: () => ''
 }

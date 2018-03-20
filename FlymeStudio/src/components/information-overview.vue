@@ -42,7 +42,10 @@
           </Alert>
 
           <Alert class="alert-information" show-icon v-for="item in info.messages" :key="item.messageId">
-            <span class="span-item"><Tag color="#80848f">{{ item.from }}</Tag> invite you to join <Tag color="blue">{{ item.teamName }}</Tag></span>
+            <Button class="btn-user" @click="clickUser(item.fromName, item.fromTel)">{{ item.fromName }}</Button>
+            <span v-if="item.type == 1"> invited you to join </span><span v-else-if="item.type == 2"> applied to join </span>
+            <Button v-if="item.type == 1" class="btn-invite" @click="clickTeam(item.teamName, item.teamId)">{{ item.teamName }}</Button>
+            <Button v-else-if="item.type == 2" class="btn-apply" @click="clickTeam(item.teamName, item.teamId)">{{ item.teamName }}</Button>
             <Icon class="icon-item" type="ios-people" slot="icon" size=30></Icon>
             <template slot="desc">
               <div class="div-message">
@@ -51,6 +54,44 @@
               </div>
             </template>
           </Alert>
+
+          <Modal class="modalUser" v-model="modalUser" title="User">
+            <Alert class="alert-information" show-icon>
+              <Icon class="icon-item" type="person" slot="icon" size=30></Icon>
+              <template slot="desc">
+                <div>
+                  <span class="span-item">{{ user.fromName }}</span>
+                </div>
+              </template>
+            </Alert>
+            <Alert class="alert-information" show-icon>
+              <Icon class="icon-item" type="ios-telephone" slot="icon" size=30></Icon>
+              <template slot="desc">
+                <div>
+                  <span class="span-item">{{ user.fromTel }}</span>
+                </div>
+              </template>
+            </Alert>
+          </Modal>
+
+          <Modal class="modalTeam" v-model="modalTeam" :title="team.teamName">
+            <Alert class="alert-information" show-icon>
+              <Icon class="icon-item" type="star" slot="icon" size=30></Icon>
+              <template slot="desc">
+                <div>
+                  <span class="span-item">{{ team.founder }}</span>
+                </div>
+              </template>
+            </Alert>
+            <Alert class="alert-information" show-icon>
+              <Icon class="icon-item" type="ios-people" slot="icon" size=30></Icon>
+              <template slot="desc">
+                <div>
+                  <span class="span-item">{{ team.population }}</span>
+                </div>
+              </template>
+            </Alert>
+          </Modal>
         </Content>
       </Layout>
     </Layout>
@@ -80,19 +121,36 @@ export default{
         messages: [
           {
             messageId: '1',
-            from: '13600000001',
+            type: 1,
+            fromTel: '13600000001',
+            fromName: '刘卓旻',
             teamName: 'System support',
             teamId: '00001'
           },
           {
             messageId: '2',
-            from: '13600000002',
+            type: 2,
+            fromTel: '13600000002',
+            fromName: '余学海',
             teamName: 'Overseas firmware',
             teamId: '00002'
           }
         ]
       },
-      spinShow: false
+      spinShow: false,
+      modalUser: false,
+      checkable: false,
+      user: {
+        fromName: '',
+        fromTel: ''
+      },
+      team: {
+        teamId: '',
+        teamName: '',
+        population: 0,
+        founder: ''
+      },
+      modalTeam: false
     }
   },
   components: {
@@ -105,8 +163,35 @@ export default{
       this.info.name = '曾宇' // test
       this.info.email = '1213814232@qq.com' // test
     },
-    clickTeam (teamId) {
-
+    clickUser (fromName, fromTel) {
+      this.user.fromName = fromName
+      this.user.fromTel = fromTel
+      this.modalUser = true
+    },
+    clickTeam (teamName, teamId) {
+      this.spinShow = true
+      this.team.teamName = teamName
+      this.team.teamId = teamId
+      let _this = this
+      setTimeout(() => {
+        _this.team.population = 1
+        _this.team.founder = '曾宇'
+        _this.spinShow = false
+        _this.modalTeam = true
+      }, 1000)
+      informationApi.team(teamId).then(function (response) {
+        if (response.data.result === true) {
+          _this.team.population = response.data.population
+          _this.team.founder = response.data.founder
+          _this.modalTeam = true
+        } else {
+          _this.$Notice.error({
+            title: 'Get team information failed.',
+            desc: ''
+          })
+          _this.spinShow = false
+        }
+      })
     },
     reply (messageId, result) {
       this.spinShow = true
@@ -170,5 +255,26 @@ export default{
 
 .btn-message {
   margin-right: 10px;
+}
+
+.modalUser{
+  max-width: 200px;
+  min-width: 100px;
+  height: auto;
+}
+
+.btn-user{
+  background-color:#80848f;
+  color:#fff;
+}
+
+.btn-invite{
+  background-color:#2d8cf0;
+  color:#fff;
+}
+
+.btn-apply{
+  background-color:#ff9900;
+  color:#fff;
 }
 </style>

@@ -7,8 +7,9 @@ export const accountApi = {
 
 export const informationApi = {
   informationUrl: () => '',
-  replyUrl: () => '',
-  modifyUrl: () => ''
+  modifyUrl: () => '',
+  teamUrl: () => '',
+  replyUrl: () => ''
 }
 
 export const projectApi = {

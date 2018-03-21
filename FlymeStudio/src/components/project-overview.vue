@@ -164,7 +164,7 @@
                     <span class="span-form">Set content</span>
                   </FormItem>
                   <FormItem prop="content">
-                    <mavon-editor class="mavonEditor" v-model="formItem.content" :subfield="subfieldModify" :defaultOpen="defaultOpenModify" :placeholder="placeholder" :toolbarsFlag="toolbarsFlagModify" :toolbars="toolbarsModify"></mavon-editor>
+                    <mavon-editor class="mavon-editor" v-model="formItem.content" :subfield="subfieldModify" :defaultOpen="defaultOpenModify" :placeholder="placeholder" :toolbarsFlag="toolbarsFlagModify" :toolbars="toolbarsModify"></mavon-editor>
                   </FormItem>
                   <FormItem>
                     <Icon class="icon-item" type="flag" size=18></Icon>
@@ -763,7 +763,7 @@ export default{
   display: block;
 }
 
-.mavonEditor {
+.mavon-editor {
   height : 400px;
   width  : 100%;
   z-index: 5;

@@ -44,7 +44,7 @@
               <Button class="btn-upload" style="margin-left:40px;" @click="modalUpload = true"><Icon type="upload" size=18></Icon><span class="span-btn">Upload</span></Button>
             </FormItem>
             <FormItem prop="content">
-              <mavon-editor class="mavonEditor" v-model="formItem.content" :subfield="subfield" :defaultOpen="defaultOpen" :placeholder="placeholder" :toolbarsFlag="toolbarsFlag" :toolbars="toolbars"></mavon-editor>
+              <mavon-editor class="mavon-editor" v-model="formItem.content" :subfield="subfield" :defaultOpen="defaultOpen" :placeholder="placeholder" :toolbarsFlag="toolbarsFlag" :toolbars="toolbars"></mavon-editor>
             </FormItem>
             <FormItem>
               <Icon class="icon-item" type="flag" size=18></Icon>
@@ -343,7 +343,7 @@ export default{
   font-size  : 16px;
 }
 
-.mavonEditor {
+.mavon-editor {
   height : 600px;
   width  : 100%;
   z-index: 5;

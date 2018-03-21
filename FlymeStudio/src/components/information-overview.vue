@@ -15,7 +15,7 @@
           </Spin>
 
           <Alert class="alert-information" show-icon>
-            <Icon class="icon-item" type="person" slot="icon" size=30></Icon>
+            <Icon class="icon-item" type="person" slot="icon" size=25></Icon>
             <template slot="desc">
               <div>
                 <span class="span-item">{{ info.name }}</span>
@@ -24,7 +24,7 @@
           </Alert>
 
           <Alert class="alert-information" show-icon>
-            <Icon class="icon-item" type="ios-telephone" slot="icon" size=30></Icon>
+            <Icon class="icon-item" type="ios-telephone" slot="icon" size=25></Icon>
             <template slot="desc">
               <div>
                 <span class="span-item">{{ info.tel }}</span>
@@ -33,7 +33,7 @@
           </Alert>
 
           <Alert class="alert-information" show-icon>
-            <Icon class="icon-item" type="email" slot="icon" size=30></Icon>
+            <Icon class="icon-item" type="email" slot="icon" size=25></Icon>
             <template slot="desc">
               <div>
                 <span class="span-item">{{ info.email }}</span>
@@ -46,7 +46,7 @@
             <span v-if="item.type == 1"> invited you to join </span><span v-else-if="item.type == 2"> applied to join </span>
             <Button v-if="item.type == 1" class="btn-invite" @click="clickTeam(item.teamName, item.teamId)">{{ item.teamName }}</Button>
             <Button v-else-if="item.type == 2" class="btn-apply" @click="clickTeam(item.teamName, item.teamId)">{{ item.teamName }}</Button>
-            <Icon class="icon-item" type="ios-people" slot="icon" size=30></Icon>
+            <Icon class="icon-item" type="ios-people" slot="icon" size=25></Icon>
             <template slot="desc">
               <div class="div-message">
                 <Button class="btn-message" type="success" @click="reply(item.messageId, true)">Accept</Button>
@@ -55,9 +55,9 @@
             </template>
           </Alert>
 
-          <Modal class="modalUser" v-model="modalUser" title="User" ok-text="Ok" cancel-text="Cancel">
+          <Modal class="modal-user" v-model="modalUser" title="User" ok-text="Ok" cancel-text="Cancel">
             <Alert class="alert-information" show-icon>
-              <Icon class="icon-item" type="person" slot="icon" size=30></Icon>
+              <Icon class="icon-item" type="person" slot="icon" size=25></Icon>
               <template slot="desc">
                 <div>
                   <span class="span-item">{{ user.fromName }}</span>
@@ -65,7 +65,7 @@
               </template>
             </Alert>
             <Alert class="alert-information" show-icon>
-              <Icon class="icon-item" type="ios-telephone" slot="icon" size=30></Icon>
+              <Icon class="icon-item" type="ios-telephone" slot="icon" size=25></Icon>
               <template slot="desc">
                 <div>
                   <span class="span-item">{{ user.fromTel }}</span>
@@ -76,7 +76,15 @@
 
           <Modal class="modalTeam" v-model="modalTeam" title="Team" ok-text="Ok" cancel-text="Cancel">
             <Alert class="alert-information" show-icon>
-              <Icon class="icon-item" type="ios-people" slot="icon" size=30></Icon>
+              <Icon class="icon-item" type="pound" slot="icon" size=25></Icon>
+              <template slot="desc">
+                <div>
+                  <span class="span-item">{{ team.teamId }}</span>
+                </div>
+              </template>
+            </Alert>
+            <Alert class="alert-information" show-icon>
+              <Icon class="icon-item" type="ios-people" slot="icon" size=25></Icon>
               <template slot="desc">
                 <div>
                   <span class="span-item">{{ team.teamName }}</span>
@@ -84,18 +92,18 @@
               </template>
             </Alert>
             <Alert class="alert-information" show-icon>
-              <Icon class="icon-item" type="star" slot="icon" size=30></Icon>
+              <Icon class="icon-item" type="star" slot="icon" size=25></Icon>
               <template slot="desc">
                 <div>
-                  <span class="span-item">{{ team.founder }}</span>
+                  <span class="span-item">{{ team.manager }}</span>
                 </div>
               </template>
             </Alert>
             <Alert class="alert-information" show-icon>
-              <Icon class="icon-item" type="chatbubbles" slot="icon" size=30></Icon>
+              <Icon class="icon-item" type="chatbubbles" slot="icon" size=25></Icon>
               <template slot="desc">
                 <div>
-                  <span class="span-item">{{ team.population }}</span>
+                  <span class="span-item">{{ team.count }}</span>
                 </div>
               </template>
             </Alert>
@@ -155,8 +163,8 @@ export default{
       team: {
         teamId: '',
         teamName: '',
-        population: 0,
-        founder: ''
+        count: 0,
+        manager: ''
       },
       modalTeam: false
     }
@@ -182,15 +190,19 @@ export default{
       this.team.teamId = teamId
       let _this = this
       setTimeout(() => {
-        _this.team.population = 1
-        _this.team.founder = '曾宇'
+        _this.team.count = 1
+        if (teamId === '00001') {
+          _this.team.manager = '李永达'
+        } else if (teamId === '00002') {
+          _this.team.manager = '段启智'
+        }
         _this.spinShow = false
         _this.modalTeam = true
       }, 1000)
       informationApi.team(teamId).then(function (response) {
         if (response.data.result === true) {
-          _this.team.population = response.data.population
-          _this.team.founder = response.data.founder
+          _this.team.count = response.data.count
+          _this.team.manager = response.data.manager
           _this.modalTeam = true
         } else {
           _this.$Notice.error({
@@ -204,7 +216,6 @@ export default{
     reply (messageId, result) {
       this.spinShow = true
       let _this = this
-
       setTimeout(() => {
         _this.$Notice.success({
           title: 'Reply successful.',
@@ -265,7 +276,7 @@ export default{
   margin-right: 10px;
 }
 
-.modalUser {
+.modal-user {
   max-width: 200px;
   min-width: 100px;
   height   : auto;

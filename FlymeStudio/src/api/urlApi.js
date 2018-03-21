@@ -9,6 +9,8 @@ export const informationApi = {
   informationUrl: () => '',
   modifyUrl: () => '',
   teamUrl: () => '',
+  searchTeamUrl: () => '',
+  joinTeamUrl: () => '',
   createTeamUrl: () => '',
   replyUrl: () => ''
 }

@@ -7,8 +7,8 @@
         <span class="span-menu-item">Information</span>
       </template>
       <MenuItem name="1">Overview</MenuItem>
-      <MenuItem name="2">Teamwork</MenuItem>
-      <MenuItem name="3">Modify</MenuItem>
+      <MenuItem name="2">Modify</MenuItem>
+      <MenuItem name="3">Teamwork</MenuItem>
     </Submenu>
     <Submenu name="10">
       <template slot="title">
@@ -53,10 +53,10 @@ export default {
           this.$router.push('/information/overview')
           break
         case '2':
-          this.$router.push('/information/teamwork')
+          this.$router.push('/information/modify')
           break
         case '3':
-          this.$router.push('/information/modify')
+          this.$router.push('/information/teamwork')
           break
         case '11':
           this.$router.push('/project/overview')

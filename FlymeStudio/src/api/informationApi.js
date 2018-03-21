@@ -51,6 +51,35 @@ export default {
       withCredentials: true
     })
   },
+  searchTeam (searchContent) {
+    var data = qs.stringify({
+      searchContent: searchContent
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: informationApi.searchTeamUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
+  joinTeam (tel, teamId) {
+    var data = qs.stringify({
+      tel: tel,
+      teamId: teamId
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: informationApi.joinTeamUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
   createTeam (teamName) {
     var data = qs.stringify({
       teamName: teamName

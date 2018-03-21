@@ -3,11 +3,26 @@
 ---
 ## Dependency
 
+### State Management
 - [Vuex](https://vuex.vuejs.org/zh-cn/)
-> npm install vuex --save
+```
+npm install vuex --save
+```
 
+### Markdown Editor
 - [mavonEditor](https://github.com/hinesboy/mavonEditor)
-> npm install mavon-editor --save
+```
+npm install mavon-editor --save
+```
 
+### UI
 - [iView](https://github.com/iview/iview)
-> npm install iview --save
+```
+npm install iview --save
+```
+
+### HTTP
+- [axios](https://github.com/axios/axios)
+```
+npm install axios
+```

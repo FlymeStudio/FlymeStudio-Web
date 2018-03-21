@@ -38,7 +38,7 @@
 
 <script>
 export default {
-  name: 'left-nav',
+  name: 'component-nav-left',
   created () {
     this.componentId = this.activeName
   },

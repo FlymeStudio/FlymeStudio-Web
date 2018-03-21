@@ -45,7 +45,7 @@ import accountApi from '../api/accountApi'
 import informationApi from '../api/informationApi'
 
 export default {
-  name: 'top-nav',
+  name: 'component-nav-top',
   created () {
     this.getInfo()
   },

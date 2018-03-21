@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import topNav from './component-topnav.vue'
-import leftNav from './component-leftnav.vue'
+import topNav from './component-nav-top.vue'
+import leftNav from './component-nav-left.vue'
 import componentFooter from './component-footer.vue'
 
 export default {

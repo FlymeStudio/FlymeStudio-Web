@@ -53,9 +53,9 @@
 </div>
 </template>
 
-<script type="text/javascript">
-import topNav from './component-topnav.vue'
-import leftNav from './component-leftnav.vue'
+<script>
+import topNav from './component-nav-top.vue'
+import leftNav from './component-nav-left.vue'
 import componentFooter from './component-footer.vue'
 
 export default{
@@ -65,7 +65,8 @@ export default{
   },
   data () {
     return {
-      currentType: '1'
+      currentType: '1',
+      spinShow: false
     }
   },
   components: {

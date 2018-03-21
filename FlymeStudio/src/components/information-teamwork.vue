@@ -51,9 +51,9 @@
 </div>
 </template>
 
-<script type="text/javascript">
-import topNav from './component-topnav.vue'
-import leftNav from './component-leftnav.vue'
+<script>
+import topNav from './component-nav-top.vue'
+import leftNav from './component-nav-left.vue'
 import componentFooter from './component-footer.vue'
 import myTeam from './component-team-my.vue'
 import joinTeam from './component-team-join.vue'

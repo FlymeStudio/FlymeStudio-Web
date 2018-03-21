@@ -104,9 +104,9 @@
 }
 
 .icon-item {
-  margin    : auto;
+  width     : 18px;
   text-align: center;
-  margin    : auto;
+  margin    : auto auto auto 0;
 }
 
 .icon-spin {

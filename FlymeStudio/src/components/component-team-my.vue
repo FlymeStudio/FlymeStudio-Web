@@ -6,7 +6,17 @@
 
 <script>
 export default {
-  name: 'component-team-my'
+  name: 'component-team-my',
+  created () {
+    this.getInfo()
+  },
+  data () {
+    return {
+    }
+  },
+  methods: {
+
+  }
 }
 </script>
 

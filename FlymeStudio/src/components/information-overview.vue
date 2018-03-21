@@ -1,16 +1,21 @@
 <template>
 <div class="layout">
   <Layout>
+
     <Header>
       <topNav></topNav>
     </Header>
+
     <Layout>
+
       <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
         <leftNav activeName="1"></leftNav>
       </Sider>
+
       <Layout :style="{padding: '0 24px'}">
         <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
-          <Spin style="z-index:10;" fix v-if="spinShow">
+
+          <Spin class="spin" fix v-if="spinShow">
             <Icon class="icon-spin" type="load-c" size=50></Icon>
           </Spin>
 
@@ -55,7 +60,8 @@
             </template>
           </Alert>
 
-          <Modal class="modal-user" v-model="modalUser" title="User" ok-text="Ok" cancel-text="Cancel">
+          <!-- user -->
+          <Modal class="modal-user" v-model="modalUser" :closable="false" :mask-closable="false" title="User" ok-text="Ok" cancel-text="Cancel">
             <Alert class="alert-information" show-icon>
               <Icon class="icon-item" type="person" slot="icon" size=25></Icon>
               <template slot="desc">
@@ -74,7 +80,8 @@
             </Alert>
           </Modal>
 
-          <Modal class="modalTeam" v-model="modalTeam" title="Team" ok-text="Ok" cancel-text="Cancel">
+          <!-- team -->
+          <Modal class="modalTeam" v-model="modalTeam" :closable="false" :mask-closable="false" title="Team" ok-text="Ok" cancel-text="Cancel">
             <Alert class="alert-information" show-icon>
               <Icon class="icon-item" type="pound" slot="icon" size=25></Icon>
               <template slot="desc">
@@ -108,11 +115,15 @@
               </template>
             </Alert>
           </Modal>
+
         </Content>
       </Layout>
     </Layout>
+
     <componentFooter></componentFooter>
+
     <BackTop></BackTop>
+
   </Layout>
 </div>
 </template>
@@ -273,6 +284,7 @@ export default{
 }
 
 .btn-message {
+  font-weight : bold;
   margin-right: 10px;
 }
 
@@ -283,16 +295,19 @@ export default{
 }
 
 .btn-user {
+  font-weight     : bold;
   background-color: #80848f;
   color           : #fff;
 }
 
 .btn-invite {
+  font-weight     : bold;
   background-color: #2d8cf0;
   color           : #fff;
 }
 
 .btn-apply {
+  font-weight     : bold;
   background-color: #ff9900;
   color           : #fff;
 }

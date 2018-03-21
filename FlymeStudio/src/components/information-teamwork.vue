@@ -1,13 +1,17 @@
 <template>
 <div class="layout">
   <Layout>
+
     <Header>
       <topNav></topNav>
     </Header>
+
     <Layout>
+
       <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
         <leftNav activeName="3"></leftNav>
       </Sider>
+
       <Layout :style="{padding: '0 24px'}">
         <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
 
@@ -36,9 +40,13 @@
 
         </Content>
       </Layout>
+
     </Layout>
+
     <componentFooter></componentFooter>
+
     <BackTop></BackTop>
+
   </Layout>
 </div>
 </template>

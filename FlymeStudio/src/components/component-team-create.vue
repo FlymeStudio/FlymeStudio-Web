@@ -1,6 +1,9 @@
 <template>
-  <div>
+<div>
+  <!-- content -->
   <Alert class="alert">
+
+    <!-- agreement -->
     <Alert type="warning" style="color:red;">
       <span class="span-agreement">Agreement</span>
       <template slot="desc">
@@ -31,15 +34,21 @@
         </RadioGroup>
       </template>
     </Alert>
+
+    <!-- create -->
     <Input class="input-create" v-model="createName" placeholder="Team name" clearable></Input>
     <Button class="btn-create" type="primary" disabled v-if="agreementCreate == 0">Create</Button>
     <Button class="btn-create" type="primary" v-else @click="submit()">Submit</Button>
+
   </Alert>
+
+  <!-- confirm -->
   <Modal class="modal-confirm" v-model="modalCreate" title="Confirm" :mask-closable="false" :closable="false" ok-text="Create" cancel-text="Cancel" loading @on-ok="create()">
     <p>Input the password to check your identity:</p>
     <Input style="margin-top:20px;" type="password" v-model="password" size="large" placeholder="Password" clearable>
     </Input>
   </Modal>
+
 </div>
 </template>
 

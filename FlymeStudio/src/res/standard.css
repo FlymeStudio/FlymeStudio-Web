@@ -118,3 +118,7 @@
   display    : flex;
   align-items: center;
 }
+
+.spin {
+  z-index: 10;
+}

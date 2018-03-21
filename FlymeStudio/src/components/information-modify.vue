@@ -1,16 +1,21 @@
 <template>
 <div class="layout">
   <Layout>
+
     <Header>
       <topNav></topNav>
     </Header>
+
     <Layout>
+
       <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
         <leftNav activeName="2"></leftNav>
       </Sider>
+
       <Layout :style="{padding: '0 24px'}">
         <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
           <Form class="form" ref="formItem" :model="formItem" :rules="ruleItem">
+
             <Alert type="info">
               <FormItem class="form-item">
                 <Icon class="icon-item" style="margin:auto 10px;" type="person" size=18></Icon>
@@ -22,6 +27,7 @@
                 </Input>
               </FormItem>
             </Alert>
+
             <Alert type="info">
               <FormItem class="form-item">
                 <Icon class="icon-item" style="margin:auto 10px;" type="ios-telephone" size=18></Icon>
@@ -33,6 +39,7 @@
                 </Input>
               </FormItem>
             </Alert>
+
             <Alert type="info">
               <FormItem class="form-item">
                 <Icon class="icon-item" style="margin:auto 10px;" type="email" size=18></Icon>
@@ -44,6 +51,7 @@
                 </Input>
               </FormItem>
             </Alert>
+
             <Alert type="info">
               <FormItem class="form-item" prop="newPassword">
                 <Input type="password" v-model="formItem.newPassword" size="large" placeholder="New password" clearable>
@@ -63,11 +71,15 @@
                 </div>
               </FormItem>
             </Alert>
+
             <FormItem class="form-item-btn">
               <Button class="btn-item" type="primary" @click="handleSubmit('formItem')" style="margin-right:15px;">Submit</Button>
               <Button class="btn-item" @click="handleReset('formItem')" style="margin-left:15px;">Reset</Button>
             </FormItem>
+
           </Form>
+
+          <!-- confirm -->
           <Modal class="modal-confirm" v-model="modalModify" title="Confirm" :mask-closable="false" :closable="false" ok-text="Modify" cancel-text="Cancel" loading @on-ok="modify()">
             <p>Input the password to check your identity:</p>
             <Input style="margin-top:20px;" type="password" v-model="password" size="large" placeholder="Password" clearable>
@@ -76,8 +88,11 @@
         </Content>
       </Layout>
     </Layout>
+
     <componentFooter></componentFooter>
+
     <BackTop></BackTop>
+
   </Layout>
 </div>
 </template>

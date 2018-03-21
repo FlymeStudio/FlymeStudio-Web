@@ -1,10 +1,13 @@
 <template>
 <div class="layout">
   <Layout>
+
     <Header class="header">
       <Menu class="menu" mode="horizontal" theme="dark" @on-select="clickTopNav">
+
         <div class="layout-logo" @click="clickFlyme"></div>
         <div class="layout-title">Flyme Studio</div>
+
         <div class="layout-nav">
           <MenuItem name="0-1">
           <Icon type="log-in" size=18></Icon>
@@ -15,46 +18,59 @@
           Retrieve
           </MenuItem>
         </div>
+
       </Menu>
     </Header>
+
     <Content class="content">
       <Form class="form" ref="formItem" :model="formItem" :rules="ruleItem" v-show="isResultView == false">
+
         <FormItem class="form-item" prop="name">
           <Input type="text" v-model="formItem.name" placeholder="Username" size="large" clearable>
           <Icon type="person" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
+
         <FormItem class="form-item" prop="tel">
           <Input type="text" v-model="formItem.tel" placeholder="Telephone" size="large" clearable>
           <Icon type="ios-telephone" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
+
         <FormItem class="form-item" prop="email">
           <Input type="text" v-model="formItem.email" placeholder="Email" size="large" clearable>
           <Icon type="email" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
+
         <FormItem class="form-item" prop="password">
           <Input type="password" v-model="formItem.password" placeholder="Password" size="large" clearable>
           <Icon type="android-lock" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
+
         <FormItem class="form-item" prop="confirm">
           <Input type="password" v-model="formItem.confirm" placeholder="Confirm" size="large" clearable>
           <Icon type="checkmark" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
+
         <FormItem class="form-item-btn">
           <Button class="btn-item" type="primary" @click="handleSubmit('formItem')" style="margin-right:15px;" :loading="loading">Sign up</Button>
           <Button class="btn-item" @click="handleReset('formItem')" style="margin-left:15px;">Reset</Button>
         </FormItem>
+
       </Form>
+
       <div class="div-result" v-show="isResultView">
         <Icon class="icon-result" type="ios-people" size="35"></Icon>
         <div>Welcome to join <b>Flyme Studio</b>!</div>
       </div>
+
     </Content>
+
     <componentFooter></componentFooter>
+
   </Layout>
 </div>
 </template>

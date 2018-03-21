@@ -1,15 +1,20 @@
 <template>
 <div class="layout">
   <Layout>
+
     <Header>
       <topNav></topNav>
     </Header>
+
     <Layout>
+
       <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
         <leftNav activeName="11"></leftNav>
       </Sider>
+
       <Layout :style="{padding: '0 24px'}">
         <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
+
           <Menu class="menu" mode="horizontal" theme="light" @on-select="clickTag" active-name="0">
             <MenuItem class="menu-item" name="0">
             <Icon class="icon-item" type="bookmark" size=20></Icon>
@@ -32,83 +37,101 @@
             Daily
             </MenuItem>
           </Menu>
+
           <Layout>
             <Content :style="{padding: '15px 0', minHeight: '280px', background: '#fff'}">
+              <!-- spin -->
               <Spin fix v-if="spinShow">
                 <Icon class="icon-spin" type="load-c" size=50></Icon>
               </Spin>
 
+              <!-- collapse -->
               <Collapse>
-              <Panel name="Total" size="large">
-                <span class="data-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
-                <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true" :key="data.timestamp">
-                <Card>
-                  <div>
-                    <div class="card-top">
-                      <i-circle v-if="data.percent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
-                        <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
-                      </i-circle>
-                      <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
-                        <span>{{ data.percent }}%</span>
-                      </i-circle>
-                      <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd"/>
-                      <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
-                      <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+
+                <Panel name="Total">
+
+                  <!-- title -->
+                  <span class="data-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
+
+                  <!-- content -->
+                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true" :key="data.timestamp">
+                  <Card>
+                    <div>
+                      <div class="card-top">
+                        <i-circle v-if="data.percent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
+                          <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
+                        </i-circle>
+                        <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
+                          <span>{{ data.percent }}%</span>
+                        </i-circle>
+                        <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd"/>
+                        <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
+                        <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                      </div>
+                      <p class="card-title" slot="title">{{ data.title }}</p>
                     </div>
-                    <p class="card-title" slot="title">{{ data.title }}</p>
+                    </Card>
                   </div>
-                  </Card>
-                </div>
-              </Panel>
+                </Panel>
 
-              <Panel name="Done">
-                <span class="data-count" style="color:#19be6b;"> Done ({{ count.done }})</span>
-                <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent == 100" :key="data.timestamp">
-                  <Card>
-                    <div>
-                      <div class="card-top">
-                        <i-circle v-if="data.percent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
-                          <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
-                        </i-circle>
-                        <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
-                          <span>{{ data.percent }}%</span>
-                        </i-circle>
-                        <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd"/>
-                        <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
-                        <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
-                      </div>
-                      <p class="card-title" slot="title">{{ data.title }}</p>
-                    </div>
-                    </Card>
-                </div>
-              </Panel>
+                <Panel name="Done">
 
-              <Panel name="Doing">
-                <span class="data-count" style="color:#ed3f14;"> Doing ({{ count.doing }})</span>
-                <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent != 100" :key="data.timestamp">
-                  <Card>
-                    <div>
-                      <div class="card-top">
-                        <i-circle v-if="data.percent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
-                          <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
-                        </i-circle>
-                        <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
-                          <span>{{ data.percent }}%</span>
-                        </i-circle>
-                        <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd"/>
-                        <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
-                        <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                  <!-- title -->
+                  <span class="data-count" style="color:#19be6b;"> Done ({{ count.done }})</span>
+
+                  <!-- content -->
+                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent == 100" :key="data.timestamp">
+                    <Card>
+                      <div>
+                        <div class="card-top">
+                          <i-circle v-if="data.percent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
+                            <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
+                          </i-circle>
+                          <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
+                            <span>{{ data.percent }}%</span>
+                          </i-circle>
+                          <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd"/>
+                          <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
+                          <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                        </div>
+                        <p class="card-title" slot="title">{{ data.title }}</p>
                       </div>
-                      <p class="card-title" slot="title">{{ data.title }}</p>
-                    </div>
-                    </Card>
-                </div>
-              </Panel>
+                      </Card>
+                  </div>
+                </Panel>
+
+                <Panel name="Doing">
+
+                  <!-- title -->
+                  <span class="data-count" style="color:#ed3f14;"> Doing ({{ count.doing }})</span>
+
+                  <!-- content -->
+                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent != 100" :key="data.timestamp">
+                    <Card>
+                      <div>
+                        <div class="card-top">
+                          <i-circle v-if="data.percent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
+                            <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
+                          </i-circle>
+                          <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
+                            <span>{{ data.percent }}%</span>
+                          </i-circle>
+                          <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd"/>
+                          <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
+                          <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                        </div>
+                        <p class="card-title" slot="title">{{ data.title }}</p>
+                      </div>
+                      </Card>
+                  </div>
+                </Panel>
+
               </Collapse>
 
               <!-- modal-detail -->
               <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="detailModal" ok-text="Ok" cancel-text="Cancel">
                 <div>
+
                   <div class="card-top">
                     <i-circle class="card-circle" :size=40 v-if="dataCopy.percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
                       <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
@@ -118,8 +141,11 @@
                     </i-circle>
                     <DatePicker class="card-date" type="date" size="large" v-model="dataCopy.date" readonly format="yyyy-MM-dd"/>
                   </div>
+
                   <p class="detail-title" slot="title">{{ dataCopy.title }}</p>
+
                   <mavon-editor class="detail-content" v-model="dataCopy.content" :subfield="subfieldDetail" :defaultOpen="defaultOpenDetail" :toolbarsFlag="toolbarsFlagDetail">{{ dataCopy.content }}</mavon-editor>
+
                   <div class="div-plans">
                     <Alert class="alert-plans" v-for="item in dataCopy.plans" :key="item.timestamp">
                       <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
@@ -130,11 +156,13 @@
                       </div>
                     </Alert>
                   </div>
+
                 </div>
               </Modal>
 
               <!-- modal-modify -->
               <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modifyModal" @on-ok="submitModify" loading  ok-text="Modify" cancel-text="Cancel">
+
                 <Form class="form" ref="formItem" :model="formItem">
                   <FormItem>
                     <Icon class="icon-item" type="bookmark" size=18></Icon>
@@ -145,6 +173,7 @@
                         <Option v-for="item in types" :value="item.value" :key="item.value">{{ item.label }}</Option>
                       </select>
                   </FormItem>
+
                   <FormItem>
                     <Icon class="icon-item" type="calendar" size=18></Icon>
                     <span class="span-form">Set date</span>
@@ -152,6 +181,7 @@
                   <FormItem prop="date">
                     <DatePicker class="card-date" type="date" size="large" v-model="formItem.date" placeholder="Date" confirm/>
                   </FormItem>
+
                   <FormItem>
                     <Icon class="icon-item" type="pin" size=18></Icon>
                     <span class="span-form">Set title</span>
@@ -159,6 +189,7 @@
                   <FormItem prop="title">
                     <Input class="input-title" type="text" v-model="formItem.title" placeholder="Title" clearable size="large" />
                   </FormItem>
+
                   <FormItem>
                     <Icon class="icon-item" type="social-markdown" size=18></Icon>
                     <span class="span-form">Set content</span>
@@ -166,6 +197,7 @@
                   <FormItem prop="content">
                     <mavon-editor class="mavon-editor" v-model="formItem.content" :subfield="subfieldModify" :defaultOpen="defaultOpenModify" :placeholder="placeholder" :toolbarsFlag="toolbarsFlagModify" :toolbars="toolbarsModify"></mavon-editor>
                   </FormItem>
+
                   <FormItem>
                     <Icon class="icon-item" type="flag" size=18></Icon>
                     <span class="span-form">Set plans</span>
@@ -187,6 +219,7 @@
                       </div>
                     </Alert>
                   </FormItem>
+
                 </Form>
               </Modal>
 
@@ -195,8 +228,11 @@
         </Content>
       </Layout>
     </Layout>
+
     <componentFooter></componentFooter>
+
     <BackTop></BackTop>
+
   </Layout>
 </div>
 </template>

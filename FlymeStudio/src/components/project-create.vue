@@ -1,55 +1,76 @@
 <template>
 <div class="layout">
   <Layout>
+
     <Header>
       <topNav></topNav>
     </Header>
+
     <Layout>
+
       <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
         <leftNav activeName="12"></leftNav>
       </Sider>
+
       <Layout :style="{padding: '0 24px'}">
         <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
-          <Spin style="z-index:10;" fix v-if="spinShow">
+
+          <!-- spin -->
+          <Spin class="spin" fix v-if="spinShow">
             <Icon class="icon-spin" type="load-c" size=50></Icon>
           </Spin>
 
           <Form ref="formItem" :model="formItem" :rules="ruleItem">
+
+            <!-- type -->
             <FormItem>
               <Icon class="icon-item" type="bookmark" size=18></Icon>
               <span class="span-form">Set type</span>
             </FormItem>
+
             <FormItem prop="type">
               <Select class="select-type" v-model="formItem.type" size="large" placeholder="Type">
                   <Option v-for="item in types" :value="item.value" :key="item.value">{{ item.label }}</Option>
                 </select>
             </FormItem>
+
+            <!-- date -->
             <FormItem>
               <Icon class="icon-item" type="calendar" size=18></Icon>
               <span class="span-form">Set date</span>
             </FormItem>
+
             <FormItem prop="date">
               <DatePicker class="datePicker" type="date" size="large" v-model="formItem.date" placeholder="Date" confirm/>
             </FormItem>
+
+            <!-- title -->
             <FormItem>
               <Icon class="icon-item" type="pin" size=18></Icon>
               <span class="span-form">Set title</span>
             </FormItem>
+
             <FormItem prop="title">
               <Input class="input-title" type="text" v-model="formItem.title" placeholder="Title" clearable size="large" />
             </FormItem>
+
+            <!-- content -->
             <FormItem>
               <Icon class="icon-item" type="social-markdown" size=18></Icon>
               <span class="span-form">Set content</span>
               <Button class="btn-upload" style="margin-left:40px;" @click="modalUpload = true"><Icon type="upload" size=18></Icon><span class="span-btn">Upload</span></Button>
             </FormItem>
+
             <FormItem prop="content">
               <mavon-editor class="mavon-editor" v-model="formItem.content" :subfield="subfield" :defaultOpen="defaultOpen" :placeholder="placeholder" :toolbarsFlag="toolbarsFlag" :toolbars="toolbars"></mavon-editor>
             </FormItem>
+
+            <!-- plans -->
             <FormItem>
               <Icon class="icon-item" type="flag" size=18></Icon>
               <span class="span-form">Set plans</span>
             </FormItem>
+
             <FormItem>
               <Alert class="alert-projects" type="success" v-for="item in formItem.plans" :key="item.timestamp">
                 <div class="div-project">
@@ -66,29 +87,39 @@
                 </div>
               </Alert>
             </FormItem>
+
             <br>
             <br>
             <br>
+
+            <!-- button -->
             <FormItem>
               <Button type="primary" class="btn-item" @click="handleSubmit('formItem')" size="large">Save</Button>
               <Button class="btn-item" @click="handleReset('formItem')" size="large">Reset</Button>
             </FormItem>
 
+            <!-- upload -->
             <Modal class="modal-confirm" v-model="modalUpload" title="Upload" :mask-closable="false" :closable="false"  ok-text="Upload" cancel-text="Cancel" loading @on-ok="upload()">
               <input class="input-chooser" type="file" accept=".md" id="chooser">
               <p>The content you upload will cover the origin content.</p>
               <p>Are you sure to upload?</p>
             </Modal>
 
+            <!-- save -->
             <Modal class="modal-confirm" v-model="modalSave" title="Confirm" :mask-closable="false" :closable="false"  ok-text="Save" cancel-text="Cancel" loading @on-ok="save()">
               <p>Are you sure to save?</p>
             </Modal>
+
           </Form>
+
         </Content>
       </Layout>
     </Layout>
+
     <componentFooter></componentFooter>
+
     <BackTop></BackTop>
+
   </Layout>
 </div>
 </template>

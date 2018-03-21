@@ -1,6 +1,7 @@
 <template>
 <div>
   <Menu class="menu" theme="light" width="auto" @on-select="clickLeftNav" :active-name="componentId" :open-names="['0', '10', '20']">
+
     <Submenu name="0">
       <template slot="title">
         <Icon type="person" size=18></Icon>
@@ -10,6 +11,7 @@
       <MenuItem name="2">Modify</MenuItem>
       <MenuItem name="3">Teamwork</MenuItem>
     </Submenu>
+
     <Submenu name="10">
       <template slot="title">
         <Icon type="clipboard" size=18></Icon>
@@ -19,6 +21,7 @@
       <MenuItem name="12">Create</MenuItem>
       <MenuItem name="13">Search</MenuItem>
     </Submenu>
+
     <Submenu name="20">
       <template slot="title">
         <Icon type="document-text" size=18></Icon>
@@ -28,6 +31,7 @@
       <MenuItem name="22">Create</MenuItem>
       <MenuItem name="23">Search</MenuItem>
     </Submenu>
+
   </Menu>
 </div>
 </template>

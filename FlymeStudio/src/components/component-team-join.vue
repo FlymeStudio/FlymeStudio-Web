@@ -1,9 +1,14 @@
 <template>
 <div>
+  <!-- content -->
   <Alert class="alert">
-    <Spin style="z-index:10;" fix v-if="spinShow">
+
+    <!-- spin -->
+    <Spin class="spin" fix v-if="spinShow">
       <Icon class="icon-spin" type="load-c" size=50></Icon>
     </Spin>
+
+    <!-- agreement -->
     <Alert type="warning" style="color:red;">
       <span class="span-agreement">Agreement</span>
       <template slot="desc">
@@ -34,6 +39,8 @@
         </RadioGroup>
       </template>
     </Alert>
+
+    <!-- join -->
     <div class="div-search">
       <Input class="input-search" v-model="searchContent" placeholder="Team id or name" clearable></Input>
       <Button class="btn" type="primary" shape="circle" icon="ios-search" @click="search()">Search</Button>
@@ -210,25 +217,22 @@ export default {
 .radio-agreement {
   font-size: 16px;
 }
-.div-search{
-margin-top: 50px;
+
+.div-search {
+  margin-top: 50px;
 }
 
-.input-search{
-  width     : 160px;
+.input-search {
+  width: 160px;
 }
 
-.btn{
-    width     : auto;
-    font-weight: bold;
-    margin-left: 15px;
+.btn {
+  width      : auto;
+  font-weight: bold;
+  margin-left: 15px;
 }
 
-.table-search{
+.table-search {
   margin-top: 20px;
-}
-
-.btn{
-
 }
 </style>

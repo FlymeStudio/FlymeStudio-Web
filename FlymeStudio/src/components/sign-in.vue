@@ -1,10 +1,13 @@
 <template>
 <div class="layout">
   <Layout>
+
     <Header class="header">
       <Menu class="menu" mode="horizontal" theme="dark" @on-select="clickTopNav">
+
         <div class="layout-logo" @click="clickFlyme"></div>
         <div class="layout-title">Flyme Studio</div>
+
         <div class="layout-nav">
           <MenuItem name="0-1">
           <Icon class="item-icon" type="person-add" size=18></Icon>
@@ -15,27 +18,35 @@
           Retrieve
           </MenuItem>
         </div>
+
       </Menu>
     </Header>
+
     <Content class="content">
       <Form class="form" ref="formItem" :model="formItem" :rules="ruleItem">
+
         <FormItem class="form-item" prop="id">
           <Input type="text" v-model="formItem.id" placeholder="Tel or email" size="large" clearable>
           <Icon type="person" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
+
         <FormItem class="form-item" prop="password">
           <Input type="password" v-model="formItem.password" placeholder="Password" size="large" clearable>
           <Icon type="android-lock" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
+
         <FormItem class="form-item-btn">
           <Button class="btn-item" type="primary" @click="handleSubmit('formItem')" style="margin-right:15px;" :loading="loading">Sign in</Button>
           <Button class="btn-item" @click="handleReset('formItem')" style="margin-left:15px;">Reset</Button>
         </FormItem>
+
       </Form>
     </Content>
+
     <componentFooter></componentFooter>
+
   </Layout>
 </div>
 </template>

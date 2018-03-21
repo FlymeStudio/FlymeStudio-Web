@@ -1,9 +1,14 @@
 <template>
 <div>
   <Menu class="menu" mode="horizontal" theme="dark" @on-select="clickTopNav">
+
+    <!-- left -->
     <div class="layout-logo" @click="clickFlyme"></div>
     <div class="layout-title" @click="clickTitle">Flyme Studio</div>
+
+    <!-- right -->
     <div class="layout-nav">
+
       <MenuItem name="1">
       <Icon class="icon-item" type="person" size=18></Icon>
       <span v-if="info.messages.length == 0" class="span-item">
@@ -13,19 +18,25 @@
         <Badge dot>{{ info.name }}</Badge>
       </span>
       </MenuItem>
+
       <MenuItem name="2">
       <Icon class="icon-item" type="help" size=18></Icon>
       <span class="span-item">Help</span>
       </MenuItem>
+
       <MenuItem name="3">
       <Icon class="icon-item" type="log-out" size=18></Icon>
       <span class="span-item">Sign out</span>
       </MenuItem>
+
     </div>
   </Menu>
-  <Spin style="z-index:10;" fix v-if="spinShow">
+
+  <!-- spin -->
+  <Spin class="spin" fix v-if="spinShow">
     <Icon class="icon-spin" type="load-c" size=50></Icon>
   </Spin>
+
 </div>
 </template>
 

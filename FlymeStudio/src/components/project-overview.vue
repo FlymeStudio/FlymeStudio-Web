@@ -12,23 +12,23 @@
         <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
           <Menu class="menu" mode="horizontal" theme="light" @on-select="clickTag" active-name="0">
             <MenuItem class="menu-item" name="0">
-            <Icon type="bookmark" size=18></Icon>
+            <Icon class="icon-item" type="bookmark" size=20></Icon>
             All
             </MenuItem>
             <MenuItem class="menu-item" name="1">
-            <Icon type="bookmark" size=18></Icon>
+            <Icon class="icon-item" type="bookmark" size=20></Icon>
             Yearly
             </MenuItem>
             <MenuItem class="menu-item" name="2">
-            <Icon type="bookmark" size=18></Icon>
+            <Icon class="icon-item" type="bookmark" size=20></Icon>
             Monthly
             </MenuItem>
             <MenuItem class="menu-item" name="3">
-            <Icon type="bookmark" size=18></Icon>
+            <Icon class="icon-item" type="bookmark" size=20></Icon>
             Weekly
             </MenuItem>
             <MenuItem class="menu-item" name="4">
-            <Icon type="bookmark" size=18></Icon>
+            <Icon class="icon-item" type="bookmark" size=20></Icon>
             Daily
             </MenuItem>
           </Menu>
@@ -107,7 +107,7 @@
               </Collapse>
 
               <!-- modal-detail -->
-              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="detailModal">
+              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="detailModal" ok-text="Ok" cancel-text="Cancel">
                 <div>
                   <div class="card-top">
                     <i-circle class="card-circle" :size=40 v-if="dataCopy.percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
@@ -134,7 +134,7 @@
               </Modal>
 
               <!-- modal-modify -->
-              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modifyModal" @on-ok="submitModify" :loading="loadingModify">
+              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modifyModal" @on-ok="submitModify" loading  ok-text="Modify" cancel-text="Cancel">
                 <Form class="form" ref="formItem" :model="formItem">
                   <FormItem>
                     <Icon class="icon-item" type="bookmark" size=18></Icon>
@@ -430,8 +430,7 @@ export default{
         preview: true // 预览
       },
       editTag: '',
-      editGoal: '',
-      loadingModify: true
+      editGoal: ''
     }
   },
   components: {
@@ -608,10 +607,6 @@ export default{
   z-index: 5;
 }
 
-.menu-item {
-  text-align: center;
-}
-
 .data-count {
   font-size  : 14px;
   margin-left: 10px;
@@ -742,11 +737,6 @@ export default{
 /** modify **/
 .form {
   padding: 10px;
-}
-
-.icon-item {
-  width     : 18px;
-  text-align: center;
 }
 
 .span-form {

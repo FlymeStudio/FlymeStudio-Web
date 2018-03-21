@@ -5,7 +5,7 @@
     <div class="layout-title" @click="clickTitle">Flyme Studio</div>
     <div class="layout-nav">
       <MenuItem name="1">
-      <Icon class="item-icon" type="person" size=18></Icon>
+      <Icon class="icon-item" type="person" size=18></Icon>
       <span v-if="info.messages.length == 0" class="span-item">
         {{ info.name }}
       </span>
@@ -14,11 +14,11 @@
       </span>
       </MenuItem>
       <MenuItem name="2">
-      <Icon class="item-icon" type="help" size=18></Icon>
+      <Icon class="icon-item" type="help" size=18></Icon>
       <span class="span-item">Help</span>
       </MenuItem>
       <MenuItem name="3">
-      <Icon class="item-icon" type="log-out" size=18></Icon>
+      <Icon class="icon-item" type="log-out" size=18></Icon>
       <span class="span-item">Sign out</span>
       </MenuItem>
     </div>
@@ -126,6 +126,8 @@ export default {
 }
 
 .span-item {
-  font-size: 16px;
+  margin     : auto;
+  align-items: center;
+  font-size  : 16px;
 }
 </style>

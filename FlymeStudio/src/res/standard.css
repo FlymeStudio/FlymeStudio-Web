@@ -103,8 +103,18 @@
   float : right;
 }
 
-.item-icon {}
+.icon-item {
+  margin    : auto;
+  text-align: center;
+  margin    : auto;
+}
 
 .icon-spin {
   animation: ani-demo-spin 1s linear infinite;
+}
+
+.menu-item {
+  text-align : center;
+  display    : flex;
+  align-items: center;
 }

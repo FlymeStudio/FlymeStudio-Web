@@ -68,7 +68,7 @@
               <Button class="btn-item" @click="handleReset('formItem')" style="margin-left:15px;">Reset</Button>
             </FormItem>
           </Form>
-          <Modal class="modal-confirm" v-model="modalModify" title="Confirm" :mask-closable="false" :closable="false" :ok-text="okModify" :cancel-text="cancel" :loading="loadingModify" @on-ok="modify()">
+          <Modal class="modal-confirm" v-model="modalModify" title="Confirm" :mask-closable="false" :closable="false" ok-text="Modify" cancel-text="Cancel" loading @on-ok="modify()">
             <p>Input the password to check your identity:</p>
             <Input style="margin-top:20px;" type="password" v-model="password" size="large" placeholder="Password" clearable>
             </Input>
@@ -180,10 +180,7 @@ export default{
           }
         ]
       },
-      cancel: 'Cancel',
-      modalModify: false,
-      loadingModify: true,
-      okModify: 'Modify'
+      modalModify: false
     }
   },
   components: {

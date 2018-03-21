@@ -55,7 +55,7 @@
             </template>
           </Alert>
 
-          <Modal class="modalUser" v-model="modalUser" title="User">
+          <Modal class="modalUser" v-model="modalUser" title="User" ok-text="Ok" cancel-text="Cancel">
             <Alert class="alert-information" show-icon>
               <Icon class="icon-item" type="person" slot="icon" size=30></Icon>
               <template slot="desc">
@@ -74,7 +74,15 @@
             </Alert>
           </Modal>
 
-          <Modal class="modalTeam" v-model="modalTeam" :title="team.teamName">
+          <Modal class="modalTeam" v-model="modalTeam" title="Team" ok-text="Ok" cancel-text="Cancel">
+            <Alert class="alert-information" show-icon>
+              <Icon class="icon-item" type="ios-people" slot="icon" size=30></Icon>
+              <template slot="desc">
+                <div>
+                  <span class="span-item">{{ team.teamName }}</span>
+                </div>
+              </template>
+            </Alert>
             <Alert class="alert-information" show-icon>
               <Icon class="icon-item" type="star" slot="icon" size=30></Icon>
               <template slot="desc">
@@ -84,7 +92,7 @@
               </template>
             </Alert>
             <Alert class="alert-information" show-icon>
-              <Icon class="icon-item" type="ios-people" slot="icon" size=30></Icon>
+              <Icon class="icon-item" type="chatbubbles" slot="icon" size=30></Icon>
               <template slot="desc">
                 <div>
                   <span class="span-item">{{ team.population }}</span>
@@ -257,24 +265,24 @@ export default{
   margin-right: 10px;
 }
 
-.modalUser{
+.modalUser {
   max-width: 200px;
   min-width: 100px;
-  height: auto;
+  height   : auto;
 }
 
-.btn-user{
-  background-color:#80848f;
-  color:#fff;
+.btn-user {
+  background-color: #80848f;
+  color           : #fff;
 }
 
-.btn-invite{
-  background-color:#2d8cf0;
-  color:#fff;
+.btn-invite {
+  background-color: #2d8cf0;
+  color           : #fff;
 }
 
-.btn-apply{
-  background-color:#ff9900;
-  color:#fff;
+.btn-apply {
+  background-color: #ff9900;
+  color           : #fff;
 }
 </style>

@@ -51,6 +51,20 @@ export default {
       withCredentials: true
     })
   },
+  createTeam (teamName) {
+    var data = qs.stringify({
+      teamName: teamName
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: informationApi.createTeamUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
   reply (messageId, result) {
     var data = qs.stringify({
       messageId: messageId,

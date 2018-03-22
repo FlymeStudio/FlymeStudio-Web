@@ -5,8 +5,10 @@ import signUp from '@/components/sign-up'
 import retrieve from '@/components/retrieve'
 import home from '@/components/home'
 import informationOverview from '@/components/information-overview'
-import informationTeamwork from '@/components/information-teamwork'
 import informationModify from '@/components/information-modify'
+import teamworkOverview from '@/components/teamwork-overview'
+import teamworkJoin from '@/components/teamwork-join'
+import teamworkCreate from '@/components/teamwork-create'
 import projectOverview from '@/components/project-overview'
 import projectCreate from '@/components/project-create'
 import projectSearch from '@/components/project-search'
@@ -49,14 +51,24 @@ export default new Router({
       component: informationOverview
     },
     {
-      path: '/information/teamwork',
-      name: 'informationTeamwork',
-      component: informationTeamwork
-    },
-    {
       path: '/information/modify',
       name: 'informationModify',
       component: informationModify
+    },
+    {
+      path: '/teamwork/overview',
+      name: 'teamworkOverview',
+      component: teamworkOverview
+    },
+    {
+      path: '/teamwork/join',
+      name: 'teamworkJoin',
+      component: teamworkJoin
+    },
+    {
+      path: '/teamwork/create',
+      name: 'teamworkCreate',
+      component: teamworkCreate
     },
     {
       path: '/project/overview',

@@ -9,7 +9,7 @@
     <Layout>
 
       <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
-        <leftNav activeName="12"></leftNav>
+        <leftNav activeName="22"></leftNav>
       </Sider>
 
       <Layout :style="{padding: '0 24px'}">

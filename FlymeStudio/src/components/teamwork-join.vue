@@ -1,75 +1,107 @@
 <template>
-<div>
-  <!-- content -->
-  <Alert class="alert">
+<div class="layout">
+  <Layout>
 
-    <!-- spin -->
-    <Spin class="spin" fix v-if="spinShow">
-      <Icon class="icon-spin" type="load-c" size=50></Icon>
-    </Spin>
+    <Header>
+      <topNav></topNav>
+    </Header>
 
-    <!-- agreement -->
-    <Alert type="warning" style="color:red;">
-      <span class="span-agreement">Agreement</span>
-      <template slot="desc">
-        <ol>
-          <li class="li-agreement">
-            <span class="span-list">After join a team, you will be the member of the team.</span>
-          </li>
-          <li class="li-agreement">
-            <span class="span-list">As the member of the team, the team manager can view your all projects and summaries.</span>
-          </li>
-          <li class="li-agreement">
-            <span class="span-list">Manager can export a report about your projects or summaries.</span>
-          </li>
-          <li class="li-agreement">
-            <span class="span-list">Manager has right to remove you from the team.</span>
-          </li>
-          <li class="li-agreement">
-            <span class="span-list">Manager has right to disband the team.</span>
-          </li>
-        </ol>
-        <RadioGroup v-model="agreementJoin">
-          <Radio class="radio-agreement" label="0">
-              <span>Disagree</span>
-          </Radio>
-          <Radio class="radio-agreement" label="1">
-              <span>Agree</span>
-          </Radio>
-        </RadioGroup>
-      </template>
-    </Alert>
+    <Layout>
 
-    <!-- join -->
-    <div class="div-search">
-      <Input class="input-search" v-model="searchContent" placeholder="Team id or name" clearable></Input>
-      <Button class="btn" type="primary" shape="circle" icon="ios-search" @click="search()">Search</Button>
-      <Button class="btn" type="info" shape="circle" icon="android-close" @click="clear()">Clear</Button>
-      <Button class="btn" type="success" shape="circle" icon="android-add" disabled v-if="agreementJoin == 0">Join</Button>
-      <Button class="btn" type="success" shape="circle" icon="android-add" v-else @click="join()">Join</Button>
-      <Table class="table-search" highlight-row border :columns="columnsTeam" :data="dataTeam" @on-current-change="changeSelection" no-data-text="No data"></Table>
-    </div>
+      <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
+        <leftNav activeName="12"></leftNav>
+      </Sider>
 
-  </Alert>
+      <Layout :style="{padding: '0 24px'}">
+        <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
+
+          <Spin class="spin" fix v-if="spinShow">
+            <Icon class="icon-spin" type="load-c" size=50></Icon>
+          </Spin>
+
+          <!-- content -->
+          <Alert class="alert">
+
+            <!-- spin -->
+            <Spin class="spin" fix v-if="spinShow">
+              <Icon class="icon-spin" type="load-c" size=50></Icon>
+            </Spin>
+
+            <!-- agreement -->
+            <Alert type="warning" style="color:red;">
+              <span class="span-agreement">Agreement</span>
+              <template slot="desc">
+                <ol>
+                  <li class="li-agreement">
+                    <span class="span-list">After join a team, you will be the member of the team.</span>
+                  </li>
+                  <li class="li-agreement">
+                    <span class="span-list">As the member of the team, the team manager can view your all projects and summaries.</span>
+                  </li>
+                  <li class="li-agreement">
+                    <span class="span-list">Manager can export a report about your projects or summaries.</span>
+                  </li>
+                  <li class="li-agreement">
+                    <span class="span-list">Manager has right to remove you from the team.</span>
+                  </li>
+                  <li class="li-agreement">
+                    <span class="span-list">Manager has right to disband the team.</span>
+                  </li>
+                </ol>
+                <RadioGroup v-model="agreementJoin">
+                  <Radio class="radio-agreement" label="0">
+                      <span>Disagree</span>
+                  </Radio>
+                  <Radio class="radio-agreement" label="1">
+                      <span>Agree</span>
+                  </Radio>
+                </RadioGroup>
+              </template>
+            </Alert>
+
+            <!-- join -->
+            <div class="div-search">
+              <Input class="input-search" v-model="searchContent" placeholder="Team id or name" clearable></Input>
+              <Button class="btn" type="primary" shape="circle" icon="ios-search" @click="search()">Search</Button>
+              <Button class="btn" type="info" shape="circle" icon="android-close" @click="clear()">Clear</Button>
+              <Button class="btn" type="success" shape="circle" icon="android-add" disabled v-if="agreementJoin == 0">Join</Button>
+              <Button class="btn" type="success" shape="circle" icon="android-add" v-else @click="join()">Join</Button>
+              <Table class="table-search" highlight-row border :columns="columnsTeam" :data="dataTeam" @on-current-change="changeSelection" no-data-text="No data"></Table>
+            </div>
+
+          </Alert>
+        </Content>
+      </Layout>
+
+    </Layout>
+
+    <componentFooter></componentFooter>
+
+    <BackTop></BackTop>
+
+  </Layout>
 </div>
 </template>
 
 <script>
+import topNav from './component-nav-top.vue'
+import leftNav from './component-nav-left.vue'
+import componentFooter from './component-footer.vue'
 import teamworkApi from '../api/teamworkApi'
 
-export default {
-  name: 'component-team-join',
+export default{
+  name: 'teamwork-join',
   created () {
     this.getInfo()
   },
   data () {
     return {
+      spinShow: false,
       info: {
         tel: '13608089849',
         name: 'user',
         email: ''
       },
-      spinShow: false,
       searchContent: '',
       agreementJoin: '0',
       currentData: {},
@@ -102,6 +134,11 @@ export default {
       ],
       dataTeam: []
     }
+  },
+  components: {
+    topNav,
+    leftNav,
+    componentFooter
   },
   methods: {
     getInfo () {
@@ -190,7 +227,6 @@ export default {
     }
   }
 }
-
 </script>
 
 <style scoped>

@@ -63,7 +63,7 @@
       </Form>
 
       <div class="div-result" v-show="isResultView">
-        <Icon class="icon-result" type="ios-people" size="35"></Icon>
+        <Icon class="icon-result" type="home" size="35"></Icon>
         <div>Welcome to join <b>Flyme Studio</b>!</div>
       </div>
 

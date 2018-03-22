@@ -211,6 +211,7 @@ export default{
         _this.modalTeam = true
       }, 1000)
       teamworkApi.team(teamId).then(function (response) {
+        _this.spinShow = false
         if (response.data.result === true) {
           _this.team.count = response.data.count
           _this.team.manager = response.data.manager
@@ -220,7 +221,6 @@ export default{
             title: 'Get team information failed.',
             desc: ''
           })
-          _this.spinShow = false
         }
       })
     },

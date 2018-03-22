@@ -17,6 +17,7 @@ export const informationApi = {
 
 export const teamworkApi = {
   teamUrl: () => '',
+  viewUrl: () => '',
   searchUrl: () => '',
   joinUrl: () => '',
   createUrl: () => '',

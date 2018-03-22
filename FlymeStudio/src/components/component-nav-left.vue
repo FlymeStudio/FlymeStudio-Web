@@ -1,6 +1,6 @@
 <template>
 <div>
-  <Menu class="menu" theme="light" width="auto" @on-select="clickLeftNav" :active-name="componentId" :open-names="[]">
+  <Menu class="menu" theme="light" width="auto" @on-select="clickLeftNav" :active-name="componentId" :open-names="openNames">
 
     <Submenu name="0">
       <template slot="title">
@@ -50,16 +50,43 @@ export default {
   name: 'component-nav-left',
   created () {
     this.componentId = this.activeName
+    this.openSubMenu()
   },
   props: [
     'activeName'
   ],
   data () {
     return {
-      componentId: '1'
+      componentId: '',
+      openNames: []
     }
   },
   methods: {
+    openSubMenu () {
+      switch (this.componentId) {
+        case '1':
+        case '2':
+          this.openNames = ['0']
+          break
+        case '11':
+        case '12':
+        case '13':
+          this.openNames = ['10']
+          break
+        case '21':
+        case '22':
+        case '23':
+          this.openNames = ['20']
+          break
+        case '31':
+        case '32':
+        case '33':
+          this.openNames = ['30']
+          break
+        default:
+          this.openNames = []
+      }
+    },
     clickLeftNav: function (name) {
       switch (name) {
         case '1':

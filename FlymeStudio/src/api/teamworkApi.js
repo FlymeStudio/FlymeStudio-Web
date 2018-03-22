@@ -19,6 +19,20 @@ export default {
       withCredentials: true
     })
   },
+  view (tel) {
+    var data = qs.stringify({
+      tel: tel
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: teamworkApi.viewUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
   search (content) {
     var data = qs.stringify({
       content: content

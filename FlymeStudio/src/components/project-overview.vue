@@ -41,7 +41,7 @@
           <Layout>
             <Content :style="{padding: '15px 0', minHeight: '280px', background: '#fff'}">
               <!-- spin -->
-              <Spin fix v-if="spinShow">
+              <Spin class="spin" fix v-if="spinShow">
                 <Icon class="icon-spin" type="load-c" size=50></Icon>
               </Spin>
 
@@ -489,6 +489,7 @@ export default{
       }
     },
     clickTag: function (name) {
+      this.spinShow = true
       this.currentType = name
       var _total = 0
       var _done = 0
@@ -526,6 +527,10 @@ export default{
         done: _done,
         doing: _doing
       }
+      let _this = this
+      setTimeout(() => {
+        _this.spinShow = false
+      }, 1000)
     },
     showModifyModal (timestamp) {
       this.spinShow = true

@@ -15,6 +15,7 @@
       <Layout :style="{padding: '0 24px'}">
         <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
 
+          <!-- spin -->
           <Spin class="spin" fix v-if="spinShow">
             <Icon class="icon-spin" type="load-c" size=50></Icon>
           </Spin>
@@ -131,14 +132,14 @@ export default{
             title: 'Create team successful.',
             desc: ''
           })
-          _this.modalCreate = false
         } else {
           _this.$Notice.error({
             title: 'Create team failed.',
             desc: ''
           })
-          _this.modalCreate = false
         }
+        _this.password = ''
+        _this.modalCreate = false
       })
     }
   }

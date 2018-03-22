@@ -224,14 +224,13 @@ export default{
             title: 'Modify successful.',
             desc: ''
           })
-          _this.modalModify = false
         } else {
           _this.$Notice.error({
             title: 'Modify failed.',
             desc: ''
           })
-          _this.modalModify = false
         }
+        _this.modalModify = false
       })
     },
     handleSubmit (name) {

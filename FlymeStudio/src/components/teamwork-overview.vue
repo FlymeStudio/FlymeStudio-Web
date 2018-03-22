@@ -15,16 +15,13 @@
       <Layout :style="{padding: '0 24px'}">
         <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
 
+          <!-- spin -->
           <Spin class="spin" fix v-if="spinShow">
             <Icon class="icon-spin" type="load-c" size=50></Icon>
           </Spin>
 
-          <!-- spin -->
-          <Spin fix v-if="spinShow">
-            <Icon class="icon-spin" type="load-c" size=50></Icon>
-          </Spin>
+          <Collapse v-model="openPanels">
 
-          <Collapse>
             <Panel name="Manage">
               <span class="div-count" style="color:#19be6b;"> Manage ({{ managedTeams.length }})</span>
 
@@ -55,13 +52,13 @@
                           <span class="span-tel">{{ member.tel }}</span>
                           <div class="btns">
                             <Tooltip content="View projects">
-                              <Button class="btn-member" size="small" type="info" shape="circle" icon="clipboard" @click="viewProjects(member.tel, member.name)"></Button>
+                              <Button class="btn-member" size="small" type="info" shape="circle" icon="clipboard" @click="viewProjects(member.tel, member.name, member.email)"></Button>
                             </Tooltip>
                             <Tooltip content="View summaries">
-                              <Button class="btn-member" size="small" type="info" shape="circle" icon="document-text" @click="viewSummaries(member.tel, member.name)"></Button>
+                              <Button class="btn-member" size="small" type="info" shape="circle" icon="document-text" @click="viewSummaries(member.tel, member.name, member.email)"></Button>
                             </Tooltip>
                             <Tooltip content="Remove member">
-                              <Button class="btn-member" size="small" style="margin-left:10px;" type="error" shape="circle" icon="close-round" @click="removeMember(member.tel, member.name)"></Button>
+                              <Button class="btn-member" size="small" style="margin-left:10px;" type="error" shape="circle" icon="close-round" @click="removeMember(team.id, member.tel, member.name)"></Button>
                             </Tooltip>
                           </div>
                         </div>
@@ -112,11 +109,20 @@
           <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalProjects">
 
             <Layout style="margin-top:20px;">
+
+              <Spin class="spin" fix v-if="spinShow">
+                <Icon class="icon-spin" type="load-c" size=50></Icon>
+              </Spin>
+
               <Header class="layout-header-bar" theme="dark">
                 <Icon type="clipboard" size=18 style="margin-right:10px;"></Icon><span>Project</span>
-                <Icon type="person" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentUser }}</span>
+                <Icon type="person" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentUser.name }}</span>
+                <Icon type="ios-telephone" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentUser.tel }}</span>
+                <Icon type="email" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentUser.email }}</span>
               </Header>
+
               <Layout>
+
                 <Sider style="z-index:6;" breakpoint="md" collapsible :collapsed-width="60" v-model="isCollapsed">
                   <Menu active-name="0" theme="dark" width="auto" :class="menuitemClasses" @on-select="clickProjectsTag">
                     <MenuItem class="menu-item" name="0"> All
@@ -132,10 +138,13 @@
                   </Menu>
                   <div slot="trigger"></div>
                 </Sider>
+
                 <Layout>
                   <Content :style="{margin: '25px', background: '#fff', minHeight: '220px'}">
                     <div span="12" class="demo-tabs-style2">
+
                       <Tabs type="card">
+
                         <TabPane label="Total">
                           <Collapse>
                             <Panel class="panel-project" v-for="project in currentProjects" :key="project.timestamp" v-if="project.show == true">
@@ -165,6 +174,7 @@
                             </Panel>
                           </Collapse>
                         </TabPane>
+
                         <TabPane label="Done">
                           <Collapse>
                             <Panel class="panel-project" v-for="project in currentProjects" :key="project.timestamp" v-if="project.show == true && project.percent == 100">
@@ -194,6 +204,7 @@
                             </Panel>
                           </Collapse>
                         </TabPane>
+
                         <TabPane label="Doing">
                           <Collapse>
                             <Panel class="panel-project" v-for="project in currentProjects" :key="project.timestamp" v-if="project.show == true && project.percent != 100">
@@ -223,11 +234,14 @@
                             </Panel>
                           </Collapse>
                         </TabPane>
+
                       </Tabs>
+
                     </div>
 
                   </Content>
                 </Layout>
+
               </Layout>
 
             </Layout>
@@ -237,8 +251,16 @@
 
           </Modal>
 
-          <Modal v-model="modalRemove">
-
+          <!-- confirm -->
+          <Modal class="modal-remove" v-model="modalRemove" title="Confirm" :mask-closable="false" :closable="false" ok-text="Remove" cancel-text="Cancel" loading @on-ok="remove()">
+            <Alert type="warning" show-icon>
+              <p>Are you sure to remove {{ currentRemove.name }}({{ currentRemove.tel }}) from team?</p>
+              <template slot="desc">
+                <p>If yes, input the password to check your identity:</p>
+                <Input style="margin-top:20px;" type="password" v-model="info.password" size="large" placeholder="Password" clearable>
+                </Input>
+              </template>
+            </Alert>
           </Modal>
         </Content>
       </Layout>
@@ -257,6 +279,7 @@
 import topNav from './component-nav-top.vue'
 import leftNav from './component-nav-left.vue'
 import componentFooter from './component-footer.vue'
+import teamworkApi from '../api/teamworkApi'
 
 export default{
   name: 'teamwork-overview',
@@ -265,39 +288,25 @@ export default{
   },
   data () {
     return {
+      info: {
+        tel: '13608089849',
+        password: ''
+      },
       spinShow: false,
-      managedTeams: [
-        {
-          id: '00001',
-          name: 'System support',
-          manager: '李永达',
-          members: [
-            {
-              tel: '13608089849',
-              name: '曾宇'
-            },
-            {
-              tel: '13612345678',
-              name: '刘卓旻'
-            }
-          ]
-        }
-      ],
-      joinedTeams: [
-        {
-          id: '00002',
-          name: 'Overseas firmware',
-          manager: '段启智',
-          members: [
-            {
-              tel: '13412345678',
-              name: '余学海'
-            }
-          ]
-        }
-      ],
+      openPanels: ['Manage', 'Join'],
+      managedTeams: [],
+      joinedTeams: [],
       currentType: '0',
-      currentUser: '',
+      currentUser: {
+        name: '',
+        tel: '',
+        email: ''
+      },
+      currentRemove: {
+        teamId: '',
+        name: '',
+        tel: ''
+      },
       currentProjects: [],
       currentSummaries: [],
       modalProjects: false,
@@ -324,11 +333,64 @@ export default{
   },
   methods: {
     getInfo () {
-
-    },
-    viewProjects (tel, name) {
       this.spinShow = true
-      this.currentUser = name
+      this.managedTeams = [
+        {
+          id: '00001',
+          name: 'System support',
+          manager: '李永达',
+          members: [
+            {
+              name: '曾宇',
+              tel: '13608089849',
+              email: '1213814232@qq.com'
+            },
+            {
+              name: '刘卓旻',
+              tel: '13612345678',
+              email: '123456789@qq.com'
+            }
+          ]
+        }
+      ]
+      this.joinedTeams = [
+        {
+          id: '00002',
+          name: 'Overseas firmware',
+          manager: '段启智',
+          members: [
+            {
+              tel: '13412345678',
+              name: '余学海'
+            }
+          ]
+        }
+      ]
+      let _this = this
+      setTimeout(() => {
+        _this.spinShow = false
+      }, 2000)
+      teamworkApi.view(this.info.tel).then(function (response) {
+        if (response.data.result === true) {
+          _this.managedTeams = response.data.managedTeams
+          _this.joinedTeams = response.data.joinedTeams
+          _this.spinShow = false
+        } else {
+          this.$Notice.error({
+            title: 'Failed to get data.',
+            desc: ''
+          })
+          _this.spinShow = false
+        }
+      })
+    },
+    viewProjects (tel, name, email) {
+      this.spinShow = true
+      this.currentUser = {
+        name: name,
+        tel: tel,
+        email: email
+      }
       this.currentProjects = [
         {
           timestamp: 1,
@@ -473,12 +535,6 @@ export default{
         _this.spinShow = false
       }, 2000)
     },
-    viewSummaries (tel, name) {
-
-    },
-    removeMember (tel, name) {
-
-    },
     computePercent () {
       for (var i = 0; i < this.currentProjects.length; i++) {
         if (this.currentProjects[i].plans.length === 0) {
@@ -493,6 +549,7 @@ export default{
       }
     },
     clickProjectsTag: function (name) {
+      this.spinShow = true
       this.currentType = name
       if (name === '0') {
         for (let i = 0; i < this.currentProjects.length; i++) {
@@ -507,6 +564,43 @@ export default{
           }
         }
       }
+      let _this = this
+      setTimeout(() => {
+        _this.spinShow = false
+      }, 1000)
+    },
+    viewSummaries (tel, name, email) {
+
+    },
+    removeMember (teamId, tel, name) {
+      this.currentRemove = {
+        teamId: teamId,
+        name: name,
+        tel: tel
+      }
+      this.modalRemove = true
+    },
+    remove () {
+      let _this = this
+      setTimeout(() => {
+        _this.$Notice.success({
+          title: 'Remove successful.',
+          desc: ''
+        })
+        for (var i = 0; i < _this.managedTeams.length; i++) {
+          if (_this.managedTeams[i].id === _this.currentRemove.teamId) {
+            for (var j = 0; j < _this.managedTeams[i].members.length; j++) {
+              if (_this.managedTeams[i].members[j].tel === _this.currentRemove.tel) {
+                _this.managedTeams[i].members.splice(j, 1)
+                _this.currentRemove = []
+                _this.info.password = ''
+                break
+              }
+            }
+          }
+        }
+        _this.modalRemove = false
+      }, 2000)
     }
   }
 }
@@ -570,7 +664,7 @@ export default{
 .btn-member {
   margin-right: 10px;
 }
-/** modal **/
+/** modal-project **/
 .vertical-center-modal {
   display        : flex;
   align-items    : center;
@@ -722,5 +816,19 @@ export default{
   position  : absolute;
   top       : 0;
   left      : 0;
+}
+
+/** modal summary**/
+
+/** modal remove **/
+
+.modal-remove {
+  position: absolute;
+  z-index : 10;
+}
+
+.modal-remove p {
+  font-size: 18px;
+  color    : red;
 }
 </style>

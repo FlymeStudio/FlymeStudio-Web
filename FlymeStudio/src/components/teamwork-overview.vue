@@ -374,14 +374,13 @@ export default{
         if (response.data.result === true) {
           _this.managedTeams = response.data.managedTeams
           _this.joinedTeams = response.data.joinedTeams
-          _this.spinShow = false
         } else {
           this.$Notice.error({
             title: 'Failed to get data.',
             desc: ''
           })
-          _this.spinShow = false
         }
+        _this.spinShow = false
       })
     },
     viewProjects (tel, name, email) {

@@ -216,14 +216,13 @@ export default{
             title: 'Send message successful.',
             desc: 'Please waitting for manager to check.'
           })
-          _this.spinShow = false
         } else {
           _this.$Notice.error({
             title: 'Join failed.',
             desc: ''
           })
-          _this.spinShow = false
         }
+        _this.spinShow = false
       })
     }
   }

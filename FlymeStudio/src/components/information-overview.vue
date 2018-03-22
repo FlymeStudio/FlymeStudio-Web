@@ -142,27 +142,10 @@ export default{
   data () {
     return {
       info: {
-        tel: '13608089849',
-        name: 'user',
+        tel: '',
+        name: '',
         email: '',
-        messages: [
-          {
-            messageId: '1',
-            type: 1,
-            fromTel: '13600000001',
-            fromName: '刘卓旻',
-            teamName: 'System support',
-            teamId: '00001'
-          },
-          {
-            messageId: '2',
-            type: 2,
-            fromTel: '13600000002',
-            fromName: '余学海',
-            teamName: 'Overseas firmware',
-            teamId: '00002'
-          }
-        ]
+        messages: []
       },
       spinShow: false,
       modalUser: false,
@@ -187,8 +170,12 @@ export default{
   },
   methods: {
     getInfo () {
-      this.info.name = '曾宇' // test
-      this.info.email = '1213814232@qq.com' // test
+      let name = this.$store.state.user.userInfo.name
+      if (name === null) {
+        this.$router.push('/')
+      } else {
+        this.info = this.$store.state.user.userInfo
+      }
     },
     clickUser (fromName, fromTel) {
       this.user.fromName = fromName
@@ -200,6 +187,7 @@ export default{
       this.team.teamName = teamName
       this.team.teamId = teamId
       let _this = this
+      // TEST START
       setTimeout(() => {
         _this.team.count = 1
         if (teamId === '00001') {
@@ -210,6 +198,7 @@ export default{
         _this.spinShow = false
         _this.modalTeam = true
       }, 1000)
+      // TEST END
       teamworkApi.team(teamId).then(function (response) {
         _this.spinShow = false
         if (response.data.result === true) {
@@ -227,32 +216,25 @@ export default{
     reply (messageId, result) {
       this.spinShow = true
       let _this = this
+      // TEST START
       setTimeout(() => {
         _this.$Notice.success({
           title: 'Reply successful.',
           desc: ''
         })
-        for (var i = 0; i < _this.info.messages.length; i++) {
-          if (_this.info.messages[i].messageId === messageId) {
-            _this.info.messages.splice(i, 1)
-            break
-          }
-        }
+        _this.$store.doDeleteMsg('dispatch', messageId)
         _this.spinShow = false
       }, 1000)
-      teamworkApi.reply(messageId, result).then(function (response) {
+      // TEST END
+      teamworkApi.reply(this.info.tel, messageId, result).then(function (response) {
         if (response.data.result === true) {
           setTimeout(() => {
+            _this.$store.doDeleteMsg('dispatch', messageId)
+            _this.info = this.$store.state.user.userInfo
             _this.$Notice.success({
               title: 'Reply successful.',
               desc: ''
             })
-            for (var i = 0; i < _this.info.messages.length; i++) {
-              if (_this.info.messages[i].messageId === messageId) {
-                _this.info.messages.splice(i, 1)
-                break
-              }
-            }
             _this.spinShow = false
           }, 1000)
         } else {

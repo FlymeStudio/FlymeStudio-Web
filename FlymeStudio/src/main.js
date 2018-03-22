@@ -3,8 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import './res/standard.css'
 import vuex from 'vuex'
+import store from './store'
+import './res/standard.css'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import iView from 'iview'
@@ -19,6 +20,7 @@ Vue.use(iView)
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

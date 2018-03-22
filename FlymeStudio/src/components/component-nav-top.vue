@@ -42,7 +42,6 @@
 
 <script>
 import accountApi from '../api/accountApi'
-import informationApi from '../api/informationApi'
 
 export default {
   name: 'component-nav-top',
@@ -52,37 +51,22 @@ export default {
   data () {
     return {
       info: {
-        tel: '13608089849',
-        name: 'user',
+        tel: '',
+        name: '',
         email: '',
-        messages: [
-          {
-            messageId: '1',
-            from: '13600000001',
-            teamName: 'System support',
-            teamId: '00001'
-          },
-          {
-            messageId: '2',
-            from: '13600000002',
-            teamName: 'Overseas firmware',
-            teamId: '00002'
-          }
-        ]
+        messages: []
       },
       spinShow: false
     }
   },
   methods: {
     getInfo () {
-      this.info.name = '曾宇' // test
-      this.info.email = '1213814232@qq.com' // test
-      let _this = this
-      informationApi.information(this.info.tel).then(function (response) {
-        if (response.data.result === true) {
-          _this.info = response.data.info
-        }
-      })
+      let name = this.$store.state.user.userInfo.name
+      if (name === null) {
+        this.$router.push('/')
+      } else {
+        this.info = this.$store.state.user.userInfo
+      }
     },
     clickTopNav: function (name) {
       switch (name) {
@@ -110,21 +94,24 @@ export default {
     clickSignOut: function () {
       this.spinShow = true
       let _this = this
+      // TEST START
       setTimeout(() => {
         _this.spinShow = false
         _this.$Message.success('Sign out successful.')
         _this.$router.push('/signIn')
       }, 1000)
+      // TEST END
       accountApi.signOut(this.info.tel).then(function (response) {
-        setTimeout(() => {
-          _this.spinShow = false
-          if (response.data.result === true) {
-            _this.$Message.success('Sign out successful.')
+        _this.spinShow = false
+        if (response.data.result === true) {
+          _this.$store.dispatch('doSignOut')
+          _this.$Message.success('Sign out successful.')
+          setTimeout(() => {
             _this.$router.push('/signIn')
-          } else {
-            _this.$Message.error('Sign out failed.')
-          }
-        }, 1000)
+          }, 1000)
+        } else {
+          _this.$Message.error('Sign out failed.')
+        }
       })
     }
   }

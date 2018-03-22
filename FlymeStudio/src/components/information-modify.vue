@@ -112,23 +112,10 @@ export default{
     return {
       password: '',
       info: {
-        name: '',
         tel: '',
+        name: '',
         email: '',
-        messages: [
-          {
-            messageId: '1',
-            from: '13600000001',
-            teamName: 'System support',
-            teamId: '00001'
-          },
-          {
-            messageId: '2',
-            from: '13600000002',
-            teamName: 'Overseas firmware',
-            teamId: '00002'
-          }
-        ]
+        messages: []
       },
       formItem: {
         name: '',
@@ -205,21 +192,36 @@ export default{
   },
   methods: {
     getInfo () {
-      this.info.name = '曾宇' // test
-      this.info.tel = '13608089849'
-      this.info.email = '1213814232@qq.com' // test
+      let name = this.$store.state.user.userInfo.name
+      if (name === null) {
+        this.$router.push('/')
+      } else {
+        this.info = this.$store.state.user.userInfo
+      }
     },
     modify: function () {
+      if (this.info.password !== this.password) {
+        this.$Notice.error({
+          title: 'Password is incorrect.',
+          desc: ''
+        })
+        return
+      }
       let _this = this
+      // TEST START
+      _this.$store.dispatch('doUpdate', _this.info)
       setTimeout(() => {
+        _this.info = this.$store.state.user.userInfo
         _this.$Notice.success({
           title: 'Modify successful.',
           desc: ''
         })
         _this.modalModify = false
       }, 1000)
+      // TEST END
       informationApi.modify(this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.newPassword, this.password).then(function (response) {
         if (response.data.result === true) {
+          _this.$store.dispatch('doUpdate', _this.info)
           _this.$Notice.success({
             title: 'Modify successful.',
             desc: ''

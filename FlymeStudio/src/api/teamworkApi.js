@@ -19,6 +19,22 @@ export default {
       withCredentials: true
     })
   },
+  reply (tel, messageId, result) {
+    var data = qs.stringify({
+      tel: tel,
+      messageId: messageId,
+      result: result
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: teamworkApi.replyUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
   view (tel) {
     var data = qs.stringify({
       tel: tel
@@ -33,8 +49,40 @@ export default {
       withCredentials: true
     })
   },
-  search (content) {
+  viewUserProjects (tel, userTel) {
     var data = qs.stringify({
+      tel: tel,
+      userTel: userTel
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: teamworkApi.viewUserProjectsUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
+  remove (tel, userTel, teamId) {
+    var data = qs.stringify({
+      tel: tel,
+      userTel: userTel,
+      teamId: teamId
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: teamworkApi.viewUserProjectsUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
+  search (tel, content) {
+    var data = qs.stringify({
+      tel: tel,
       content: content
     })
     return axios({
@@ -62,9 +110,9 @@ export default {
       withCredentials: true
     })
   },
-  create (password, name) {
-    // check password
+  create (tel, name) {
     var data = qs.stringify({
+      tel: tel,
       name: name
     })
     return axios({
@@ -73,21 +121,6 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: teamworkApi.createUrl(),
-      data: data,
-      withCredentials: true
-    })
-  },
-  reply (messageId, result) {
-    var data = qs.stringify({
-      messageId: messageId,
-      result: result
-    })
-    return axios({
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      url: teamworkApi.replyUrl(),
       data: data,
       withCredentials: true
     })

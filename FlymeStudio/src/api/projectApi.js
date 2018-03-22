@@ -19,8 +19,9 @@ export default {
       withCredentials: true
     })
   },
-  create (type, date, title, content, plans) {
+  create (tel, type, date, title, content, plans) {
     var data = qs.stringify({
+      tel: tel,
       type: type,
       date: date,
       title: title,
@@ -55,8 +56,9 @@ export default {
       withCredentials: true
     })
   },
-  modify (timestamp, type, date, title, content, plans) {
+  modify (tel, timestamp, type, date, title, content, plans) {
     var data = qs.stringify({
+      tel: tel,
       timestamp: timestamp,
       type: type,
       date: date,

@@ -42,9 +42,16 @@ import componentFooter from './component-footer.vue'
 export default{
   name: 'summary-search',
   created () {
+    this.getInfo()
   },
   data () {
     return {
+      info: {
+        tel: '',
+        name: '',
+        email: '',
+        messages: []
+      },
       spinShow: false
     }
   },
@@ -54,6 +61,14 @@ export default{
     componentFooter
   },
   methods: {
+    getInfo () {
+      let name = this.$store.state.user.userInfo.name
+      if (name === null) {
+        this.$router.push('/')
+      } else {
+        this.info = this.$store.state.user.userInfo
+      }
+    }
   }
 }
 </script>

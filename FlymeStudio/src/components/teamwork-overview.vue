@@ -257,7 +257,7 @@
               <p>Are you sure to remove {{ currentRemove.name }}({{ currentRemove.tel }}) from team?</p>
               <template slot="desc">
                 <p>If yes, input the password to check your identity:</p>
-                <Input style="margin-top:20px;" type="password" v-model="info.password" size="large" placeholder="Password" clearable>
+                <Input style="margin-top:20px;" type="password" v-model="password" size="large" placeholder="Password" clearable>
                 </Input>
               </template>
             </Alert>
@@ -285,18 +285,22 @@ export default{
   name: 'teamwork-overview',
   created () {
     this.getInfo()
+    this.getTeams()
   },
   data () {
     return {
+      password: '',
       info: {
-        tel: '13608089849',
-        password: ''
+        tel: '',
+        name: '',
+        email: '',
+        messages: []
       },
       spinShow: false,
       openPanels: ['Manage', 'Join'],
       managedTeams: [],
       joinedTeams: [],
-      currentType: '0',
+      currentTag: '0',
       currentUser: {
         name: '',
         tel: '',
@@ -333,7 +337,16 @@ export default{
   },
   methods: {
     getInfo () {
-      this.spinShow = true
+      let name = this.$store.state.user.userInfo.name
+      if (name === null) {
+        this.$router.push('/')
+      } else {
+        this.info = this.$store.state.user.userInfo
+      }
+    },
+    getTeams () {
+      this.spinShow = false
+      // TEST START
       this.managedTeams = [
         {
           id: '00001',
@@ -366,16 +379,15 @@ export default{
           ]
         }
       ]
+      this.spinShow = false
+      // TEST END
       let _this = this
-      setTimeout(() => {
-        _this.spinShow = false
-      }, 2000)
       teamworkApi.view(this.info.tel).then(function (response) {
         if (response.data.result === true) {
           _this.managedTeams = response.data.managedTeams
           _this.joinedTeams = response.data.joinedTeams
         } else {
-          this.$Notice.error({
+          _this.$Notice.error({
             title: 'Failed to get data.',
             desc: ''
           })
@@ -390,6 +402,7 @@ export default{
         tel: tel,
         email: email
       }
+      // TEST START
       this.currentProjects = [
         {
           timestamp: 1,
@@ -528,11 +541,24 @@ export default{
         }
       ]
       this.computePercent()
-      let _this = this
       setTimeout(() => {
         _this.modalProjects = true
         _this.spinShow = false
       }, 2000)
+      // TEST END
+      let _this = this
+      teamworkApi.viewUserProjects(this.info.tel, tel).then(function (response) {
+        if (response.data.result === true) {
+          _this.currentProjects = response.data.projects
+          _this.computePercent()
+        } else {
+          _this.$Notice.error({
+            title: 'Failed to get data.',
+            desc: ''
+          })
+        }
+        _this.spinShow = false
+      })
     },
     computePercent () {
       for (var i = 0; i < this.currentProjects.length; i++) {
@@ -549,7 +575,7 @@ export default{
     },
     clickProjectsTag: function (name) {
       this.spinShow = true
-      this.currentType = name
+      this.currentTag = name
       if (name === '0') {
         for (let i = 0; i < this.currentProjects.length; i++) {
           this.currentProjects[i].show = true
@@ -580,7 +606,17 @@ export default{
       this.modalRemove = true
     },
     remove () {
+      if (this.password !== this.info.password) {
+        this.$Notice.error({
+          title: 'Password is incorrect.',
+          desc: ''
+        })
+        this.password = ''
+        return
+      }
+      console.log('----------')
       let _this = this
+      // TEST START
       setTimeout(() => {
         _this.$Notice.success({
           title: 'Remove successful.',
@@ -592,14 +628,32 @@ export default{
               if (_this.managedTeams[i].members[j].tel === _this.currentRemove.tel) {
                 _this.managedTeams[i].members.splice(j, 1)
                 _this.currentRemove = []
-                _this.info.password = ''
+                _this.password = ''
+                _this.modalRemove = false
                 break
               }
             }
           }
         }
-        _this.modalRemove = false
       }, 2000)
+      // TEST END
+      teamworkApi.remove(this.info.tel, this.currentRemove.tel, this.currentRemove.teamId).then(function (response) {
+        if (response.data.result === true) {
+          _this.$Notice.success({
+            title: 'Remove successful.',
+            desc: ''
+          })
+          _this.currentRemove = []
+          _this.password = ''
+          _this.getTeams()
+        } else {
+          _this.$Notice.error({
+            title: 'Remove failed.',
+            desc: ''
+          })
+        }
+        _this.modalRemove = false
+      })
     }
   }
 }

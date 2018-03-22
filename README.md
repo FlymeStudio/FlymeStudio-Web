@@ -3,6 +3,13 @@
 ---
 ## Dependency
 
+
+### Router
+- [Vuex](https://router.vuejs.org/zh-cn/)
+```
+npm install vue-router
+```
+
 ### State Management
 - [Vuex](https://vuex.vuejs.org/zh-cn/)
 ```

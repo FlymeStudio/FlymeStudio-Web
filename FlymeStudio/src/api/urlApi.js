@@ -7,21 +7,17 @@ export const accountApi = {
 
 export const informationApi = {
   informationUrl: () => '',
-  modifyUrl: () => '',
-  teamUrl: () => '',
-  searchTeamUrl: () => '',
-  joinTeamUrl: () => '',
-  createTeamUrl: () => '',
-  replyUrl: () => ''
+  modifyUrl: () => ''
 }
 
 export const teamworkApi = {
   teamUrl: () => '',
+  replyUrl: () => '',
   viewUrl: () => '',
+  viewUserProjectsUrl: () => '',
   searchUrl: () => '',
   joinUrl: () => '',
-  createUrl: () => '',
-  replyUrl: () => ''
+  createUrl: () => ''
 }
 
 export const projectApi = {

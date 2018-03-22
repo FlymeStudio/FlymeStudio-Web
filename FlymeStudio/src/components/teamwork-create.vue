@@ -89,9 +89,16 @@ import teamworkApi from '../api/teamworkApi'
 export default{
   name: 'teamwork-create',
   created () {
+    this.getInfo()
   },
   data () {
     return {
+      info: {
+        tel: '',
+        name: '',
+        email: '',
+        messages: []
+      },
       spinShow: false,
       agreementCreate: '0',
       createName: '',
@@ -105,6 +112,14 @@ export default{
     componentFooter
   },
   methods: {
+    getInfo () {
+      let name = this.$store.state.user.userInfo.name
+      if (name === null) {
+        this.$router.push('/')
+      } else {
+        this.info = this.$store.state.user.userInfo
+      }
+    },
     submit () {
       var regex = /^([a-zA-Z0-9\u4e00-\u9fa5\s]){2,10}$/
       if (!regex.test(this.createName)) {
@@ -118,7 +133,15 @@ export default{
       }
     },
     create () {
+      if (this.password !== this.info.password) {
+        this.$Notice.error({
+          title: 'Password is incorrect.',
+          desc: ''
+        })
+        return
+      }
       let _this = this
+      // TEST START
       setTimeout(() => {
         _this.$Notice.success({
           title: 'Create team successful.',
@@ -126,7 +149,8 @@ export default{
         })
         _this.modalCreate = false
       }, 1000)
-      teamworkApi.create(this.password, this.createName).then(function (response) {
+      // TEST END
+      teamworkApi.create(this.info.tel, this.createName).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Create team successful.',

@@ -99,9 +99,10 @@ export default{
     return {
       spinShow: false,
       info: {
-        tel: '13608089849',
-        name: 'user',
-        email: ''
+        tel: '',
+        name: '',
+        email: '',
+        messages: []
       },
       searchContent: '',
       agreementJoin: '0',
@@ -143,8 +144,12 @@ export default{
   },
   methods: {
     getInfo () {
-      this.info.name = '曾宇' // test
-      this.info.email = '1213814232@qq.com' // test
+      let name = this.$store.state.user.userInfo.name
+      if (name === null) {
+        this.$router.push('/')
+      } else {
+        this.info = this.$store.state.user.userInfo
+      }
     },
     search () {
       var regex = /^([a-zA-Z0-9\u4e00-\u9fa5\s]){2,10}$/
@@ -158,6 +163,7 @@ export default{
       }
       this.spinShow = true
       let _this = this
+      // TEST START
       setTimeout(() => {
         _this.dataTeam = [
           {
@@ -181,7 +187,8 @@ export default{
         ]
         _this.spinShow = false
       }, 1000)
-      teamworkApi.search(this.searchContent).then(function (response) {
+      // TEST END
+      teamworkApi.search(this.info.tel, this.searchContent).then(function (response) {
         if (response.data.result === true) {
           _this.dataTeam = response.data.dataTeam
           _this.spinShow = false
@@ -203,6 +210,7 @@ export default{
     join () {
       this.spinShow = true
       let _this = this
+      // TEST START
       setTimeout(() => {
         _this.$Notice.success({
           title: 'Send message successful.',
@@ -210,6 +218,7 @@ export default{
         })
         _this.spinShow = false
       }, 1000)
+      // TEST END
       teamworkApi.join(this.info.tel, this.currentData.id).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({

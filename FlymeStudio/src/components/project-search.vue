@@ -61,6 +61,7 @@ import componentFooter from './component-footer.vue'
 export default{
   name: 'project-search',
   created () {
+    this.getInfo()
     this.clickTag('1')
   },
   data () {
@@ -75,6 +76,14 @@ export default{
     componentFooter
   },
   methods: {
+    getInfo () {
+      let name = this.$store.state.user.userInfo.name
+      if (name === null) {
+        this.$router.push('/')
+      } else {
+        this.info = this.$store.state.user.userInfo
+      }
+    },
     clickTag: function (name) {
       this.currentType = name
     }

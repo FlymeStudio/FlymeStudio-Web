@@ -109,32 +109,45 @@ export default {
     signIn: function () {
       this.loading = true
       let _this = this
+      // TEST START
       setTimeout(() => {
+        let userInfo = {
+          tel: '13608089849',
+          name: '曾宇',
+          email: '1213814232@qq.com',
+          password: '123456',
+          messages: []
+        }
+        _this.$store.dispatch('doSignIn', userInfo)
         _this.$Notice.success({
           title: 'Sign in successful.',
           desc: ''
         })
         _this.$router.push('/home')
       }, 1000)
-      accountApi.signIn(this.id, this.password)
+      // TEST END
+      accountApi.signIn(this.formItem.id, this.formItem.password)
         .then(function (response) {
           if (response.data.result === true) {
+            let userInfo = {
+              tel: response.data.id,
+              name: response.data.name,
+              email: response.data.email,
+              password: _this.formItem.password,
+              messages: response.data.messages
+            }
+            _this.$store.dispatch('doSignIn', userInfo)
             _this.$Notice.success({
               title: 'Sign in successful.',
               desc: ''
             })
-            // let signInInfo = {
-            //   id: _this.id,
-            //   password: _this.password
-            // }
-            // _this.$store.dispatch('doLogin', signInInfo)
             _this.$router.push('/home')
           } else {
-            _this.loading = true
             _this.$Notice.error({
               title: 'Sign in failed.',
               desc: ''
             })
+            _this.loading = false
           }
         })
     },

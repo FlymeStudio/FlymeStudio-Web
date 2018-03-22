@@ -133,9 +133,16 @@ import projectApi from '../api/projectApi'
 export default{
   name: 'project-create',
   created () {
+    this.getInfo()
   },
   data () {
     return {
+      info: {
+        tel: '',
+        name: '',
+        email: '',
+        messages: []
+      },
       types: [
         {
           value: '1',
@@ -244,6 +251,14 @@ export default{
     componentFooter
   },
   methods: {
+    getInfo () {
+      let name = this.$store.state.user.userInfo.name
+      if (name === null) {
+        this.$router.push('/')
+      } else {
+        this.info = this.$store.state.user.userInfo
+      }
+    },
     upload () {
       var chooser = document.getElementById('chooser').files
       if (chooser.length !== 0) {
@@ -311,6 +326,7 @@ export default{
     },
     save () {
       let _this = this
+      // TEST START
       setTimeout(() => {
         _this.$Notice.success({
           title: 'Save successful.',
@@ -319,7 +335,8 @@ export default{
         _this.handleReset('formItem')
         _this.modalSave = false
       }, 1000)
-      projectApi.create(this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
+      // TEST END
+      projectApi.create(this.info.tel, this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Save successful.',

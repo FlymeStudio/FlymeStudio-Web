@@ -17,24 +17,34 @@
 
           <Menu class="menu" mode="horizontal" theme="light" @on-select="clickTag" active-name="0">
             <MenuItem class="menu-item" name="0">
-            <Icon class="icon-item" type="bookmark" size=20></Icon>
-            All
+            <div class="div-menu-item">
+              <Icon class="icon-item" type="bookmark" size=20></Icon>
+              <span class="span-item">All</span>
+            </div>
             </MenuItem>
             <MenuItem class="menu-item" name="1">
-            <Icon class="icon-item" type="bookmark" size=20></Icon>
-            Yearly
+            <div class="div-menu-item">
+              <Icon class="icon-item" type="bookmark" size=20></Icon>
+              <span class="span-item">Yearly</span>
+            </div>
             </MenuItem>
             <MenuItem class="menu-item" name="2">
-            <Icon class="icon-item" type="bookmark" size=20></Icon>
-            Monthly
+            <div class="div-menu-item">
+              <Icon class="icon-item" type="bookmark" size=20></Icon>
+              <span class="span-item">Monthly</span>
+            </div>
             </MenuItem>
             <MenuItem class="menu-item" name="3">
-            <Icon class="icon-item" type="bookmark" size=20></Icon>
-            Weekly
+            <div class="div-menu-item">
+              <Icon class="icon-item" type="bookmark" size=20></Icon>
+              <span class="span-item">Weekly</span>
+            </div>
             </MenuItem>
             <MenuItem class="menu-item" name="4">
-            <Icon class="icon-item" type="bookmark" size=20></Icon>
-            Daily
+            <div class="div-menu-item">
+              <Icon class="icon-item" type="bookmark" size=20></Icon>
+              <span class="span-item">Daily</span>
+            </div>
             </MenuItem>
           </Menu>
 
@@ -55,21 +65,21 @@
 
                   <!-- content -->
                   <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true" :key="data.timestamp">
-                  <Card>
-                    <div>
-                      <div class="card-top">
-                        <i-circle v-if="data.percent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
-                          <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
-                        </i-circle>
-                        <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
-                          <span>{{ data.percent }}%</span>
-                        </i-circle>
-                        <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd"/>
-                        <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
-                        <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                    <Card>
+                      <div>
+                        <div class="card-top">
+                          <i-circle v-if="data.percent == 100" class="card-circle" :size=40 :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
+                            <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
+                          </i-circle>
+                          <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
+                            <span>{{ data.percent }}%</span>
+                          </i-circle>
+                          <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd" />
+                          <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
+                          <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                        </div>
+                        <p class="card-title" slot="title">{{ data.title }}</p>
                       </div>
-                      <p class="card-title" slot="title">{{ data.title }}</p>
-                    </div>
                     </Card>
                   </div>
                 </Panel>
@@ -90,13 +100,13 @@
                           <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
                             <span>{{ data.percent }}%</span>
                           </i-circle>
-                          <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd"/>
+                          <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd" />
                           <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
                           <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
                         </div>
                         <p class="card-title" slot="title">{{ data.title }}</p>
                       </div>
-                      </Card>
+                    </Card>
                   </div>
                 </Panel>
 
@@ -116,13 +126,13 @@
                           <i-circle v-else class="card-circle" :size=40 :percent="data.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
                             <span>{{ data.percent }}%</span>
                           </i-circle>
-                          <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd"/>
+                          <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd" />
                           <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
                           <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
                         </div>
                         <p class="card-title" slot="title">{{ data.title }}</p>
                       </div>
-                      </Card>
+                    </Card>
                   </div>
                 </Panel>
 
@@ -139,7 +149,7 @@
                     <i-circle class="card-circle" :size=40 v-else :percent="dataCopy.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
                       <span>{{ dataCopy.percent }}%</span>
                     </i-circle>
-                    <DatePicker class="card-date" type="date" size="large" v-model="dataCopy.date" readonly format="yyyy-MM-dd"/>
+                    <DatePicker class="card-date" type="date" size="large" v-model="dataCopy.date" readonly format="yyyy-MM-dd" />
                   </div>
 
                   <p class="detail-title" slot="title">{{ dataCopy.title }}</p>
@@ -161,7 +171,7 @@
               </Modal>
 
               <!-- modal-modify -->
-              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modifyModal" @on-ok="submitModify" loading  ok-text="Modify" cancel-text="Cancel">
+              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modifyModal" @on-ok="submitModify" loading ok-text="Modify" cancel-text="Cancel">
 
                 <Form class="form" ref="formItem" :model="formItem">
                   <FormItem>
@@ -218,6 +228,14 @@
                         <Button class="btn-edit" type="ghost" shape="circle" icon="plus" @click="addPlan()"></Button>
                       </div>
                     </Alert>
+                  </FormItem>
+
+                  <FormItem>
+                    <Icon class="icon-item" type="android-warning" size=18></Icon>
+                    <span class="span-form">Delete project</span>
+                  </FormItem>
+                  <FormItem>
+                    <Button type="error" icon="close-round" :loading="loadingDelete" @click="deleteProject()">Delete</Button>
                   </FormItem>
 
                 </Form>
@@ -336,7 +354,8 @@ export default{
         preview: true // 预览
       },
       editTag: '',
-      editGoal: ''
+      editGoal: '',
+      loadingDelete: false
     }
   },
   components: {
@@ -658,7 +677,41 @@ export default{
             title: 'Modify failed.',
             desc: ''
           })
-          _this.loadingModify = false
+        }
+      })
+    },
+    deleteProject () {
+      this.loadingDelete = true
+      let _this = this
+      // TEST START
+      setTimeout(() => {
+        _this.$Notice.success({
+          title: 'Delete successful.',
+          desc: ''
+        })
+        for (var i = 0; i < _this.datas.length; i++) {
+          if (_this.datas[i].timestamp === _this.formItem.timestamp) {
+            _this.datas.splice(i, 1)
+          }
+        }
+        _this.clickTag(_this.currentTag)
+        _this.modifyModal = false
+      }, 1000)
+      // TEST END
+      projectApi.delete(this.info.tel, this.formItem.timestamp).then(function (response) {
+        if (response.data.result === true) {
+          _this.$Notice.success({
+            title: 'Delete successful.',
+            desc: ''
+          })
+          _this.getProjects(_this.currentTag)
+          _this.modifyModal = false
+        } else {
+          _this.$Notice.error({
+            title: 'Delete failed.',
+            desc: ''
+          })
+          _this.loadingDelete = false
         }
       })
     }
@@ -669,6 +722,11 @@ export default{
 <style scoped>
 .menu {
   z-index: 5;
+}
+
+.span-item {
+  align-items: center;
+  font-size  : 16px;
 }
 
 .data-count {

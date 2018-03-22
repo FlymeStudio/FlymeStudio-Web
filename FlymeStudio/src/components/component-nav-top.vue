@@ -10,23 +10,29 @@
     <div class="layout-nav">
 
       <MenuItem name="1">
-      <Icon class="icon-item" type="person" size=18></Icon>
-      <span v-if="info.messages.length == 0" class="span-item">
-        {{ info.name }}
-      </span>
-      <span v-else class="span-item">
-        <Badge dot>{{ info.name }}</Badge>
-      </span>
+        <div class="div-menu-item">
+          <Icon class="icon-item" type="person" size=18></Icon>
+          <span v-if="info.messages.length == 0" class="span-item">
+          {{ info.name }}
+          </span>
+          <span v-else class="span-item">
+            <Badge dot>{{ info.name }}</Badge>
+          </span>
+        </div>
       </MenuItem>
 
       <MenuItem name="2">
-      <Icon class="icon-item" type="help" size=18></Icon>
-      <span class="span-item">Help</span>
+        <div class="div-menu-item">
+          <Icon class="icon-item" type="help" size=18></Icon>
+          <span class="span-item">Help</span>
+        </div>
       </MenuItem>
 
       <MenuItem name="3">
-      <Icon class="icon-item" type="log-out" size=18></Icon>
-      <span class="span-item">Sign out</span>
+        <div class="div-menu-item">
+          <Icon class="icon-item" type="log-out" size=18></Icon>
+          <span class="span-item">Sign out</span>
+        </div>
       </MenuItem>
 
     </div>

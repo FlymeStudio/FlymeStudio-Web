@@ -104,9 +104,10 @@
 }
 
 .icon-item {
-  width     : 18px;
-  text-align: center;
-  margin    : auto auto auto 0;
+  margin     : auto 2px;
+  width      : 18px;
+  text-align : center;
+  align-items: center;
 }
 
 .icon-spin {
@@ -115,6 +116,13 @@
 
 .menu-item {
   text-align : center;
+  display    : flex;
+  align-items: center;
+}
+
+.div-menu-item {
+  width      : auto;
+  height     : auto;
   display    : flex;
   align-items: center;
 }

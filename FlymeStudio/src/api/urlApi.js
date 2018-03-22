@@ -24,7 +24,8 @@ export const projectApi = {
   projectUrl: () => '',
   createUrl: () => '',
   modifyUrl: () => '',
-  searchUrl: () => ''
+  searchUrl: () => '',
+  deleteUrl: () => ''
 }
 
 export const summaryApi = {

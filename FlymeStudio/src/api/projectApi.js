@@ -75,5 +75,20 @@ export default {
       data: data,
       withCredentials: true
     })
+  },
+  delete (tel, timestamp) {
+    var data = qs.stringify({
+      tel: tel,
+      timestamp: timestamp
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: projectApi.daleteUrl(),
+      data: data,
+      withCredentials: true
+    })
   }
 }

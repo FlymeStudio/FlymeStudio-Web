@@ -5,7 +5,7 @@
 
 
 ### Router
-- [Vuex](https://router.vuejs.org/zh-cn/)
+- [vue-router](https://router.vuejs.org/zh-cn/)
 ```
 npm install vue-router
 ```

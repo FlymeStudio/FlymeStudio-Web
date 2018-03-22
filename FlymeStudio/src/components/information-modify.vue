@@ -18,8 +18,10 @@
 
             <Alert type="info">
               <FormItem class="form-item">
-                <Icon class="icon-item" style="margin:auto 10px;" type="person" size=18></Icon>
-                <span class="span-item">{{ info.name }}</span>
+                <div class="div-menu-item">
+                  <Icon class="icon-item" style="margin:auto 10px;" type="person" size=18></Icon>
+                  <span class="span-item">{{ info.name }}</span>
+                </div>
               </FormItem>
               <FormItem class="form-item" prop="name">
                 <Input type="text" v-model="formItem.name" size="large" placeholder="New name" clearable>
@@ -30,8 +32,10 @@
 
             <Alert type="info">
               <FormItem class="form-item">
-                <Icon class="icon-item" style="margin:auto 10px;" type="ios-telephone" size=18></Icon>
-                <span class="span-item">{{ info.tel }}</span>
+                <div class="div-menu-item">
+                  <Icon class="icon-item" style="margin:auto 10px;" type="ios-telephone" size=18></Icon>
+                  <span class="span-item">{{ info.tel }}</span>
+                </div>
               </FormItem>
               <FormItem class="form-item" prop="tel">
                 <Input type="text" v-model="formItem.tel" size="large" placeholder="New tel" clearable>
@@ -42,8 +46,10 @@
 
             <Alert type="info">
               <FormItem class="form-item">
-                <Icon class="icon-item" style="margin:auto 10px;" type="email" size=18></Icon>
-                <span class="span-item">{{ info.email }}</span>
+                <div class="div-menu-item">
+                  <Icon class="icon-item" style="margin:auto 10px;" type="email" size=18></Icon>
+                  <span class="span-item">{{ info.email }}</span>
+                </div>
               </FormItem>
               <FormItem class="form-item" prop="email">
                 <Input type="text" v-model="formItem.email" size="large" placeholder="New email" clearable>
@@ -267,7 +273,6 @@ export default{
 
 .form-item {
   margin-left: 3%;
-  width      : 300px;
   color      : #1c2438;
   font-weight: bold;
 }

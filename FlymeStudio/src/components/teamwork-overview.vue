@@ -31,13 +31,13 @@
                     <Icon class="icon-item" type="ios-people" size="18"></Icon>
                     <span>{{ team.name }}</span>
                   </p>
-                  <div style="margin:10px;">
+                  <div class="div-menu-item">
                     <Icon class="icon-item" type="pound" size="18"></Icon>
-                    <span>{{ team.id }}</span>
+                    <span class="span-item">{{ team.id }}</span>
                   </div>
-                  <div style="margin:10px;">
+                  <div class="div-menu-item">
                     <Icon class="icon-item" type="star" size="18"></Icon>
-                    <span>{{ team.manager }}</span>
+                    <span class="span-item">{{ team.manager }}</span>
                   </div>
 
                   <Collapse>
@@ -78,13 +78,13 @@
                     <Icon class="icon-item" type="ios-people" size="18"></Icon>
                     <span>{{ team.name }}</span>
                   </p>
-                  <div style="margin:10px;">
+                  <div class="div-menu-item">
                     <Icon class="icon-item" type="pound" size="18"></Icon>
-                    <span>{{ team.id }}</span>
+                    <span class="span-item">{{ team.id }}</span>
                   </div>
-                  <div style="margin:10px;">
+                  <div class="div-menu-item">
                     <Icon class="icon-item" type="star" size="18"></Icon>
-                    <span>{{ team.manager }}</span>
+                    <span class="span-item">{{ team.manager }}</span>
                   </div>
 
                   <Collapse>
@@ -664,6 +664,16 @@ export default{
   font-size  : 14px;
   margin-left: 10px;
   font-weight: bold;
+}
+
+.div-menu-item{
+  padding: 5px;
+}
+
+.span-item {
+  margin     : auto auto auto 5px;
+  align-items: center;
+  font-size  : 16px;
 }
 
 .div-members {

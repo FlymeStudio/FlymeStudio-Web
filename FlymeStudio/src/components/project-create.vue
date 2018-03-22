@@ -24,8 +24,10 @@
 
             <!-- type -->
             <FormItem>
-              <Icon class="icon-item" type="bookmark" size=18></Icon>
-              <span class="span-form">Set type</span>
+              <div class="div-menu-item">
+                <Icon class="icon-item" type="bookmark" size=18></Icon>
+                <span class="span-form">Set type</span>
+              </div>
             </FormItem>
 
             <FormItem prop="type">
@@ -36,8 +38,10 @@
 
             <!-- date -->
             <FormItem>
-              <Icon class="icon-item" type="calendar" size=18></Icon>
-              <span class="span-form">Set date</span>
+              <div class="div-menu-item">
+                <Icon class="icon-item" type="calendar" size=18></Icon>
+                <span class="span-form">Set date</span>
+              </div>
             </FormItem>
 
             <FormItem prop="date">
@@ -46,8 +50,10 @@
 
             <!-- title -->
             <FormItem>
-              <Icon class="icon-item" type="pin" size=18></Icon>
-              <span class="span-form">Set title</span>
+              <div class="div-menu-item">
+                <Icon class="icon-item" type="pin" size=18></Icon>
+                <span class="span-form">Set title</span>
+              </div>
             </FormItem>
 
             <FormItem prop="title">
@@ -56,9 +62,11 @@
 
             <!-- content -->
             <FormItem>
-              <Icon class="icon-item" type="social-markdown" size=18></Icon>
-              <span class="span-form">Set content</span>
-              <Button class="btn-upload" style="margin-left:40px;" @click="modalUpload = true"><Icon type="upload" size=18></Icon><span class="span-btn">Upload</span></Button>
+              <div class="div-menu-item">
+                <Icon class="icon-item" type="social-markdown" size=18></Icon>
+                <span class="span-form">Set content</span>
+                <Button class="btn-upload" style="margin-left:40px;" @click="modalUpload = true"><Icon type="upload" size=18></Icon><span class="span-btn">Upload</span></Button>
+              </div>
             </FormItem>
 
             <FormItem prop="content">
@@ -67,8 +75,10 @@
 
             <!-- plans -->
             <FormItem>
-              <Icon class="icon-item" type="flag" size=18></Icon>
-              <span class="span-form">Set plans</span>
+              <div class="div-menu-item">
+                <Icon class="icon-item" type="flag" size=18></Icon>
+                <span class="span-form">Set plans</span>
+              </div>
             </FormItem>
 
             <FormItem>
@@ -99,14 +109,14 @@
             </FormItem>
 
             <!-- upload -->
-            <Modal class="modal-confirm" v-model="modalUpload" title="Upload" :mask-closable="false" :closable="false"  ok-text="Upload" cancel-text="Cancel" loading @on-ok="upload()">
+            <Modal class="modal-confirm" v-model="modalUpload" title="Upload" :mask-closable="false" :closable="false" ok-text="Upload" cancel-text="Cancel" loading @on-ok="upload()">
               <input class="input-chooser" type="file" accept=".md" id="chooser">
               <p>The content you upload will cover the origin content.</p>
               <p>Are you sure to upload?</p>
             </Modal>
 
             <!-- save -->
-            <Modal class="modal-confirm" v-model="modalSave" title="Confirm" :mask-closable="false" :closable="false"  ok-text="Save" cancel-text="Cancel" loading @on-ok="save()">
+            <Modal class="modal-confirm" v-model="modalSave" title="Confirm" :mask-closable="false" :closable="false" ok-text="Save" cancel-text="Cancel" loading @on-ok="save()">
               <p>Are you sure to save?</p>
             </Modal>
 

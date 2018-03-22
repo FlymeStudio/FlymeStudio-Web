@@ -4,7 +4,7 @@
 
     <Submenu name="0">
       <template slot="title">
-        <Icon type="person" size=18></Icon>
+        <Icon class="icon-item" type="person" size=18></Icon>
         <span class="span-menu-item">Information</span>
       </template>
       <MenuItem name="1">Overview</MenuItem>
@@ -13,7 +13,7 @@
 
     <Submenu name="10">
       <template slot="title">
-        <Icon type="ios-people" size=18></Icon>
+        <Icon class="icon-item" type="ios-people" size=18></Icon>
         <span class="span-menu-item">Teamwork</span>
       </template>
       <MenuItem name="11">Overview</MenuItem>
@@ -23,7 +23,7 @@
 
     <Submenu name="20">
       <template slot="title">
-        <Icon type="clipboard" size=18></Icon>
+        <Icon class="icon-item" type="clipboard" size=18></Icon>
         <span class="span-menu-item">Project</span>
       </template>
       <MenuItem name="21">Overview</MenuItem>
@@ -33,7 +33,7 @@
 
     <Submenu name="30">
       <template slot="title">
-        <Icon type="document-text" size=18></Icon>
+        <Icon class="icon-item" type="document-text" size=18></Icon>
         <span class="span-menu-item">Summary</span>
       </template>
       <MenuItem name="31">Overview</MenuItem>

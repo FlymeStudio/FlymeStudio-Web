@@ -17,7 +17,7 @@
 
           <Menu class="menu" mode="horizontal" theme="light" active-name="0" @on-select="clickTag">
             <MenuItem class="menu-item" name="0">
-            <Icon type="ios-people" size=20></Icon>
+            <Icon type="android-person" size=20></Icon>
             My team
             </MenuItem>
             <MenuItem class="menu-item" name="1">

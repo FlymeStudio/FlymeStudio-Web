@@ -132,7 +132,7 @@
 import topNav from './component-nav-top.vue'
 import leftNav from './component-nav-left.vue'
 import componentFooter from './component-footer.vue'
-import informationApi from '../api/informationApi'
+import teamworkApi from '../api/teamworkApi'
 
 export default{
   name: 'information-overview',
@@ -210,7 +210,7 @@ export default{
         _this.spinShow = false
         _this.modalTeam = true
       }, 1000)
-      informationApi.team(teamId).then(function (response) {
+      teamworkApi.team(teamId).then(function (response) {
         if (response.data.result === true) {
           _this.team.count = response.data.count
           _this.team.manager = response.data.manager
@@ -240,7 +240,7 @@ export default{
         }
         _this.spinShow = false
       }, 1000)
-      informationApi.reply(messageId, result).then(function (response) {
+      teamworkApi.reply(messageId, result).then(function (response) {
         if (response.data.result === true) {
           setTimeout(() => {
             _this.$Notice.success({

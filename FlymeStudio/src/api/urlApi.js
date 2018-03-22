@@ -15,6 +15,14 @@ export const informationApi = {
   replyUrl: () => ''
 }
 
+export const teamworkApi = {
+  teamUrl: () => '',
+  searchUrl: () => '',
+  joinUrl: () => '',
+  createUrl: () => '',
+  replyUrl: () => ''
+}
+
 export const projectApi = {
   projectUrl: () => '',
   createUrl: () => '',

@@ -37,7 +37,7 @@
 
     <!-- create -->
     <Input class="input-create" v-model="createName" placeholder="Team name" clearable></Input>
-    <Button class="btn-create" type="primary" disabled v-if="agreementCreate == 0">Create</Button>
+    <Button class="btn-create" type="primary" disabled v-if="agreementCreate == 0">Submit</Button>
     <Button class="btn-create" type="primary" v-else @click="submit()">Submit</Button>
 
   </Alert>
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import informationApi from '../api/informationApi'
+import teamworkApi from '../api/teamworkApi'
 
 export default {
   name: 'component-team-create',
@@ -87,7 +87,7 @@ export default {
         })
         _this.modalCreate = false
       }, 1000)
-      informationApi.createTeam(this.password, this.createName).then(function (response) {
+      teamworkApi.create(this.password, this.createName).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Create team successful.',

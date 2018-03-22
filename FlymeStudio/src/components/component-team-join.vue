@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import informationApi from '../api/informationApi'
+import teamworkApi from '../api/teamworkApi'
 
 export default {
   name: 'component-team-join',
@@ -143,7 +143,7 @@ export default {
         ]
         _this.spinShow = false
       }, 1000)
-      informationApi.searchTeam(this.searchContent).then(function (response) {
+      teamworkApi.search(this.searchContent).then(function (response) {
         if (response.data.result === true) {
           _this.dataTeam = response.data.dataTeam
           _this.spinShow = false
@@ -172,7 +172,7 @@ export default {
         })
         _this.spinShow = false
       }, 1000)
-      informationApi.joinTeam(this.info.tel, this.currentData.id).then(function (response) {
+      teamworkApi.join(this.info.tel, this.currentData.id).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Send message successful.',

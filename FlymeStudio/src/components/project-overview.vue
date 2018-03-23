@@ -694,11 +694,13 @@ export default{
             _this.datas.splice(i, 1)
           }
         }
+        _this.loadingDelete = false
         _this.clickTag(_this.currentTag)
         _this.modifyModal = false
       }, 1000)
       // TEST END
       projectApi.delete(this.info.tel, this.formItem.timestamp).then(function (response) {
+        _this.loadingDelete = false
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Delete successful.',
@@ -711,7 +713,6 @@ export default{
             title: 'Delete failed.',
             desc: ''
           })
-          _this.loadingDelete = false
         }
       })
     }

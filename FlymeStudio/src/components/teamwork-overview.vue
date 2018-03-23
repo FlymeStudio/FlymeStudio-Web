@@ -20,33 +20,52 @@
             <Icon class="icon-spin" type="load-c" size=50></Icon>
           </Spin>
 
-          <Collapse v-model="openPanels">
+          <Collapse>
 
-            <Panel name="Manage">
+            <Panel>
               <span class="div-count" style="color:#19be6b;"> Manage ({{ managedTeams.length }})</span>
 
-              <div class="div-members" slot="content" v-for="team in managedTeams" :key="team.id">
-                <Card>
-                  <p slot="title">
-                    <Icon class="icon-item" type="ios-people" size="18"></Icon>
-                    <span>{{ team.name }}</span>
-                  </p>
+              <div class="div-team" slot="content" v-for="team in managedTeams" :key="team.id">
+                <Card class="card-team">
+                  <div slot="title">
+                    <Icon class="icon-item" type="ios-people" size="22"></Icon>
+                    <span class="span-team-name">{{ team.name }}</span>
+                  </div>
+
+                  <Alert type="success">
+                    <Tooltip content="Export projects">
+                      <Button class="btn-team" type="primary" shape="circle" icon="archive" @click="exportProjects(team.id)"></Button>
+                    </Tooltip>
+                    <Tooltip content="Export summaries">
+                      <Button class="btn-team" type="primary" shape="circle" icon="archive" @click="exportSummaries(team.id)"></Button>
+                    </Tooltip>
+                    <Tooltip content="Invite people">
+                      <Button class="btn-team" type="info" shape="circle" icon="android-person-add" @click="invite(team.id)"></Button>
+                    </Tooltip>
+                    <Tooltip content="Disband team">
+                      <Button v-if="team.administratorTel == info.tel" class="btn-team" type="error" shape="circle" icon="android-warning" @click="disband(team.id)"></Button>
+                      <Button v-else class="btn-team" type="warning" shape="circle" icon="android-warning" disabled></Button>
+                    </Tooltip>
+                  </Alert>
+
                   <div class="div-menu-item">
                     <Icon class="icon-item" type="pound" size="18"></Icon>
                     <span class="span-item">{{ team.id }}</span>
                   </div>
                   <div class="div-menu-item">
-                    <Icon class="icon-item" type="star" size="18"></Icon>
-                    <span class="span-item">{{ team.manager }}</span>
+                    <Icon class="icon-item" type="star" size="18" style="color:#ff9900;"></Icon>
+                    <span class="span-item">{{ team.administratorName }}</span>
                   </div>
 
                   <Collapse>
-                    <Panel name="ManagedMembers">
+                    <Panel>
                       <span class="div-count"><Icon class="icon-item" type="chatbubbles" size="18"></Icon> Member ({{ team.members.length }})</span>
 
                       <div class="div-members" slot="content">
                         <div class="div-member" v-for="member in team.members" :key="member.tel">
-                          <Icon class="icon-member" type="person" size="18"></Icon>
+                          <Icon v-if="member.permission == 2" class="icon-member" type="person" size="18" style="color:#ff9900;"></Icon>
+                          <Icon v-else-if="member.permission == 1" class="icon-member" type="person" size="18" style="color:#19be6b;"></Icon>
+                          <Icon v-else class="icon-member" type="person" size="18" style="color:#2d8cf0;"></Icon>
                           <span class="span-name">{{ member.name }}</span>
                           <Icon class="icon-member" type="ios-telephone" size="18"></Icon>
                           <span class="span-tel">{{ member.tel }}</span>
@@ -57,8 +76,13 @@
                             <Tooltip content="View summaries">
                               <Button class="btn-member" size="small" type="info" shape="circle" icon="document-text" @click="viewSummaries(member.tel, member.name, member.email)"></Button>
                             </Tooltip>
+                            <Tooltip content="Set permission">
+                              <Button v-if="team.administratorTel == info.tel" class="btn-member" size="small" type="warning" shape="circle" icon="key" @click="setPermission(team.id, member.tel)" style="margin-left:10px;"></Button>
+                              <Button v-else class="btn-member" size="small" type="warning" shape="circle" icon="key" disabled style="margin-left:10px;"></Button>
+                            </Tooltip>
                             <Tooltip content="Remove member">
-                              <Button class="btn-member" size="small" style="margin-left:10px;" type="error" shape="circle" icon="close-round" @click="removeMember(team.id, member.tel, member.name)"></Button>
+                              <Button v-if="member.tel != info.tel && member.permission == 0" class="btn-member" size="small" type="error" shape="circle" icon="close-round" @click="removeMember(team.id, member.tel, member.name)"></Button>
+                              <Button v-else class="btn-member" size="small" type="error" shape="circle" icon="close-round" disabled></Button>
                             </Tooltip>
                           </div>
                         </div>
@@ -69,34 +93,67 @@
               </div>
             </Panel>
 
-            <Panel name="Join">
-              <span class="div-count" style="color:#ff9900;"> Join ({{ joinedTeams.length }})</span>
+            <Panel>
+              <span class="div-count" style="color:#2d8cf0;"> Join ({{ joinedTeams.length }})</span>
 
-              <div class="div-members" slot="content" v-for="team in joinedTeams" :key="team.id">
-                <Card>
-                  <p slot="title">
-                    <Icon class="icon-item" type="ios-people" size="18"></Icon>
-                    <span>{{ team.name }}</span>
-                  </p>
+              <div class="div-team" slot="content" v-for="team in joinedTeams" :key="team.id">
+                <Card class="card-team">
+                  <div slot="title">
+                    <Icon class="icon-item" type="ios-people" size="22"></Icon>
+                    <span class="span-team-name">{{ team.name }}</span>
+                  </div>
+
+                  <Alert type="success">
+                    <Tooltip content="Export projects">
+                      <Button class="btn-team" type="primary" shape="circle" icon="archive" disabled></Button>
+                    </Tooltip>
+                    <Tooltip content="Export summaries">
+                      <Button class="btn-team" type="primary" shape="circle" icon="archive" disabled></Button>
+                    </Tooltip>
+                    <Tooltip content="Invite people">
+                      <Button class="btn-team" type="info" shape="circle" icon="android-person-add" @click="invite(team.id)"></Button>
+                    </Tooltip>
+                    <Tooltip content="Set permission">
+                      <Button class="btn-team" type="warning" shape="circle" icon="key" disabled></Button>
+                    </Tooltip>
+                    <Tooltip content="Disband team">
+                      <Button class="btn-team" type="warning" shape="circle" icon="android-warning" disabled></Button>
+                    </Tooltip>
+                  </Alert>
+
                   <div class="div-menu-item">
                     <Icon class="icon-item" type="pound" size="18"></Icon>
                     <span class="span-item">{{ team.id }}</span>
                   </div>
                   <div class="div-menu-item">
-                    <Icon class="icon-item" type="star" size="18"></Icon>
-                    <span class="span-item">{{ team.manager }}</span>
+                    <Icon class="icon-item" type="star" size="18" style="color:#ff9900;"></Icon>
+                    <span class="span-item">{{ team.administratorName }}</span>
                   </div>
 
                   <Collapse>
-                    <Panel name="ManagedMembers">
+                    <Panel>
                       <span class="div-count"><Icon class="icon-item" type="chatbubbles" size="18"></Icon> Member ({{ team.members.length }})</span>
 
                       <div class="div-members" slot="content">
                         <div class="div-member" v-for="member in team.members" :key="member.tel">
-                          <Icon class="icon-member" type="person" size="18"></Icon>
+                          <Icon v-if="member.permission == 2" class="icon-member" type="person" size="18" style="color:#ff9900;"></Icon>
+                          <Icon v-else-if="member.permission == 1" class="icon-member" type="person" size="18" style="color:#19be6b;"></Icon>
+                          <Icon v-else class="icon-member" type="person" size="18" style="color:#2d8cf0;"></Icon>
                           <span class="span-name">{{ member.name }}</span>
                           <Icon class="icon-member" type="ios-telephone" size="18"></Icon>
                           <span class="span-tel">{{ member.tel }}</span>
+
+                          <div class="btns">
+                            <Tooltip content="View projects">
+                              <Button class="btn-member" size="small" type="info" shape="circle" icon="clipboard" disabled></Button>
+                            </Tooltip>
+                            <Tooltip content="View summaries">
+                              <Button class="btn-member" size="small" type="info" shape="circle" icon="document-text" disabled></Button>
+                            </Tooltip>
+                            <Tooltip content="Remove member">
+                              <Button class="btn-member" size="small" style="margin-left:10px;" type="error" shape="circle" icon="close-round" disabled></Button>
+                            </Tooltip>
+                          </div>
                         </div>
                       </div>
                     </Panel>
@@ -351,17 +408,52 @@ export default{
         {
           id: '00001',
           name: 'System support',
-          manager: '李永达',
+          administratorName: '李永达',
+          administratorTel: '13612345678',
           members: [
+            {
+              name: '李永达',
+              tel: '13612345678',
+              email: '87654321@qq.com',
+              permission: 2
+            },
             {
               name: '曾宇',
               tel: '13608089849',
-              email: '1213814232@qq.com'
+              email: '1213814232@qq.com',
+              permission: 1
             },
             {
               name: '刘卓旻',
               tel: '13612345678',
-              email: '123456789@qq.com'
+              email: '123456789@qq.com',
+              permission: 0
+            }
+          ]
+        },
+        {
+          id: '00003',
+          name: 'Test team',
+          administratorName: '曾宇',
+          administratorTel: '13608089849',
+          members: [
+            {
+              name: '曾宇',
+              tel: '13608089849',
+              email: '1213814232@qq.com',
+              permission: 2
+            },
+            {
+              name: '刘卓旻',
+              tel: '13612345678',
+              email: '123456789@qq.com',
+              permission: 0
+            },
+            {
+              name: '张三',
+              tel: '12345678901',
+              email: '123455555@qq.com',
+              permission: 1
             }
           ]
         }
@@ -370,11 +462,26 @@ export default{
         {
           id: '00002',
           name: 'Overseas firmware',
-          manager: '段启智',
+          administratorName: '段启智',
+          administratorTel: '13456789012',
           members: [
             {
+              tel: '13456789012',
+              name: '段启智',
+              email: '122222222@qq.com',
+              permission: 2
+            },
+            {
               tel: '13412345678',
-              name: '余学海'
+              name: '余学海',
+              email: '1111111@qq.com',
+              permission: 0
+            },
+            {
+              name: '曾宇',
+              tel: '13608089849',
+              email: '1213814232@qq.com',
+              permission: 0
             }
           ]
         }
@@ -394,6 +501,18 @@ export default{
         }
         _this.spinShow = false
       })
+    },
+    invite (teamId) {
+      //
+    },
+    setPermission (teamId) {
+      //
+    },
+    exportProjects (teamId) {
+      //
+    },
+    exportSummaries (teamId) {
+      //
     },
     viewProjects (tel, name, email) {
       this.spinShow = true
@@ -595,7 +714,7 @@ export default{
       }, 1000)
     },
     viewSummaries (tel, name, email) {
-
+      //
     },
     removeMember (teamId, tel, name) {
       this.currentRemove = {
@@ -660,10 +779,22 @@ export default{
 </script>
 
 <style scoped>
-.div-count {
-  font-size  : 14px;
-  margin-left: 10px;
-  font-weight: bold;
+.div-team{
+  margin-bottom: 20px;
+}
+
+.card-team{
+/* background-color:#e9eaec; */
+}
+
+.span-team-name{
+  font-size: 20px;
+  color:#1c2438;
+}
+
+.btn-team{
+  margin: auto 5px;
+  font-size: 20px;
 }
 
 .div-menu-item{
@@ -674,6 +805,12 @@ export default{
   margin     : auto auto auto 5px;
   align-items: center;
   font-size  : 16px;
+}
+
+.div-count {
+  font-size  : 14px;
+  margin-left: 10px;
+  font-weight: bold;
 }
 
 .div-members {

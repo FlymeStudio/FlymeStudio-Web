@@ -19,39 +19,33 @@
             <Icon class="icon-spin" type="load-c" size=50></Icon>
           </Spin>
 
-          <Alert class="alert-information" show-icon>
-            <Icon class="icon-item" type="person" slot="icon" size=25></Icon>
-            <template slot="desc">
-              <div>
-                <span class="span-item">{{ info.name }}</span>
-              </div>
-            </template>
+          <Alert>
+            <div class="div-menu-item">
+              <Icon class="icon-item" type="person" size=25></Icon>
+              <span class="span-item">{{ info.name }}</span>
+            </div>
           </Alert>
 
-          <Alert class="alert-information" show-icon>
-            <Icon class="icon-item" type="ios-telephone" slot="icon" size=25></Icon>
-            <template slot="desc">
-              <div>
-                <span class="span-item">{{ info.tel }}</span>
-              </div>
-            </template>
+          <Alert>
+            <div class="div-menu-item">
+              <Icon class="icon-item" type="ios-telephone" size=25></Icon>
+              <span class="span-item">{{ info.tel }}</span>
+            </div>
           </Alert>
 
-          <Alert class="alert-information" show-icon>
-            <Icon class="icon-item" type="email" slot="icon" size=25></Icon>
-            <template slot="desc">
-              <div>
-                <span class="span-item">{{ info.email }}</span>
-              </div>
-            </template>
+          <Alert>
+            <div class="div-menu-item">
+              <Icon class="icon-item" type="email" size=25></Icon>
+              <span class="span-item">{{ info.email }}</span>
+            </div>
           </Alert>
 
-          <Alert class="alert-information" show-icon v-for="item in info.messages" :key="item.messageId">
+          <Alert class="alert-message" show-icon v-for="item in info.messages" :key="item.messageId">
+            <Icon class="icon-item" type="ios-people" slot="icon" size=25></Icon>
             <Button class="btn-user" @click="clickUser(item.fromName, item.fromTel)">{{ item.fromName }}</Button>
             <span v-if="item.type == 1"> invited you to join </span><span v-else-if="item.type == 2"> applied to join </span>
             <Button v-if="item.type == 1" class="btn-invite" @click="clickTeam(item.teamName, item.teamId)">{{ item.teamName }}</Button>
             <Button v-else-if="item.type == 2" class="btn-apply" @click="clickTeam(item.teamName, item.teamId)">{{ item.teamName }}</Button>
-            <Icon class="icon-item" type="ios-people" slot="icon" size=25></Icon>
             <template slot="desc">
               <div class="div-message">
                 <Button class="btn-message" type="success" @click="reply(item.messageId, true)">Accept</Button>
@@ -60,59 +54,47 @@
             </template>
           </Alert>
 
-          <!-- user -->
-          <Modal class="modal-user" v-model="modalUser" :closable="false" :mask-closable="false" title="User" ok-text="Ok" cancel-text="Cancel">
-            <Alert class="alert-information" show-icon>
-              <Icon class="icon-item" type="person" slot="icon" size=25></Icon>
-              <template slot="desc">
-                <div>
-                  <span class="span-item">{{ user.fromName }}</span>
-                </div>
-              </template>
+          <!-- modal-user -->
+          <Modal class="modal" v-model="modalUser" :closable="false" :mask-closable="false" title="User" ok-text="Ok" cancel-text="Cancel">
+            <Alert>
+              <div class="div-menu-item">
+                <Icon class="icon-item" type="person" size=20></Icon>
+                <span class="span-item">{{ user.fromName }}</span>
+              </div>
             </Alert>
-            <Alert class="alert-information" show-icon>
-              <Icon class="icon-item" type="ios-telephone" slot="icon" size=25></Icon>
-              <template slot="desc">
-                <div>
-                  <span class="span-item">{{ user.fromTel }}</span>
-                </div>
-              </template>
+            <Alert>
+              <div class="div-menu-item">
+                <Icon class="icon-item" type="ios-telephone" size=20></Icon>
+                <span class="span-item">{{ user.fromTel }}</span>
+              </div>
             </Alert>
           </Modal>
 
-          <!-- team -->
-          <Modal class="modalTeam" v-model="modalTeam" :closable="false" :mask-closable="false" title="Team" ok-text="Ok" cancel-text="Cancel">
-            <Alert class="alert-information" show-icon>
-              <Icon class="icon-item" type="pound" slot="icon" size=25></Icon>
-              <template slot="desc">
-                <div>
-                  <span class="span-item">{{ team.teamId }}</span>
-                </div>
-              </template>
+          <!-- modal-team -->
+          <Modal class="modal" v-model="modalTeam" :closable="false" :mask-closable="false" title="Team" ok-text="Ok" cancel-text="Cancel">
+            <Alert>
+              <div class="div-menu-item">
+                <Icon class="icon-item" type="pound" size=20></Icon>
+                <span class="span-item">{{ team.teamId }}</span>
+              </div>
             </Alert>
-            <Alert class="alert-information" show-icon>
-              <Icon class="icon-item" type="ios-people" slot="icon" size=25></Icon>
-              <template slot="desc">
-                <div>
-                  <span class="span-item">{{ team.teamName }}</span>
-                </div>
-              </template>
+            <Alert>
+              <div class="div-menu-item">
+                <Icon class="icon-item" type="ios-people" size=20></Icon>
+                <span class="span-item">{{ team.teamName }}</span>
+              </div>
             </Alert>
-            <Alert class="alert-information" show-icon>
-              <Icon class="icon-item" type="star" slot="icon" size=25></Icon>
-              <template slot="desc">
-                <div>
-                  <span class="span-item">{{ team.manager }}</span>
-                </div>
-              </template>
+            <Alert>
+              <div class="div-menu-item">
+                <Icon class="icon-item" type="star" size=20></Icon>
+                <span class="span-item">{{ team.manager }}</span>
+              </div>
             </Alert>
-            <Alert class="alert-information" show-icon>
-              <Icon class="icon-item" type="chatbubbles" slot="icon" size=25></Icon>
-              <template slot="desc">
-                <div>
-                  <span class="span-item">{{ team.count }}</span>
-                </div>
-              </template>
+            <Alert>
+              <div class="div-menu-item">
+                <Icon class="icon-item" type="chatbubbles" size=20></Icon>
+                <span class="span-item">{{ team.count }}</span>
+              </div>
             </Alert>
           </Modal>
 
@@ -222,14 +204,14 @@ export default{
           title: 'Reply successful.',
           desc: ''
         })
-        _this.$store.doDeleteMsg('dispatch', messageId)
+        _this.$store.dispatch('doDeleteMsg', messageId)
         _this.spinShow = false
       }, 1000)
       // TEST END
       teamworkApi.reply(this.info.tel, messageId, result).then(function (response) {
         if (response.data.result === true) {
           setTimeout(() => {
-            _this.$store.doDeleteMsg('dispatch', messageId)
+            _this.$store.dispatch('doDeleteMsg', messageId)
             _this.info = this.$store.state.user.userInfo
             _this.$Notice.success({
               title: 'Reply successful.',
@@ -253,12 +235,17 @@ export default{
 </script>
 
 <style scoped>
-.span-item {
-  font-size: 16px;
+.div-menu-item {
+  margin      : 2px auto;
+  padding-left: 10px;
+  color       : #2b85e4;
 }
 
-.alert-information {
-  margin-bottom: 10px;
+.span-item {
+  height     : 100%;
+  align-items: center;
+  margin     : auto auto auto 15px;
+  font-size  : 16px;
 }
 
 .div-message {
@@ -270,7 +257,7 @@ export default{
   margin-right: 10px;
 }
 
-.modal-user {
+.modal {
   max-width: 200px;
   min-width: 100px;
   height   : auto;

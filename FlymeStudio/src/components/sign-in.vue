@@ -116,7 +116,24 @@ export default {
           name: '曾宇',
           email: '1213814232@qq.com',
           password: '123456',
-          messages: []
+          messages: [
+            {
+              messageId: '1',
+              type: 1,
+              fromTel: '13600000001',
+              fromName: '刘卓旻',
+              teamName: 'System support',
+              teamId: '00001'
+            },
+            {
+              messageId: '2',
+              type: 2,
+              fromTel: '13600000002',
+              fromName: '余学海',
+              teamName: 'Overseas firmware',
+              teamId: '00002'
+            }
+          ]
         }
         _this.$store.dispatch('doSignIn', userInfo)
         _this.$Notice.success({

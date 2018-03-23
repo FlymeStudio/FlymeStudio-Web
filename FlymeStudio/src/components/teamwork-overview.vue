@@ -26,7 +26,7 @@
               <span class="div-count" style="color:#19be6b;"> Manage ({{ managedTeams.length }})</span>
 
               <div class="div-team" slot="content" v-for="team in managedTeams" :key="team.id">
-                <Card class="card-team">
+                <Card>
                   <div slot="title">
                     <Icon class="icon-item" type="ios-people" size="22"></Icon>
                     <span class="span-team-name">{{ team.name }}</span>
@@ -97,7 +97,7 @@
               <span class="div-count" style="color:#2d8cf0;"> Join ({{ joinedTeams.length }})</span>
 
               <div class="div-team" slot="content" v-for="team in joinedTeams" :key="team.id">
-                <Card class="card-team">
+                <Card>
                   <div slot="title">
                     <Icon class="icon-item" type="ios-people" size="22"></Icon>
                     <span class="span-team-name">{{ team.name }}</span>
@@ -425,7 +425,7 @@ export default{
             },
             {
               name: '刘卓旻',
-              tel: '13612345678',
+              tel: '13612345679',
               email: '123456789@qq.com',
               permission: 0
             }
@@ -445,7 +445,7 @@ export default{
             },
             {
               name: '刘卓旻',
-              tel: '13612345678',
+              tel: '13612345679',
               email: '123456789@qq.com',
               permission: 0
             },
@@ -779,25 +779,21 @@ export default{
 </script>
 
 <style scoped>
-.div-team{
+.div-team {
   margin-bottom: 20px;
 }
 
-.card-team{
-/* background-color:#e9eaec; */
-}
-
-.span-team-name{
+.span-team-name {
   font-size: 20px;
-  color:#1c2438;
+  color    : #1c2438;
 }
 
-.btn-team{
-  margin: auto 5px;
+.btn-team {
+  margin   : auto 5px;
   font-size: 20px;
 }
 
-.div-menu-item{
+.div-menu-item {
   padding: 5px;
 }
 
@@ -864,7 +860,9 @@ export default{
 .btn-member {
   margin-right: 10px;
 }
+
 /** modal-project **/
+
 .vertical-center-modal {
   display        : flex;
   align-items    : center;
@@ -923,7 +921,7 @@ export default{
   font-size     : 22px;
 }
 
-.panel-project{
+.panel-project {
   z-index: 5;
 }
 
@@ -931,7 +929,7 @@ export default{
   margin-left: 10px;
   font-size  : 15px;
   font-weight: bold;
-  overflow: hidden;
+  overflow   : hidden;
 }
 
 .card-top {

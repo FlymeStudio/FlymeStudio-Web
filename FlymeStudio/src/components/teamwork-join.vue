@@ -183,7 +183,7 @@ export default{
         _this.spinShow = false
       }, 1000)
       // TEST END
-      teamworkApi.search(this.info.tel, this.searchContent).then(function (response) {
+      teamworkApi.searchTeam(this.info.tel, this.searchContent).then(function (response) {
         if (response.data.result === true) {
           _this.dataTeam = response.data.dataTeam
           _this.spinShow = false
@@ -214,7 +214,7 @@ export default{
         _this.spinShow = false
       }, 1000)
       // TEST END
-      teamworkApi.join(this.info.tel, this.currentData.id).then(function (response) {
+      teamworkApi.joinTeam(this.info.tel, this.currentData.id).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Send message successful.',

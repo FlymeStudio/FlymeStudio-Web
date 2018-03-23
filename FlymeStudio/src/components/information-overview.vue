@@ -181,7 +181,7 @@ export default{
         _this.modalTeam = true
       }, 1000)
       // TEST END
-      teamworkApi.team(teamId).then(function (response) {
+      teamworkApi.getTeamMsg(teamId).then(function (response) {
         _this.spinShow = false
         if (response.data.result === true) {
           _this.team.count = response.data.count
@@ -208,7 +208,7 @@ export default{
         _this.spinShow = false
       }, 1000)
       // TEST END
-      teamworkApi.reply(this.info.tel, messageId, result).then(function (response) {
+      teamworkApi.replyMsg(this.info.tel, messageId, result).then(function (response) {
         if (response.data.result === true) {
           setTimeout(() => {
             _this.$store.dispatch('doDeleteMsg', messageId)
@@ -238,7 +238,7 @@ export default{
 .div-menu-item {
   margin      : 2px auto;
   padding-left: 10px;
-  color       : #2b85e4;
+  color       : #1c2438;
 }
 
 .span-item {

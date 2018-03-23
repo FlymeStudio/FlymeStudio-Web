@@ -11,12 +11,19 @@ export const informationApi = {
 }
 
 export const teamworkApi = {
-  teamUrl: () => '',
-  replyUrl: () => '',
-  viewUrl: () => '',
-  viewUserProjectsUrl: () => '',
-  searchUrl: () => '',
-  joinUrl: () => '',
+  getTeamMsgUrl: () => '',
+  replyMsgUrl: () => '',
+  viewTeamsUrl: () => '',
+  viewTeamProjectsUrl: () => '',
+  viewTeamSummariesUrl: () => '',
+  inviteUrl: () => '',
+  disbandUrl: () => '',
+  viewMemberProjectsUrl: () => '',
+  viewMemberSummariesUrl: () => '',
+  setPermissionUrl: () => '',
+  removeMemberUrl: () => '',
+  searchTeamUrl: () => '',
+  joinTeamUrl: () => '',
   createUrl: () => ''
 }
 

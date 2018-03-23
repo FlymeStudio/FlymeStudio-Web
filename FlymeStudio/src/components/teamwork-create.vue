@@ -133,14 +133,18 @@ export default{
       }
     },
     create () {
+      let _this = this
       if (this.password !== this.info.password) {
         this.$Notice.error({
           title: 'Password is incorrect.',
           desc: ''
         })
+        setTimeout(() => {
+          _this.password = ''
+          _this.modalCreate = false
+        }, 1000)
         return
       }
-      let _this = this
       // TEST START
       setTimeout(() => {
         _this.$Notice.success({

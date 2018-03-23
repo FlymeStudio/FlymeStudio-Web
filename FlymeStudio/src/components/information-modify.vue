@@ -206,14 +206,18 @@ export default{
       }
     },
     modify: function () {
+      let _this = this
       if (this.info.password !== this.password) {
         this.$Notice.error({
           title: 'Password is incorrect.',
           desc: ''
         })
+        setTimeout(() => {
+          _this.password = ''
+          _this.modalModify = false
+        }, 1000)
         return
       }
-      let _this = this
       // TEST START
       _this.$store.dispatch('doUpdate', _this.info)
       setTimeout(() => {

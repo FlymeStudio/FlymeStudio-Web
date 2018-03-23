@@ -23,12 +23,12 @@
           <Collapse>
 
             <Panel>
-              <span class="div-count" style="color:#19be6b;"> Manage ({{ managedTeams.length }})</span>
+              <span class="div-count" style="color:#1c2438;"> Managed ({{ managedTeams.length }})</span>
 
               <div class="div-team" slot="content" v-for="team in managedTeams" :key="team.id">
                 <Card>
-                  <div slot="title">
-                    <Icon class="icon-item" type="ios-people" size="22"></Icon>
+                  <div slot="title" style="color:#2b85e4;">
+                    <Icon class="icon-item" type="ios-people" size="24"></Icon>
                     <span class="span-team-name">{{ team.name }}</span>
                   </div>
 
@@ -94,12 +94,12 @@
             </Panel>
 
             <Panel>
-              <span class="div-count" style="color:#2d8cf0;"> Join ({{ joinedTeams.length }})</span>
+              <span class="div-count" style="color:#1c2438;"> Joined ({{ joinedTeams.length }})</span>
 
               <div class="div-team" slot="content" v-for="team in joinedTeams" :key="team.id">
                 <Card>
-                  <div slot="title">
-                    <Icon class="icon-item" type="ios-people" size="22"></Icon>
+                  <div slot="title" style="color:#2b85e4;">
+                    <Icon class="icon-item" type="ios-people" size="24"></Icon>
                     <span class="span-team-name">{{ team.name }}</span>
                   </div>
 
@@ -150,8 +150,11 @@
                             <Tooltip content="View summaries">
                               <Button class="btn-member" size="small" type="info" shape="circle" icon="document-text" disabled></Button>
                             </Tooltip>
+                            <Tooltip content="Set permission">
+                              <Button class="btn-member" size="small" style="margin-left:10px;" type="warning" shape="circle" icon="key" disabled></Button>
+                            </Tooltip>
                             <Tooltip content="Remove member">
-                              <Button class="btn-member" size="small" style="margin-left:10px;" type="error" shape="circle" icon="close-round" disabled></Button>
+                              <Button class="btn-member" size="small" type="error" shape="circle" icon="close-round" disabled></Button>
                             </Tooltip>
                           </div>
                         </div>
@@ -163,153 +166,102 @@
             </Panel>
           </Collapse>
 
-          <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalProjects">
+          <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalViewProjects">
 
             <Layout style="margin-top:20px;">
 
-              <Spin class="spin" fix v-if="spinShow">
+              <Spin class="spin" fix v-if="spinModal">
                 <Icon class="icon-spin" type="load-c" size=50></Icon>
               </Spin>
 
               <Header class="layout-header-bar" theme="dark">
                 <Icon type="clipboard" size=18 style="margin-right:10px;"></Icon><span>Project</span>
-                <Icon type="person" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentUser.name }}</span>
-                <Icon type="ios-telephone" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentUser.tel }}</span>
-                <Icon type="email" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentUser.email }}</span>
+                <Icon type="person" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentView.name }}</span>
+                <Icon type="ios-telephone" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentView.tel }}</span>
+                <Icon type="email" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentView.email }}</span>
               </Header>
 
               <Layout>
 
-                <Sider style="z-index:6;" breakpoint="md" collapsible :collapsed-width="60" v-model="isCollapsed">
-                  <Menu active-name="0" theme="dark" width="auto" :class="menuitemClasses" @on-select="clickProjectsTag">
-                    <MenuItem class="menu-item" name="0"> All
+                <Sider style="z-index:6;" width="100">
+                  <Menu active-name="0" theme="dark" width="auto" @on-select="clickProjectsTag">
+                    <MenuItem class="menu-item" name="0"><span>All</span>
                     </MenuItem>
-                    <MenuItem class="menu-item" name="1"> Yearly
+                    <MenuItem class="menu-item" name="1"><span>Yearly</span>
                     </MenuItem>
-                    <MenuItem class="menu-item" name="2"> Monthly
+                    <MenuItem class="menu-item" name="2"><span>Monthly</span>
                     </MenuItem>
-                    <MenuItem class="menu-item" name="3"> Weekly
+                    <MenuItem class="menu-item" name="3"><span>Weekly</span>
                     </MenuItem>
-                    <MenuItem class="menu-item" name="4"> Daily
+                    <MenuItem class="menu-item" name="4"><span>Daily</span>
                     </MenuItem>
                   </Menu>
-                  <div slot="trigger"></div>
                 </Sider>
 
-                <Layout>
-                  <Content :style="{margin: '25px', background: '#fff', minHeight: '220px'}">
-                    <div span="12" class="demo-tabs-style2">
+                <Sider style="background:#fff">
 
-                      <Tabs type="card">
+                  <Collapse v-model="collapseProjects">
 
-                        <TabPane label="Total">
-                          <Collapse>
-                            <Panel class="panel-project" v-for="project in currentProjects" :key="project.timestamp" v-if="project.show == true">
-                              <span class="detail-title">{{ project.title }}</span>
-                              <div slot="content">
-                                <div class="card-top">
-                                  <i-circle class="card-circle" :size=40 v-if="project.percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
-                                    <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
-                                  </i-circle>
-                                  <i-circle class="card-circle" :size=40 v-else :percent="project.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
-                                    <span>{{ project.percent }}%</span>
-                                  </i-circle>
-                                  <DatePicker class="card-date" type="date" size="large" v-model="project.date" readonly format="yyyy-MM-dd" />
-                                </div>
-                                <mavon-editor class="detail-content" v-model="project.content" :subfield="subfieldProject" :defaultOpen="defaultOpenProject" :toolbarsFlag="toolbarsFlagProject">{{ project.content }}</mavon-editor>
-                                <div class="div-plans">
-                                  <Alert class="alert-plans" v-for="item in project.plans" :key="item.timestamp">
-                                    <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
-                                    <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
-                                    <div class="div-plan">
-                                      <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
-                                      <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
-                                    </div>
-                                  </Alert>
-                                </div>
-                              </div>
-                            </Panel>
-                          </Collapse>
-                        </TabPane>
+                    <Panel name="Total">
 
-                        <TabPane label="Done">
-                          <Collapse>
-                            <Panel class="panel-project" v-for="project in currentProjects" :key="project.timestamp" v-if="project.show == true && project.percent == 100">
-                              <span class="detail-title">{{ project.title }}</span>
-                              <div slot="content">
-                                <div class="card-top">
-                                  <i-circle class="card-circle" :size=40 v-if="project.percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
-                                    <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
-                                  </i-circle>
-                                  <i-circle class="card-circle" :size=40 v-else :percent="project.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
-                                    <span>{{ project.percent }}%</span>
-                                  </i-circle>
-                                  <DatePicker class="card-date" type="date" size="large" v-model="project.date" readonly format="yyyy-MM-dd" />
-                                </div>
-                                <mavon-editor class="detail-content" v-model="project.content" :subfield="subfieldProject" :defaultOpen="defaultOpenProject" :toolbarsFlag="toolbarsFlagProject">{{ project.content }}</mavon-editor>
-                                <div class="div-plans">
-                                  <Alert class="alert-plans" v-for="item in project.plans" :key="item.timestamp">
-                                    <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
-                                    <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
-                                    <div class="div-plan">
-                                      <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
-                                      <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
-                                    </div>
-                                  </Alert>
-                                </div>
-                              </div>
-                            </Panel>
-                          </Collapse>
-                        </TabPane>
+                      <!-- title -->
+                      <span class="data-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
 
-                        <TabPane label="Doing">
-                          <Collapse>
-                            <Panel class="panel-project" v-for="project in currentProjects" :key="project.timestamp" v-if="project.show == true && project.percent != 100">
-                              <span class="detail-title">{{ project.title }}</span>
-                              <div slot="content">
-                                <div class="card-top">
-                                  <i-circle class="card-circle" :size=40 v-if="project.percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
-                                    <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
-                                  </i-circle>
-                                  <i-circle class="card-circle" :size=40 v-else :percent="project.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
-                                    <span>{{ project.percent }}%</span>
-                                  </i-circle>
-                                  <DatePicker class="card-date" type="date" size="large" v-model="project.date" readonly format="yyyy-MM-dd" />
-                                </div>
-                                <mavon-editor class="detail-content" v-model="project.content" :subfield="subfieldProject" :defaultOpen="defaultOpenProject" :toolbarsFlag="toolbarsFlagProject">{{ project.content }}</mavon-editor>
-                                <div class="div-plans">
-                                  <Alert class="alert-plans" v-for="item in project.plans" :key="item.timestamp">
-                                    <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
-                                    <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
-                                    <div class="div-plan">
-                                      <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
-                                      <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
-                                    </div>
-                                  </Alert>
-                                </div>
-                              </div>
-                            </Panel>
-                          </Collapse>
-                        </TabPane>
+                      <!-- content -->
+                      <div slot="content">
+                        <Alert class="alert-title" v-for="data in currentProjects" v-if="data.show == true" :key="data.timestamp" @click="chooseProject(data)">
+                          {{ data.title }}
+                        </Alert>
+                      </div>
+                    </Panel>
 
-                      </Tabs>
+                    <Panel name="Done">
 
-                    </div>
+                      <!-- title -->
+                      <span class="data-count" style="color:#19be6b;"> Done ({{ count.done }})</span>
 
-                  </Content>
-                </Layout>
+                      <!-- content -->
+                      <div slot="content">
+                        <Alert class="alert-title" v-for="data in currentProjects" v-if="data.show == true && data.percent == 100" :key="data.timestamp" @click="chooseProject(data)">
+                          {{ data.title }}
+                        </Alert>
+                      </div>
+
+                    </Panel>
+
+                    <Panel name="Doing">
+
+                      <!-- title -->
+                      <span class="data-count" style="color:#ed3f14;"> Doing ({{ count.doing }})</span>
+
+                      <!-- content -->
+                      <div slot="content">
+                        <Alert class="alert-title" v-for="data in currentProjects" v-if="data.show == true && data.percent != 100" :key="data.timestamp" @click="chooseProject(data)">
+                          {{ data.title }}
+                        </Alert>
+
+                      </div>
+
+                    </Panel>
+
+                  </Collapse>
+
+                </Sider>
+
+                <Content>
+                </Content>
 
               </Layout>
 
             </Layout>
           </Modal>
 
-          <Modal v-model="modalSummaries">
+          <Modal v-model="modalViewSummaries">
 
           </Modal>
 
           <!-- confirm -->
-          <Modal class="modal-remove" v-model="modalRemove" title="Confirm" :mask-closable="false" :closable="false" ok-text="Remove" cancel-text="Cancel" loading @on-ok="remove()">
+          <Modal class="modal-remove" v-model="modalRemoveMember" title="Confirm" :mask-closable="false" :closable="false" ok-text="Remove" cancel-text="Cancel" loading @on-ok="remove()">
             <Alert type="warning" show-icon>
               <p>Are you sure to remove {{ currentRemove.name }}({{ currentRemove.tel }}) from team?</p>
               <template slot="desc">
@@ -354,11 +306,10 @@ export default{
         messages: []
       },
       spinShow: false,
-      openPanels: ['Manage', 'Join'],
+      spinModal: false,
       managedTeams: [],
       joinedTeams: [],
-      currentTag: '0',
-      currentUser: {
+      currentView: {
         name: '',
         tel: '',
         email: ''
@@ -368,23 +319,28 @@ export default{
         name: '',
         tel: ''
       },
+      count: {
+        total: 0,
+        done: 0,
+        doing: 0
+      },
+      currentTag: '0',
       currentProjects: [],
+      currentProject: {},
+      collapseProjects: '',
       currentSummaries: [],
-      modalProjects: false,
-      modalSummaries: false,
-      modalRemove: false,
-      isCollapsed: false,
+      currentSummary: {},
+      modalExportProjects: false,
+      modalExportSummaries: false,
+      modalInvite: false,
+      modalDisband: false,
+      modalViewProjects: false,
+      modalViewSummaries: false,
+      modalSetPermission: false,
+      modalRemoveMember: false,
       subfieldProject: false,
       defaultOpenProject: 'preview',
       toolbarsFlagProject: false
-    }
-  },
-  computed: {
-    menuitemClasses: function () {
-      return [
-        'menu-item',
-        this.isCollapsed ? 'collapsed-menu' : ''
-      ]
     }
   },
   components: {
@@ -489,7 +445,7 @@ export default{
       this.spinShow = false
       // TEST END
       let _this = this
-      teamworkApi.view(this.info.tel).then(function (response) {
+      teamworkApi.viewTeams(this.info.tel).then(function (response) {
         if (response.data.result === true) {
           _this.managedTeams = response.data.managedTeams
           _this.joinedTeams = response.data.joinedTeams
@@ -502,21 +458,21 @@ export default{
         _this.spinShow = false
       })
     },
+    exportProjects (teamId) {
+      this.$Message.error('Function not available.')
+    },
+    exportSummaries (teamId) {
+      this.$Message.error('Function not available.')
+    },
     invite (teamId) {
       //
     },
-    setPermission (teamId) {
-      //
-    },
-    exportProjects (teamId) {
-      //
-    },
-    exportSummaries (teamId) {
-      //
+    disband (teamId) {
+      this.$Message.error('Function not available.')
     },
     viewProjects (tel, name, email) {
       this.spinShow = true
-      this.currentUser = {
+      this.currentView = {
         name: name,
         tel: tel,
         email: email
@@ -660,16 +616,18 @@ export default{
         }
       ]
       this.computePercent()
+      this.clickProjectsTag(this.currentTag)
       setTimeout(() => {
-        _this.modalProjects = true
+        _this.modalViewProjects = true
         _this.spinShow = false
       }, 2000)
       // TEST END
       let _this = this
-      teamworkApi.viewUserProjects(this.info.tel, tel).then(function (response) {
+      teamworkApi.viewMemberProjects(this.info.tel, tel).then(function (response) {
         if (response.data.result === true) {
           _this.currentProjects = response.data.projects
           _this.computePercent()
+          _this.clickProjectsTag(_this.currentTag)
         } else {
           _this.$Notice.error({
             title: 'Failed to get data.',
@@ -692,29 +650,56 @@ export default{
         }
       }
     },
-    clickProjectsTag: function (name) {
-      this.spinShow = true
+    clickProjectsTag (name) {
+      this.collapseProjects = ''
+      this.spinModal = true
       this.currentTag = name
+      var _total = 0
+      var _done = 0
+      var _doing = 0
       if (name === '0') {
+        _total = this.currentProjects.length
         for (let i = 0; i < this.currentProjects.length; i++) {
           this.currentProjects[i].show = true
+          if (this.currentProjects[i].percent === 100) {
+            _done++
+          } else {
+            _doing++
+          }
         }
       } else {
         for (let i = 0; i < this.currentProjects.length; i++) {
           if (this.currentProjects[i].type === name) {
+            _total++
             this.currentProjects[i].show = true
+            if (this.currentProjects[i].percent === 100) {
+              _done++
+            } else {
+              _doing++
+            }
           } else {
             this.currentProjects[i].show = false
           }
         }
       }
+      this.count = {
+        total: _total,
+        done: _done,
+        doing: _doing
+      }
       let _this = this
       setTimeout(() => {
-        _this.spinShow = false
+        _this.spinModal = false
       }, 1000)
     },
+    chooseProject (data) {
+      this.currentProject = data
+    },
     viewSummaries (tel, name, email) {
-      //
+      this.$Message.error('Function not available.')
+    },
+    setPermission (teamId) {
+      this.$Message.error('Function not available.')
     },
     removeMember (teamId, tel, name) {
       this.currentRemove = {
@@ -722,7 +707,7 @@ export default{
         name: name,
         tel: tel
       }
-      this.modalRemove = true
+      this.modalRemoveMember = true
     },
     remove () {
       if (this.password !== this.info.password) {
@@ -733,7 +718,6 @@ export default{
         this.password = ''
         return
       }
-      console.log('----------')
       let _this = this
       // TEST START
       setTimeout(() => {
@@ -748,7 +732,7 @@ export default{
                 _this.managedTeams[i].members.splice(j, 1)
                 _this.currentRemove = []
                 _this.password = ''
-                _this.modalRemove = false
+                _this.modalRemoveMember = false
                 break
               }
             }
@@ -756,7 +740,7 @@ export default{
         }
       }, 2000)
       // TEST END
-      teamworkApi.remove(this.info.tel, this.currentRemove.tel, this.currentRemove.teamId).then(function (response) {
+      teamworkApi.removeMember(this.info.tel, this.currentRemove.tel, this.currentRemove.teamId).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Remove successful.',
@@ -771,7 +755,7 @@ export default{
             desc: ''
           })
         }
-        _this.modalRemove = false
+        _this.modalRemoveMember = false
       })
     }
   }
@@ -784,8 +768,9 @@ export default{
 }
 
 .span-team-name {
-  font-size: 20px;
-  color    : #1c2438;
+  margin-left: 10px;
+  font-size  : 20px;
+  font-weight: bold;
 }
 
 .btn-team {
@@ -804,9 +789,10 @@ export default{
 }
 
 .div-count {
-  font-size  : 14px;
+  font-size  : 16px;
   margin-left: 10px;
   font-weight: bold;
+  color      : #2d8cf0;
 }
 
 .div-members {
@@ -860,9 +846,7 @@ export default{
 .btn-member {
   margin-right: 10px;
 }
-
 /** modal-project **/
-
 .vertical-center-modal {
   display        : flex;
   align-items    : center;
@@ -895,41 +879,30 @@ export default{
 .menu-item span {
   display       : inline-block;
   overflow      : hidden;
-  width         : 69px;
+  width         : auto;
   text-overflow : ellipsis;
   white-space   : nowrap;
   vertical-align: bottom;
-  transition    : width 0.2s ease 0.2s;
+  font-weight   : bold;
+  text-align    : center;
 }
 
 .menu-item i {
-  transform     : translateX(0px);
-  transition    : font-size 0.2s ease, transform 0.2s ease;
   vertical-align: middle;
   font-size     : 16px;
 }
 
-.collapsed-menu span {
-  width     : 0;
-  transition: width 0.2s ease;
-}
-
-.collapsed-menu i {
-  transform     : translateX(5px);
-  transition    : font-size 0.2s ease 0.2s, transform 0.2s ease 0.2s;
-  vertical-align: middle;
-  font-size     : 22px;
-}
-
-.panel-project {
-  z-index: 5;
-}
-
-.detail-title {
+.data-count {
+  font-size  : 14px;
   margin-left: 10px;
-  font-size  : 15px;
   font-weight: bold;
-  overflow   : hidden;
+}
+
+.alert-title {
+  margin     : 0;
+  cursor     : pointer;
+  font-size  : 14px;
+  font-weight: bold;
 }
 
 .card-top {
@@ -952,6 +925,13 @@ export default{
   width      : auto;
   margin-left: 5px;
   display    : flex;
+}
+
+.detail-title {
+  margin-left: 10px;
+  font-size  : 15px;
+  font-weight: bold;
+  overflow   : hidden;
 }
 
 .detail-content {
@@ -996,30 +976,9 @@ export default{
   display: inline-block;
 }
 
-.demo-tabs-style2 > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
-  border-radius: 0;
-  background   : #fff;
-}
-
-.demo-tabs-style2 > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active {
-  border-top: 1px solid #3399ff;
-}
-
-.demo-tabs-style2 > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active:before {
-  content   : '';
-  display   : block;
-  width     : 100%;
-  height    : 1px;
-  background: #3399ff;
-  position  : absolute;
-  top       : 0;
-  left      : 0;
-}
-
+.div-list {}
 /** modal summary**/
-
 /** modal remove **/
-
 .modal-remove {
   position: absolute;
   z-index : 10;

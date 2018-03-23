@@ -5,7 +5,7 @@ import axios from 'axios'
 import qs from 'qs'
 
 export default {
-  team (id) {
+  getTeamMsg (id) {
     var data = qs.stringify({
       id: id
     })
@@ -14,12 +14,12 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.teamUrl(),
+      url: teamworkApi.getTeamMsgUrl(),
       data: data,
       withCredentials: true
     })
   },
-  reply (tel, messageId, result) {
+  replyMsg (tel, messageId, result) {
     var data = qs.stringify({
       tel: tel,
       messageId: messageId,
@@ -30,12 +30,12 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.replyUrl(),
+      url: teamworkApi.replyMsgUrl(),
       data: data,
       withCredentials: true
     })
   },
-  view (tel) {
+  viewTeams (tel) {
     var data = qs.stringify({
       tel: tel
     })
@@ -44,12 +44,73 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.viewUrl(),
+      url: teamworkApi.viewTeamsUrl(),
       data: data,
       withCredentials: true
     })
   },
-  viewUserProjects (tel, userTel) {
+  viewTeamProjects (tel, teamId) {
+    var data = qs.stringify({
+      tel: tel,
+      teamId: teamId
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: teamworkApi.viewTeamProjectsUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
+  viewTeamSummaries (tel, teamId) {
+    var data = qs.stringify({
+      tel: tel,
+      teamId: teamId
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: teamworkApi.viewTeamSummariesUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
+  invite (tel, toTel, teamId) {
+    var data = qs.stringify({
+      tel: tel,
+      toTel: toTel,
+      teamId: teamId
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: teamworkApi.inviteUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
+  disband (tel, teamId) {
+    var data = qs.stringify({
+      tel: tel,
+      teamId: teamId
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: teamworkApi.disbandUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
+  viewMemberProjects (tel, userTel) {
     var data = qs.stringify({
       tel: tel,
       userTel: userTel
@@ -59,12 +120,44 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.viewUserProjectsUrl(),
+      url: teamworkApi.viewMemberProjectsUrl(),
       data: data,
       withCredentials: true
     })
   },
-  remove (tel, userTel, teamId) {
+  viewMemberSummaries (tel, userTel) {
+    var data = qs.stringify({
+      tel: tel,
+      userTel: userTel
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: teamworkApi.viewMemberSummariesUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
+  setPermission (tel, userTel, teamId, permission) {
+    var data = qs.stringify({
+      tel: tel,
+      userTel: userTel,
+      teamId: teamId,
+      permission: permission
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: teamworkApi.setPermissionUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
+  removeMember (tel, userTel, teamId) {
     var data = qs.stringify({
       tel: tel,
       userTel: userTel,
@@ -75,12 +168,12 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.viewUserProjectsUrl(),
+      url: teamworkApi.removeMemberUrl(),
       data: data,
       withCredentials: true
     })
   },
-  search (tel, content) {
+  searchTeam (tel, content) {
     var data = qs.stringify({
       tel: tel,
       content: content
@@ -90,22 +183,22 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.searchUrl(),
+      url: teamworkApi.searchTeamUrl(),
       data: data,
       withCredentials: true
     })
   },
-  join (tel, id) {
+  joinTeam (tel, teamId) {
     var data = qs.stringify({
       tel: tel,
-      id: id
+      teamId: teamId
     })
     return axios({
       method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.joinUrl(),
+      url: teamworkApi.joinTeamUrl(),
       data: data,
       withCredentials: true
     })

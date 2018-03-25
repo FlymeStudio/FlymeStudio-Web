@@ -44,12 +44,13 @@
             <Icon class="icon-item" type="ios-people" slot="icon" size=25></Icon>
             <Button class="btn-user" @click="clickUser(item.fromName, item.fromTel)">{{ item.fromName }}</Button>
             <span v-if="item.type == 1"> invited you to join </span><span v-else-if="item.type == 2"> applied to join </span>
-            <Button v-if="item.type == 1" class="btn-invite" @click="clickTeam(item.teamName, item.teamId)">{{ item.teamName }}</Button>
+            <Button v-if="item.type == 1" class="btn-team" @click="clickTeam(item.teamName, item.teamId)">{{ item.teamName }}</Button>
             <Button v-else-if="item.type == 2" class="btn-apply" @click="clickTeam(item.teamName, item.teamId)">{{ item.teamName }}</Button>
             <template slot="desc">
               <div class="div-message">
                 <Button class="btn-message" type="success" @click="reply(item.messageId, true)">Accept</Button>
                 <Button class="btn-message" type="error" @click="reply(item.messageId, false)">Refuse</Button>
+                  <div v-if="item.type == 1" class="div-agreement" @click="modalAgreement = true"><i>Agreenment</i></div>
               </div>
             </template>
           </Alert>
@@ -98,6 +99,31 @@
             </Alert>
           </Modal>
 
+          <!-- modal-agreement -->
+          <Modal class="modal" v-model="modalAgreement" :closable="false" :mask-closable="false" title="Agreement" ok-text="Ok" cancel-text="Cancel">
+            <Alert type="warning" style="color:red;">
+              <template slot="desc">
+                <ol>
+                  <li class="li-agreement">
+                    <span class="span-list">After join a team, you will be the member of the team.</span>
+                  </li>
+                  <li class="li-agreement">
+                    <span class="span-list">As the member of the team, the team manager can view your all projects and summaries.</span>
+                  </li>
+                  <li class="li-agreement">
+                    <span class="span-list">Manager can export a report about your projects or summaries.</span>
+                  </li>
+                  <li class="li-agreement">
+                    <span class="span-list">Manager has right to remove you from the team.</span>
+                  </li>
+                  <li class="li-agreement">
+                    <span class="span-list">Manager has right to disband the team.</span>
+                  </li>
+                </ol>
+              </template>
+            </Alert>
+          </Modal>
+
         </Content>
       </Layout>
     </Layout>
@@ -130,19 +156,19 @@ export default{
         messages: []
       },
       spinShow: false,
-      modalUser: false,
-      checkable: false,
       user: {
         fromName: '',
         fromTel: ''
       },
+      modalUser: false,
       team: {
         teamId: '',
         teamName: '',
         count: 0,
         manager: ''
       },
-      modalTeam: false
+      modalTeam: false,
+      modalAgreement: false
     }
   },
   components: {
@@ -238,7 +264,7 @@ export default{
 .div-menu-item {
   margin      : 2px auto;
   padding-left: 10px;
-  color       : #1c2438;
+  color       : #2d8cf0;
 }
 
 .span-item {
@@ -269,7 +295,7 @@ export default{
   color           : #fff;
 }
 
-.btn-invite {
+.btn-team {
   font-weight     : bold;
   background-color: #2d8cf0;
   color           : #fff;
@@ -279,5 +305,20 @@ export default{
   font-weight     : bold;
   background-color: #ff9900;
   color           : #fff;
+}
+
+.div-agreement {
+  width          : auto;
+  font-size      : 16px;
+  color          : #2d8cf0;
+  cursor         : pointer;
+  text-decoration: underline;
+  display        : inline-block;
+}
+
+.li-agreement {
+  color    : red;
+  font-size: 18px;
+  margin   : 20px;
 }
 </style>

@@ -113,9 +113,6 @@
                     <Tooltip content="Invite people">
                       <Button class="btn-team" type="info" shape="circle" icon="android-person-add" @click="invite(team.id)"></Button>
                     </Tooltip>
-                    <Tooltip content="Set permission">
-                      <Button class="btn-team" type="warning" shape="circle" icon="key" disabled></Button>
-                    </Tooltip>
                     <Tooltip content="Disband team">
                       <Button class="btn-team" type="warning" shape="circle" icon="android-warning" disabled></Button>
                     </Tooltip>
@@ -166,7 +163,18 @@
             </Panel>
           </Collapse>
 
-          <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalViewProjects">
+          <!-- modal-invite -->
+          <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalInvite">
+
+          </Modal>
+
+          <!-- modal-disband -->
+          <Modal>
+
+          </Modal>
+
+          <!-- modal-view-projects -->
+          <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalViewProjects" ok-text="Ok" cancel-text="Cancel">
 
             <Layout style="margin-top:20px;">
 
@@ -209,9 +217,9 @@
 
                       <!-- content -->
                       <div slot="content">
-                        <Alert class="alert-title" v-for="data in currentProjects" v-if="data.show == true" :key="data.timestamp" @click="chooseProject(data)">
-                          {{ data.title }}
-                        </Alert>
+                        <div class="div-content-title" v-for="data in currentProjects" v-if="data.show == true" :key="data.timestamp" @click="chooseProject(data)">
+                          <Alert>{{ data.title }}</Alert>
+                        </div>
                       </div>
                     </Panel>
 
@@ -222,9 +230,9 @@
 
                       <!-- content -->
                       <div slot="content">
-                        <Alert class="alert-title" v-for="data in currentProjects" v-if="data.show == true && data.percent == 100" :key="data.timestamp" @click="chooseProject(data)">
-                          {{ data.title }}
-                        </Alert>
+                        <div class="div-content-title" v-for="data in currentProjects" v-if="data.show == true" :key="data.timestamp" @click="chooseProject(data)">
+                          <Alert>{{ data.title }}</Alert>
+                        </div>
                       </div>
 
                     </Panel>
@@ -236,10 +244,9 @@
 
                       <!-- content -->
                       <div slot="content">
-                        <Alert class="alert-title" v-for="data in currentProjects" v-if="data.show == true && data.percent != 100" :key="data.timestamp" @click="chooseProject(data)">
-                          {{ data.title }}
-                        </Alert>
-
+                        <div class="div-content-title" v-for="data in currentProjects" v-if="data.show == true" :key="data.timestamp" @click="chooseProject(data)">
+                          <Alert>{{ data.title }}</Alert>
+                        </div>
                       </div>
 
                     </Panel>
@@ -249,6 +256,32 @@
                 </Sider>
 
                 <Content>
+                  <div class="div-content">
+                    <div class="card-top">
+                      <i-circle class="card-circle" :size=40 v-if="currentProject.percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
+                        <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
+                      </i-circle>
+                      <i-circle class="card-circle" :size=40 v-else :percent="currentProject.percent" stroke-color="#2d8cf0" :stroke-width="9" :trail-width="9" style="color:#ed3f14;">
+                        <span>{{ currentProject.percent }}%</span>
+                      </i-circle>
+                      <DatePicker class="card-date" type="date" size="large" v-model="currentProject.date" readonly format="yyyy-MM-dd" />
+                    </div>
+
+                    <p class="detail-title" slot="title">{{ currentProject.title }}</p>
+
+                    <mavon-editor class="detail-content" v-model="currentProject.content" :subfield="subfieldProject" :defaultOpen="defaultOpenProject" :toolbarsFlag="toolbarsFlagProject">{{ currentProject.content }}</mavon-editor>
+
+                    <div class="div-plans">
+                      <Alert class="alert-plans" v-for="item in currentProject.plans" :key="item.timestamp">
+                        <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
+                        <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
+                        <div class="div-plan">
+                          <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
+                          <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
+                        </div>
+                      </Alert>
+                    </div>
+                  </div>
                 </Content>
 
               </Layout>
@@ -256,11 +289,17 @@
             </Layout>
           </Modal>
 
+          <!-- modal-view-summaries -->
           <Modal v-model="modalViewSummaries">
 
           </Modal>
 
-          <!-- confirm -->
+          <!-- modal-set-permission -->
+          <Modal>
+
+          </Modal>
+
+          <!-- modal-remove = -->
           <Modal class="modal-remove" v-model="modalRemoveMember" title="Confirm" :mask-closable="false" :closable="false" ok-text="Remove" cancel-text="Cancel" loading @on-ok="remove()">
             <Alert type="warning" show-icon>
               <p>Are you sure to remove {{ currentRemove.name }}({{ currentRemove.tel }}) from team?</p>
@@ -271,6 +310,7 @@
               </template>
             </Alert>
           </Modal>
+
         </Content>
       </Layout>
 
@@ -309,15 +349,18 @@ export default{
       spinModal: false,
       managedTeams: [],
       joinedTeams: [],
+      /** export **/
+      modalExportProjects: false,
+      modalExportSummaries: false,
+      /** invite **/
+      modalInvite: false,
+      /** disband **/
+      modalDisband: false,
+      /** view **/
       currentView: {
         name: '',
         tel: '',
         email: ''
-      },
-      currentRemove: {
-        teamId: '',
-        name: '',
-        tel: ''
       },
       count: {
         total: 0,
@@ -325,22 +368,25 @@ export default{
         doing: 0
       },
       currentTag: '0',
-      currentProjects: [],
-      currentProject: {},
-      collapseProjects: '',
-      currentSummaries: [],
-      currentSummary: {},
-      modalExportProjects: false,
-      modalExportSummaries: false,
-      modalInvite: false,
-      modalDisband: false,
-      modalViewProjects: false,
-      modalViewSummaries: false,
-      modalSetPermission: false,
-      modalRemoveMember: false,
       subfieldProject: false,
       defaultOpenProject: 'preview',
-      toolbarsFlagProject: false
+      toolbarsFlagProject: false,
+      collapseProjects: '',
+      currentProjects: [],
+      currentProject: {},
+      currentSummaries: [],
+      currentSummary: {},
+      modalViewProjects: false,
+      modalViewSummaries: false,
+      /** permission **/
+      modalSetPermission: false,
+      /** remove **/
+      currentRemove: {
+        teamId: '',
+        name: '',
+        tel: ''
+      },
+      modalRemoveMember: false
     }
   },
   components: {
@@ -693,6 +739,7 @@ export default{
       }, 1000)
     },
     chooseProject (data) {
+      console.log(data.timestamp)
       this.currentProject = data
     },
     viewSummaries (tel, name, email) {
@@ -716,6 +763,7 @@ export default{
           desc: ''
         })
         this.password = ''
+        this.modalRemoveMember = false
         return
       }
       let _this = this
@@ -846,6 +894,17 @@ export default{
 .btn-member {
   margin-right: 10px;
 }
+
+.modal {
+  z-index: 7;
+}
+
+/** modal-export **/
+
+/** modal-invite **/
+
+/** modal-desband **/
+
 /** modal-project **/
 .vertical-center-modal {
   display        : flex;
@@ -855,10 +914,6 @@ export default{
   .ivu-modal {
     top: 0;
   }
-}
-
-.modal {
-  z-index: 7;
 }
 
 .layout {
@@ -900,9 +955,16 @@ export default{
 
 .alert-title {
   margin     : 0;
-  cursor     : pointer;
-  font-size  : 14px;
-  font-weight: bold;
+}
+
+.div-content-title{
+cursor     : pointer;
+font-size  : 14px;
+font-weight: bold;
+}
+
+.div-content{
+  margin: 10px;
 }
 
 .card-top {
@@ -978,6 +1040,9 @@ export default{
 
 .div-list {}
 /** modal summary**/
+
+/** modal-permission **/
+
 /** modal remove **/
 .modal-remove {
   position: absolute;

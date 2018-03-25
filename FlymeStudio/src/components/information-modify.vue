@@ -298,6 +298,7 @@ export default{
 
 .span-item {
   font-size: 16px;
+  color: #2d8cf0;
 }
 
 .modal-confirm {

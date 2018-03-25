@@ -88,7 +88,7 @@
             <Alert>
               <div class="div-menu-item">
                 <Icon class="icon-item" type="star" size=20></Icon>
-                <span class="span-item">{{ team.manager }}</span>
+                <span class="span-item">{{ team.administrator }}</span>
               </div>
             </Alert>
             <Alert>
@@ -117,7 +117,7 @@
                     <span class="span-list">Manager has right to remove you from the team.</span>
                   </li>
                   <li class="li-agreement">
-                    <span class="span-list">Manager has right to disband the team.</span>
+                    <span class="span-list">Administrator has right to disband the team.</span>
                   </li>
                 </ol>
               </template>
@@ -165,7 +165,7 @@ export default{
         teamId: '',
         teamName: '',
         count: 0,
-        manager: ''
+        administrator: ''
       },
       modalTeam: false,
       modalAgreement: false
@@ -199,9 +199,9 @@ export default{
       setTimeout(() => {
         _this.team.count = 1
         if (teamId === '00001') {
-          _this.team.manager = '李永达'
+          _this.team.administrator = '李永达'
         } else if (teamId === '00002') {
-          _this.team.manager = '段启智'
+          _this.team.administrator = '段启智'
         }
         _this.spinShow = false
         _this.modalTeam = true
@@ -211,7 +211,7 @@ export default{
         _this.spinShow = false
         if (response.data.result === true) {
           _this.team.count = response.data.count
-          _this.team.manager = response.data.manager
+          _this.team.administrator = response.data.administrator
           _this.modalTeam = true
         } else {
           _this.$Notice.error({

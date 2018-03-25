@@ -16,6 +16,7 @@ export const teamworkApi = {
   viewTeamsUrl: () => '',
   viewTeamProjectsUrl: () => '',
   viewTeamSummariesUrl: () => '',
+  searchUserUrl: () => '',
   inviteUrl: () => '',
   disbandUrl: () => '',
   viewMemberProjectsUrl: () => '',

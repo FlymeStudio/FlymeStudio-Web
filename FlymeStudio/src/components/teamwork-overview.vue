@@ -40,7 +40,7 @@
                       <Button class="btn-team" type="primary" shape="circle" icon="archive" @click="exportSummaries(team.id)"></Button>
                     </Tooltip>
                     <Tooltip content="Invite people">
-                      <Button class="btn-team" type="info" shape="circle" icon="android-person-add" @click="invite(team.id)"></Button>
+                      <Button class="btn-team" type="info" shape="circle" icon="android-person-add" @click="invite(team.id, team.name)"></Button>
                     </Tooltip>
                     <Tooltip content="Disband team">
                       <Button v-if="team.administratorTel == info.tel" class="btn-team" type="error" shape="circle" icon="android-warning" @click="disband(team.id)"></Button>
@@ -111,7 +111,7 @@
                       <Button class="btn-team" type="primary" shape="circle" icon="archive" disabled></Button>
                     </Tooltip>
                     <Tooltip content="Invite people">
-                      <Button class="btn-team" type="info" shape="circle" icon="android-person-add" @click="invite(team.id)"></Button>
+                      <Button class="btn-team" type="info" shape="circle" icon="android-person-add" @click="invite(team.id, team.name)"></Button>
                     </Tooltip>
                     <Tooltip content="Disband team">
                       <Button class="btn-team" type="warning" shape="circle" icon="android-warning" disabled></Button>
@@ -164,8 +164,23 @@
           </Collapse>
 
           <!-- modal-invite -->
-          <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalInvite">
+          <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalInvite" ok-text="Ok" cancel-text="Cancel">
+            <Layout>
 
+              <Spin class="spin" fix v-if="spinInvite">
+                <Icon class="icon-spin" type="load-c" size=50></Icon>
+              </Spin>
+
+            <div class="div-invite">
+              <div class="div-invite-title">Invite user to join to {{ inviteTeam.teamName }}({{ inviteTeam.teamId }}):</div>
+              <Input class="input-invite" v-model="searchContent" placeholder="User tel or name" clearable></Input>
+              <Button class="btn" type="primary" shape="circle" icon="ios-search" @click="search()">Search</Button>
+              <Button class="btn" type="info" shape="circle" icon="android-close" @click="clear()">Clear</Button>
+              <Button class="btn" type="success" shape="circle" icon="android-add" @click="invitePeople()">Invite</Button>
+              <Table class="table-search" highlight-row border :columns="columnsUser" :data="dataUser" @on-current-change="changeSelection" no-data-text="No data"></Table>
+            </div>
+
+          </Layout>
           </Modal>
 
           <!-- modal-disband -->
@@ -174,11 +189,11 @@
           </Modal>
 
           <!-- modal-view-projects -->
-          <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalViewProjects" ok-text="Ok" cancel-text="Cancel">
+          <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalViewProjects" ok-text="Ok" cancel-text="Cancel" @on-ok="searchContent = ''" @on-cancel="searchContent = ''">
 
             <Layout style="margin-top:20px;">
 
-              <Spin class="spin" fix v-if="spinModal">
+              <Spin class="spin" fix v-if="spinViewProjects">
                 <Icon class="icon-spin" type="load-c" size=50></Icon>
               </Spin>
 
@@ -346,13 +361,38 @@ export default{
         messages: []
       },
       spinShow: false,
-      spinModal: false,
       managedTeams: [],
       joinedTeams: [],
       /** export **/
+      spinViewProjects: false,
       modalExportProjects: false,
       modalExportSummaries: false,
       /** invite **/
+      inviteTeam: {
+        teamId: '0',
+        teamName: ''
+      },
+      searchContent: '',
+      currentInvite: {},
+      columnsUser: [
+        {
+          type: 'index',
+          width: 60,
+          align: 'center'
+        },
+        {
+          title: 'Tel',
+          // width: 120,
+          key: 'tel'
+        },
+        {
+          title: 'Name',
+          // width: 200,
+          key: 'name'
+        }
+      ],
+      dataUser: [],
+      spinInvite: false,
       modalInvite: false,
       /** disband **/
       modalDisband: false,
@@ -510,8 +550,85 @@ export default{
     exportSummaries (teamId) {
       this.$Message.error('Function not available.')
     },
-    invite (teamId) {
-      //
+    invite (teamId, teamName) {
+      this.inviteTeam = {
+        teamId: teamId,
+        teamName: teamName
+      }
+      this.modalInvite = true
+    },
+    search () {
+      var regex = /^([a-zA-Z0-9\u4e00-\u9fa5\s]){2,10}$/
+      if (!regex.test(this.searchContent)) {
+        this.$Notice.error({
+          title: 'Invalid value.',
+          desc: ''
+        })
+        this.searchContent = ''
+        return
+      }
+      this.spinInvite = true
+      let _this = this
+      // TEST START
+      setTimeout(() => {
+        _this.dataUser = [
+          {
+            tel: '13608089849',
+            name: '曾宇'
+          },
+          {
+            tel: '13456789012',
+            name: '李四'
+          }
+        ]
+        _this.spinInvite = false
+      }, 1000)
+      // TEST END
+      teamworkApi.searchUser(this.info.tel, this.searchContent).then(function (response) {
+        if (response.data.result === true) {
+          _this.dataUser = response.data.dataUser
+          _this.spinInvite = false
+        } else {
+          _this.$Notice.error({
+            title: 'Search failed.',
+            desc: ''
+          })
+          _this.spinInvite = false
+        }
+      })
+    },
+    changeSelection (currentRow, oldCurrentRow) {
+      this.currentInvite = currentRow
+    },
+    clear () {
+      this.dataUser = []
+    },
+    invitePeople (tel) {
+      this.spinInvite = true
+      let _this = this
+      // TEST START
+      setTimeout(() => {
+        _this.$Notice.success({
+          title: 'Send message successful.',
+          desc: 'Please waitting for user to check.'
+        })
+        _this.spinInvite = false
+      }, 1000)
+      // TEST END
+      teamworkApi.invite(this.info.tel, this.inviteTeam.teamId, this.currentInvite.tel).then(function (response) {
+        if (response.data.result === true) {
+          _this.$Notice.success({
+            title: 'Send message successful.',
+            desc: 'Please waitting for user to check.'
+          })
+        } else {
+          _this.$Notice.error({
+            title: 'Invite failed.',
+            desc: ''
+          })
+        }
+        _this.spinInvite = false
+      })
     },
     disband (teamId) {
       this.$Message.error('Function not available.')
@@ -698,7 +815,7 @@ export default{
     },
     clickProjectsTag (name) {
       this.collapseProjects = ''
-      this.spinModal = true
+      this.spinViewProjects = true
       this.currentTag = name
       var _total = 0
       var _done = 0
@@ -735,11 +852,10 @@ export default{
       }
       let _this = this
       setTimeout(() => {
-        _this.spinModal = false
+        _this.spinViewProjects = false
       }, 1000)
     },
     chooseProject (data) {
-      console.log(data.timestamp)
       this.currentProject = data
     },
     viewSummaries (tel, name, email) {
@@ -902,6 +1018,30 @@ export default{
 /** modal-export **/
 
 /** modal-invite **/
+
+.div-invite {
+}
+
+.div-invite-title{
+  font-size: 16px;
+  margin: 10px auto 15px 0;
+  font-weight: bold;
+  color: red;
+}
+
+.input-invite {
+  width: 160px;
+}
+
+.btn {
+  width      : auto;
+  font-weight: bold;
+  margin-left: 15px;
+}
+
+.table-search {
+  margin-top: 20px;
+}
 
 /** modal-desband **/
 

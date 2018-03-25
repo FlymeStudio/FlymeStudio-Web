@@ -79,6 +79,21 @@ export default {
       withCredentials: true
     })
   },
+  searchUser (tel, content) {
+    var data = qs.stringify({
+      tel: tel,
+      content: content
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: teamworkApi.searchUserUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
   invite (tel, toTel, teamId) {
     var data = qs.stringify({
       tel: tel,

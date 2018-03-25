@@ -41,7 +41,7 @@
                     <span class="span-list">Manager has right to remove you from the team.</span>
                   </li>
                   <li class="li-agreement">
-                    <span class="span-list">Manager has right to disband the team.</span>
+                    <span class="span-list">Administrator has right to disband the team.</span>
                   </li>
                 </ol>
                 <RadioGroup v-model="agreementJoin">
@@ -119,9 +119,9 @@ export default{
           key: 'name'
         },
         {
-          title: 'Manager',
+          title: 'Administrator',
           // width: 100,
-          key: 'manager'
+          key: 'administrator'
         },
         {
           title: 'Count',
@@ -150,7 +150,7 @@ export default{
       var regex = /^([a-zA-Z0-9\u4e00-\u9fa5\s]){2,10}$/
       if (!regex.test(this.searchContent)) {
         this.$Notice.error({
-          title: 'Invalid team name.',
+          title: 'Invalid value.',
           desc: ''
         })
         this.searchContent = ''
@@ -164,19 +164,19 @@ export default{
           {
             id: '00001',
             name: 'System support',
-            manager: '李永达',
+            administrator: '李永达',
             count: '11'
           },
           {
             id: '00002',
             name: 'Overseas firmware',
-            manager: '段启智',
+            administrator: '段启智',
             count: '8'
           },
           {
             id: '00003',
             name: 'System test',
-            manager: '张三',
+            administrator: '张三',
             count: '9'
           }
         ]

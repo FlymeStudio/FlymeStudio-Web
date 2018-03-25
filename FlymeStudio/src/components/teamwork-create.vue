@@ -28,7 +28,7 @@
               <template slot="desc">
                 <ol>
                   <li class="li-agreement">
-                    <span class="span-list">After creating a team, you will be the manager of the team.</span>
+                    <span class="span-list">After creating a team, you will be the administrator of the team.</span>
                   </li>
                   <li class="li-agreement">
                     <span class="span-list">As the manager of the team, you can view all projects and summaries of each member.</span>
@@ -40,7 +40,7 @@
                     <span class="span-list">Manager has right to remove any member from the team.</span>
                   </li>
                   <li class="li-agreement">
-                    <span class="span-list">Manager has right to disband the team.</span>
+                    <span class="span-list">Administrator has right to disband the team.</span>
                   </li>
                 </ol>
                 <RadioGroup v-model="agreementCreate">

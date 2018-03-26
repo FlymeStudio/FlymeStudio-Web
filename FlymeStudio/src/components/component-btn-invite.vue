@@ -30,10 +30,6 @@ export default {
   name: 'btn-invite',
   created () {
     this.getInfo()
-    this.inviteTeam = {
-      teamId: this.dataId,
-      teamName: this.dataName
-    }
   },
   props: [
     'dataId',
@@ -49,8 +45,8 @@ export default {
       },
       /** invite **/
       inviteTeam: {
-        teamId: '0',
-        teamName: ''
+        teamId: this.dataId,
+        teamName: this.dataName
       },
       searchContent: '',
       currentInvite: {},

@@ -100,12 +100,12 @@
           </Modal>
 
           <!-- modal-agreement -->
-          <Modal class="modal" v-model="modalAgreement" :closable="false" :mask-closable="false" title="Agreement" ok-text="Ok" cancel-text="Cancel">
+          <Modal class="modal" width="80%" v-model="modalAgreement" :closable="false" :mask-closable="false" title="Agreement" ok-text="Ok" cancel-text="Cancel">
             <Alert type="warning" style="color:red;">
               <template slot="desc">
                 <ol>
                   <li class="li-agreement">
-                    <span class="span-list">After join a team, you will be the member of the team.</span>
+                    <span class="span-list">After joining a team, you will become the member of the team.</span>
                   </li>
                   <li class="li-agreement">
                     <span class="span-list">As the member of the team, the team manager can view your all projects and summaries.</span>

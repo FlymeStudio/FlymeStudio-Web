@@ -18,7 +18,7 @@
       <ButtonInvite :dataId="teamData.id" :dataName="teamData.name"></ButtonInvite>
     </Tooltip>
     <Tooltip content="Disband team">
-      <Button v-if="teamData.administratorTel == info.tel" class="btn-team" type="error" shape="circle" icon="android-warning" @click="disband(teamData.id)"></Button>
+      <Button v-if="teamData.administratorTel == info.tel" class="btn-team" type="error" shape="circle" icon="android-warning" @click="disbandTeam(teamData.id, teamData.name)"></Button>
       <Button v-else class="btn-team" type="warning" shape="circle" icon="android-warning" disabled></Button>
     </Tooltip>
   </Alert>
@@ -47,15 +47,23 @@
   </Collapse>
 
   <!-- modal-disband -->
-  <Modal>
-
+  <Modal class="modal-disband" width="80%" v-model="modalDisband" title="Warning" :mask-closable="false" :closable="false" ok-text="Remove" cancel-text="Cancel" loading @on-ok="disband()">
+    <Alert type="warning" show-icon>
+      <p>Are you sure to disband {{ currentDisband.teamName }}({{ currentDisband.teamId }}) ?</p>
+      <p>After disbanding the team, you should sign in again.</p>
+      <template slot="desc">
+      <p>If yes, input the password to check your identity:</p>
+      <Input style="margin-top:20px;" type="password" v-model="password" size="large" placeholder="Password" clearable>
+      </Input>
+    </template>
+    </Alert>
   </Modal>
 
 </Card>
 </template>
 
 <script>
-// import teamworkApi from '../api/teamworkApi'
+import teamworkApi from '../api/teamworkApi'
 import ButtonInvite from './component-btn-invite.vue'
 import componentMembers from './component-members.vue'
 
@@ -78,10 +86,15 @@ export default {
         email: '',
         messages: []
       },
+      password: '',
       /** export **/
       modalExportProjects: false,
       modalExportSummaries: false,
       /** disband **/
+      currentDisband: {
+        teamId: '',
+        teamName: ''
+      },
       modalDisband: false
     }
   },
@@ -104,8 +117,51 @@ export default {
     exportSummaries (teamId) {
       this.$Message.error('Function not available.')
     },
+    disbandTeam (teamId, teamName) {
+      this.currentDisband = {
+        teamId: teamId,
+        teamName: teamName
+      }
+      this.modalDisband = true
+    },
     disband (teamId) {
-      this.$Message.error('Function not available.')
+      if (this.password !== this.info.password) {
+        this.$Notice.error({
+          title: 'Password is incorrect.',
+          desc: ''
+        })
+        setTimeout(() => {
+          this.password = ''
+          this.modalDisband = false
+        }, 1000)
+        return
+      }
+      let _this = this
+      // TEST START
+      setTimeout(() => {
+        _this.$Notice.success({
+          title: 'Remove successful.',
+          desc: ''
+        })
+        _this.modalDisband = false
+        _this.$router.push('/')
+      }, 2000)
+      // TEST END
+      teamworkApi.disband(this.info.tel, this.currentDisband.teamId).then(function (response) {
+        if (response.data.result === true) {
+          _this.$Notice.success({
+            title: 'Disband successful.',
+            desc: ''
+          })
+          _this.$router.push('/')
+        } else {
+          _this.$Notice.error({
+            title: 'Disband failed.',
+            desc: ''
+          })
+        }
+        _this.modalDisband = false
+      })
     }
   }
 }
@@ -160,5 +216,13 @@ export default {
 /** modal-export **/
 
 /** modal-desband **/
+.modal-disband {
+  position: absolute;
+  z-index : 10;
+}
 
+.modal-disband p {
+  font-size: 18px;
+  color    : red;
+}
 </style>

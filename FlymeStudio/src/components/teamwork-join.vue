@@ -29,7 +29,7 @@
               <template slot="desc">
                 <ol>
                   <li class="li-agreement">
-                    <span class="span-list">After join a team, you will be the member of the team.</span>
+                    <span class="span-list">After joining a team, you will become the member of the team.</span>
                   </li>
                   <li class="li-agreement">
                     <span class="span-list">As the member of the team, the team manager can view your all projects and summaries.</span>

@@ -17,11 +17,11 @@
         <Button v-else class="btn-member" size="small" type="info" shape="circle" icon="document-text" disabled></Button>
       </Tooltip>
       <Tooltip content="Set permission">
-        <Button v-if="teamData.administratorTel == info.tel" class="btn-member" size="small" type="warning" shape="circle" icon="key" @click="setPermission(teamData.id, member.tel)" style="margin-left:10px;"></Button>
+        <Button v-if="teamData.administratorTel == info.tel && member.tel != info.tel" class="btn-member" size="small" type="warning" shape="circle" icon="key" @click="setMemberPermission(member.name, member.tel)" style="margin-left:10px;"></Button>
         <Button v-else class="btn-member" size="small" type="warning" shape="circle" icon="key" disabled style="margin-left:10px;"></Button>
       </Tooltip>
       <Tooltip content="Remove member">
-        <Button v-if="teamType == 1 && member.tel != info.tel && member.permission == 0" class="btn-member" size="small" type="error" shape="circle" icon="close-round" @click="removeMember(teamData.id, member.tel, member.name)"></Button>
+        <Button v-if="teamType == 1 && member.tel != info.tel && member.permission == 0" class="btn-member" size="small" type="error" shape="circle" icon="close-round" @click="removeMember(member.tel, member.name)"></Button>
         <Button v-else class="btn-member" size="small" type="error" shape="circle" icon="close-round" disabled></Button>
       </Tooltip>
     </div>
@@ -154,12 +154,36 @@
   </Modal>
 
   <!-- modal-set-permission -->
-  <Modal>
-
+  <Modal class-name="vertical-center-modal" class="modal-permission" width="80%" v-model="modalSetPermission" title="Setting" :mask-closable="false" :closable="false" ok-text="Set" cancel-text="Cancel" loading @on-ok="setPermission()">
+    <Alert type="info" style="color:red;">
+      <span class="span-permission">Permission</span>
+      <template slot="desc">
+        <ol>
+          <li class="li-permission">
+            <span class="span-list">Manager can export a report about members' projects or summaries.</span>
+          </li>
+          <li class="li-permission">
+            <span class="span-list">Manager can view members' all projects and summaries.</span>
+          </li>
+          <li class="li-permission">
+            <span class="span-list">Manager has right to remove a member from the team.</span>
+          </li>
+        </ol>
+        <RadioGroup v-model="currentPermission.permission">
+          <Radio class="radio-permission" label="0">
+              <span>Member</span>
+          </Radio>
+          <Radio class="radio-permission" label="1">
+              <span>Manager</span>
+          </Radio>
+        </RadioGroup>
+      </template>
+    </Alert>
+    <p>Are you sure to set permission of {{ currentPermission.name }}({{ currentPermission.tel }}) in {{ currentPermission.teamName }}?</p>
   </Modal>
 
   <!-- modal-remove = -->
-  <Modal class="modal-remove" v-model="modalRemoveMember" title="Confirm" :mask-closable="false" :closable="false" ok-text="Remove" cancel-text="Cancel" loading @on-ok="remove()">
+  <Modal class-name="vertical-center-modal" class="modal-remove" v-model="modalRemoveMember" title="Confirm" :mask-closable="false" :closable="false" ok-text="Remove" cancel-text="Cancel" loading @on-ok="remove()">
     <Alert type="warning" show-icon>
       <p>Are you sure to remove {{ currentRemove.name }}({{ currentRemove.tel }}) from team?</p>
       <template slot="desc">
@@ -220,6 +244,13 @@ export default {
       modalViewProjects: false,
       modalViewSummaries: false,
       /** permission **/
+      currentPermission: {
+        teamId: '',
+        teamName: '',
+        name: '',
+        tel: '',
+        permission: '0'
+      },
       modalSetPermission: false,
       /** remove **/
       currentRemove: {
@@ -514,12 +545,59 @@ export default {
     viewSummaries (tel, name, email) {
       this.$Message.error('Function not available.')
     },
-    setPermission (teamId) {
-      this.$Message.error('Function not available.')
+    setMemberPermission (name, tel) {
+      this.currentPermission = {
+        teamId: this.teamData.id,
+        teamName: this.teamData.name,
+        name: name,
+        tel: tel,
+        permission: 0
+      }
+      this.modalSetPermission = true
     },
-    removeMember (teamId, tel, name) {
+    setPermission () {
+      let _this = this
+      // TEST START
+      setTimeout(() => {
+        for (var j = 0; j < _this.teamData.members.length; j++) {
+          if (_this.teamData.members[j].tel === _this.currentPermission.tel) {
+            _this.teamData.members[j].permission = _this.currentPermission.permission
+            _this.currentPermission = {}
+            break
+          }
+        }
+        _this.$Notice.success({
+          title: 'Set successful.',
+          desc: ''
+        })
+        _this.modalSetPermission = false
+      }, 2000)
+      // TEST END
+      teamworkApi.setPermission(this.info.tel, this.currentPermission.tel, this.currentPermission.teamId, this.currentPermission.permission).then(function (response) {
+        if (response.data.result === true) {
+          for (var j = 0; j < _this.teamData.members.length; j++) {
+            if (_this.teamData.members[j].tel === _this.currentPermission.tel) {
+              _this.teamData.members[j].permission = _this.currentPermission.permission
+              _this.currentPermission = {}
+              break
+            }
+          }
+          _this.$Notice.success({
+            title: 'Set successful.',
+            desc: ''
+          })
+        } else {
+          _this.$Notice.error({
+            title: 'Set failed.',
+            desc: ''
+          })
+        }
+        _this.modalSetPermission = false
+      })
+    },
+    removeMember (tel, name) {
       this.currentRemove = {
-        teamId: teamId,
+        teamId: this.teamData.id,
         name: name,
         tel: tel
       }
@@ -540,21 +618,19 @@ export default {
       let _this = this
       // TEST START
       setTimeout(() => {
+        for (var j = 0; j < _this.teamData.members.length; j++) {
+          if (_this.teamData.members[j].tel === _this.currentRemove.tel) {
+            _this.teamData.members.splice(j, 1)
+            _this.currentRemove = []
+            _this.password = ''
+            break
+          }
+        }
         _this.$Notice.success({
           title: 'Remove successful.',
           desc: ''
         })
-        if (_this.teamData.id === _this.currentRemove.teamId) {
-          for (var j = 0; j < _this.teamData.members.length; j++) {
-            if (_this.teamData.members[j].tel === _this.currentRemove.tel) {
-              _this.teamData.members.splice(j, 1)
-              _this.currentRemove = []
-              _this.password = ''
-              _this.modalRemoveMember = false
-              break
-            }
-          }
-        }
+        _this.modalRemoveMember = false
       }, 2000)
       // TEST END
       teamworkApi.removeMember(this.info.tel, this.currentRemove.tel, this.currentRemove.teamId).then(function (response) {
@@ -767,6 +843,35 @@ font-weight: bold;
 /** modal summary**/
 
 /** modal-permission **/
+.modal-permission{
+  position: absolute;
+  z-index : 10;
+}
+
+.modal-permission p {
+  font-size: 18px;
+  color    : red;
+}
+
+.span-permission {
+  width      : 100%;
+  font-size  : 22px;
+  font-weight: bold;
+  text-align : center;
+  display    : block;
+}
+
+.li-permission {
+  color    : red;
+  font-size: 18px;
+  margin   : 20px;
+}
+
+.span-list {}
+
+.radio-permission {
+  font-size: 16px;
+}
 
 /** modal remove **/
 .modal-remove {

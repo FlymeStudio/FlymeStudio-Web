@@ -20,7 +20,7 @@
         <Button v-else class="btn-team" type="primary" shape="circle" icon="archive" disabled></Button>
       </Tooltip>
       <Tooltip content="Invite people">
-        <Button class="btn-team" type="info" shape="circle" icon="android-person-add" @click="invite(teamData.id, teamData.name)"></Button>
+        <ButtonInvite :dataId="teamData.id" :dataName="teamData.name"></ButtonInvite>
       </Tooltip>
       <Tooltip content="Disband team">
         <Button v-if="teamData.administratorTel == info.tel" class="btn-team" type="error" shape="circle" icon="android-warning" @click="disband(teamData.id)"></Button>
@@ -72,33 +72,13 @@
       </Panel>
     </Collapse>
 
-    <!-- modal-invite -->
-    <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalInvite" ok-text="Ok" cancel-text="Cancel">
-      <Layout>
-
-        <Spin class="spin" fix v-if="spinInvite">
-          <Icon class="icon-spin" type="load-c" size=50></Icon>
-        </Spin>
-
-      <div class="div-invite">
-        <div class="div-invite-title">Invite user to join to {{ inviteTeam.teamName }}({{ inviteTeam.teamId }}):</div>
-        <Input class="input-invite" v-model="searchContent" placeholder="User tel or name" clearable></Input>
-        <Button class="btn" type="primary" shape="circle" icon="ios-search" @click="search()">Search</Button>
-        <Button class="btn" type="info" shape="circle" icon="android-close" @click="clear()">Clear</Button>
-        <Button class="btn" type="success" shape="circle" icon="android-add" @click="invitePeople()">Invite</Button>
-        <Table class="table-search" highlight-row border :columns="columnsUser" :data="dataUser" @on-current-change="changeSelection" no-data-text="No data"></Table>
-      </div>
-
-    </Layout>
-    </Modal>
-
     <!-- modal-disband -->
     <Modal>
 
     </Modal>
 
     <!-- modal-view-projects -->
-    <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalViewProjects" ok-text="Ok" cancel-text="Cancel" @on-ok="searchContent = ''" @on-cancel="searchContent = ''">
+    <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalViewProjects" ok-text="Ok" cancel-text="Cancel" @on-ok="clearContent()" @on-cancel="clearContent()">
 
       <Layout style="margin-top:20px;">
 
@@ -116,7 +96,7 @@
         <Layout>
 
           <Sider style="z-index:6;" width="100">
-            <Menu active-name="0" theme="dark" width="auto" @on-select="clickProjectsTag">
+            <Menu theme="dark" width="auto" :active-name="activeProjectsTag" @on-select="clickProjectsTag">
               <MenuItem class="menu-item" name="0"><span>All</span>
               </MenuItem>
               <MenuItem class="menu-item" name="1"><span>Yearly</span>
@@ -180,7 +160,7 @@
           </Sider>
 
           <Content>
-            <div class="div-content">
+            <div class="div-content" v-if="currentProject != null && currentProject != {}">
               <div class="card-top">
                 <i-circle class="card-circle" :size=40 v-if="currentProject.percent == 100" :percent="100" stroke-color="#5cb85c" :stroke-width="9" :trail-width="9">
                   <Icon type="ios-checkmark-empty" size=50 color="#5cb85c"></Icon>
@@ -240,6 +220,7 @@
 
 <script>
 import teamworkApi from '../api/teamworkApi'
+import ButtonInvite from './component-btn-invite.vue'
 
 export default {
   name: 'component-team',
@@ -266,33 +247,6 @@ export default {
       spinViewProjects: false,
       modalExportProjects: false,
       modalExportSummaries: false,
-      /** invite **/
-      inviteTeam: {
-        teamId: '0',
-        teamName: ''
-      },
-      searchContent: '',
-      currentInvite: {},
-      columnsUser: [
-        {
-          type: 'index',
-          width: 60,
-          align: 'center'
-        },
-        {
-          title: 'Tel',
-          // width: 120,
-          key: 'tel'
-        },
-        {
-          title: 'Name',
-          // width: 200,
-          key: 'name'
-        }
-      ],
-      dataUser: [],
-      spinInvite: false,
-      modalInvite: false,
       /** disband **/
       modalDisband: false,
       /** view **/
@@ -310,6 +264,7 @@ export default {
       subfieldProject: false,
       defaultOpenProject: 'preview',
       toolbarsFlagProject: false,
+      activeProjectsTag: '0',
       collapseProjects: '',
       currentProjects: [],
       currentProject: {},
@@ -329,7 +284,7 @@ export default {
     }
   },
   components: {
-    //
+    ButtonInvite
   },
   methods: {
     getInfo () {
@@ -346,86 +301,6 @@ export default {
     exportSummaries (teamId) {
       this.$Message.error('Function not available.')
     },
-    invite (teamId, teamName) {
-      this.inviteTeam = {
-        teamId: teamId,
-        teamName: teamName
-      }
-      this.modalInvite = true
-    },
-    search () {
-      var regex = /^([a-zA-Z0-9\u4e00-\u9fa5\s]){2,10}$/
-      if (!regex.test(this.searchContent)) {
-        this.$Notice.error({
-          title: 'Invalid value.',
-          desc: ''
-        })
-        this.searchContent = ''
-        return
-      }
-      this.spinInvite = true
-      let _this = this
-      // TEST START
-      setTimeout(() => {
-        _this.dataUser = [
-          {
-            tel: '13608089849',
-            name: '曾宇'
-          },
-          {
-            tel: '13456789012',
-            name: '李四'
-          }
-        ]
-        _this.spinInvite = false
-      }, 1000)
-      // TEST END
-      teamworkApi.searchUser(this.info.tel, this.searchContent).then(function (response) {
-        if (response.data.result === true) {
-          _this.dataUser = response.data.dataUser
-          _this.spinInvite = false
-        } else {
-          _this.$Notice.error({
-            title: 'Search failed.',
-            desc: ''
-          })
-          _this.spinInvite = false
-        }
-      })
-    },
-    changeSelection (currentRow, oldCurrentRow) {
-      this.currentInvite = currentRow
-    },
-    clear () {
-      this.dataUser = []
-    },
-    invitePeople (tel) {
-      this.spinInvite = true
-      let _this = this
-      // TEST START
-      setTimeout(() => {
-        _this.$Notice.success({
-          title: 'Send message successful.',
-          desc: 'Please waitting for user to check.'
-        })
-        _this.spinInvite = false
-      }, 1000)
-      // TEST END
-      teamworkApi.invite(this.info.tel, this.inviteTeam.teamId, this.currentInvite.tel).then(function (response) {
-        if (response.data.result === true) {
-          _this.$Notice.success({
-            title: 'Send message successful.',
-            desc: 'Please waitting for user to check.'
-          })
-        } else {
-          _this.$Notice.error({
-            title: 'Invite failed.',
-            desc: ''
-          })
-        }
-        _this.spinInvite = false
-      })
-    },
     disband (teamId) {
       this.$Message.error('Function not available.')
     },
@@ -436,144 +311,172 @@ export default {
         tel: tel,
         email: email
       }
-      // TEST START
-      this.currentProjects = [
-        {
-          timestamp: 1,
-          show: true,
-          type: '1',
-          percent: 0,
-          date: '2017-03-01',
-          title: '2017年度计划',
-          content: '内容。。。',
-          plans: [
-            {
-              timestamp: 0,
-              tag: 'project',
-              goal: '健身',
-              percent: 20
-            },
-            {
-              timestamp: 1,
-              tag: 'project',
-              goal: '考驾照',
-              percent: 100
-            },
-            {
-              timestamp: 2,
-              tag: 'project',
-              goal: '秋招',
-              percent: 100
-            }
-          ]
-        },
-        {
-          timestamp: 2,
-          show: true,
-          type: '2',
-          percent: 0,
-          date: '2017-09-01',
-          title: '2017年9月报告',
-          content: '内容。。。\nddddddddddd\naaaaaaaaa',
-          plans: [
-            {
-              timestamp: 3,
-              tag: '秋招',
-              goal: '复习',
-              percent: 70
-            },
-            {
-              timestamp: 4,
-              tag: '开学',
-              goal: '选班委',
-              percent: 100
-            }
-          ]
-        },
-        {
-          timestamp: 3,
-          show: true,
-          type: '3',
-          percent: 0,
-          date: '2018-02-12',
-          title: '2018春节活动',
-          content: '内容。。。',
-          plans: [
-            {
-              timestamp: 5,
-              tag: '旅游',
-              goal: '深圳',
-              percent: 100
-            },
-            {
-              timestamp: 6,
-              tag: '旅游',
-              goal: '香港',
-              percent: 100
-            }
-          ]
-        },
-        {
-          timestamp: 4,
-          show: true,
-          type: '2',
-          percent: 0,
-          date: '2018-03-04',
-          title: '2018开学准备',
-          content: '内容',
-          plans: [
-            {
-              timestamp: 7,
-              tag: '实习',
-              goal: '初期报告',
-              percent: 0
-            }
-          ]
-        },
-        {
-          timestamp: 5,
-          show: true,
-          type: '2',
-          percent: 0,
-          date: '2018-01-12',
-          title: '放假安排',
-          content: '## 1.\n- projects1\n- projects2\n- projects3\n- projects4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
-          plans: [
-            {
-              timestamp: 8,
-              tag: '年前',
-              goal: '在家休息',
-              percent: 100
-            },
-            {
-              timestamp: 9,
-              tag: '年后',
-              goal: '出行游玩',
-              percent: 100
-            }
-          ]
-        },
-        {
-          timestamp: 6,
-          show: true,
-          type: '2',
-          percent: 0,
-          date: '2018-03-15',
-          title: '实习相关事项',
-          content: '内容',
-          plans: []
-        },
-        {
-          timestamp: 7,
-          show: true,
-          type: '4',
-          percent: 0,
-          date: '2018-05-01',
-          title: '毕设安排',
-          content: '内容',
-          plans: []
-        }
-      ]
+      if (tel === '13608089849') {
+        // TEST START
+        this.currentProjects = [
+          {
+            timestamp: 1,
+            show: true,
+            type: '1',
+            percent: 0,
+            date: '2017-03-01',
+            title: '2017年度计划',
+            content: '内容。。。',
+            plans: [
+              {
+                timestamp: 0,
+                tag: 'project',
+                goal: '健身',
+                percent: 20
+              },
+              {
+                timestamp: 1,
+                tag: 'project',
+                goal: '考驾照',
+                percent: 100
+              },
+              {
+                timestamp: 2,
+                tag: 'project',
+                goal: '秋招',
+                percent: 100
+              }
+            ]
+          },
+          {
+            timestamp: 2,
+            show: true,
+            type: '2',
+            percent: 0,
+            date: '2017-09-01',
+            title: '2017年9月报告',
+            content: '内容。。。\nddddddddddd\naaaaaaaaa',
+            plans: [
+              {
+                timestamp: 3,
+                tag: '秋招',
+                goal: '复习',
+                percent: 70
+              },
+              {
+                timestamp: 4,
+                tag: '开学',
+                goal: '选班委',
+                percent: 100
+              }
+            ]
+          },
+          {
+            timestamp: 3,
+            show: true,
+            type: '3',
+            percent: 0,
+            date: '2018-02-12',
+            title: '2018春节活动',
+            content: '内容。。。',
+            plans: [
+              {
+                timestamp: 5,
+                tag: '旅游',
+                goal: '深圳',
+                percent: 100
+              },
+              {
+                timestamp: 6,
+                tag: '旅游',
+                goal: '香港',
+                percent: 100
+              }
+            ]
+          },
+          {
+            timestamp: 4,
+            show: true,
+            type: '2',
+            percent: 0,
+            date: '2018-03-04',
+            title: '2018开学准备',
+            content: '内容',
+            plans: [
+              {
+                timestamp: 7,
+                tag: '实习',
+                goal: '初期报告',
+                percent: 0
+              }
+            ]
+          },
+          {
+            timestamp: 5,
+            show: true,
+            type: '2',
+            percent: 0,
+            date: '2018-01-12',
+            title: '放假安排',
+            content: '## 1.\n- projects1\n- projects2\n- projects3\n- projects4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
+            plans: [
+              {
+                timestamp: 8,
+                tag: '年前',
+                goal: '在家休息',
+                percent: 100
+              },
+              {
+                timestamp: 9,
+                tag: '年后',
+                goal: '出行游玩',
+                percent: 100
+              }
+            ]
+          },
+          {
+            timestamp: 6,
+            show: true,
+            type: '2',
+            percent: 0,
+            date: '2018-03-15',
+            title: '实习相关事项',
+            content: '内容',
+            plans: []
+          },
+          {
+            timestamp: 7,
+            show: true,
+            type: '4',
+            percent: 0,
+            date: '2018-05-01',
+            title: '毕设安排',
+            content: '内容',
+            plans: []
+          }
+        ]
+      } else {
+        this.currentProjects = [
+          {
+            timestamp: 1001,
+            show: true,
+            type: '2',
+            percent: 0,
+            date: '2018-03-26',
+            title: '测试标题',
+            content: '测试内容。。。\nddddddddddd\naaaaaaaaa',
+            plans: [
+              {
+                timestamp: 10001,
+                tag: '测试tag1',
+                goal: '测试goal1',
+                percent: 70
+              },
+              {
+                timestamp: 10002,
+                tag: '测试tag2',
+                goal: '测试goal2',
+                percent: 100
+              }
+            ]
+          }
+        ]
+      }
       this.computePercent()
       this.clickProjectsTag(this.currentTag)
       setTimeout(() => {
@@ -597,6 +500,9 @@ export default {
       })
     },
     computePercent () {
+      if (this.currentProjects === null) {
+        return
+      }
       for (var i = 0; i < this.currentProjects.length; i++) {
         if (this.currentProjects[i].plans.length === 0) {
           this.currentProjects[i].percent = 0
@@ -616,28 +522,30 @@ export default {
       var _total = 0
       var _done = 0
       var _doing = 0
-      if (name === '0') {
-        _total = this.currentProjects.length
-        for (let i = 0; i < this.currentProjects.length; i++) {
-          this.currentProjects[i].show = true
-          if (this.currentProjects[i].percent === 100) {
-            _done++
-          } else {
-            _doing++
-          }
-        }
-      } else {
-        for (let i = 0; i < this.currentProjects.length; i++) {
-          if (this.currentProjects[i].type === name) {
-            _total++
+      if (this.currentProjects !== null) {
+        if (name === '0') {
+          _total = this.currentProjects.length
+          for (let i = 0; i < this.currentProjects.length; i++) {
             this.currentProjects[i].show = true
             if (this.currentProjects[i].percent === 100) {
               _done++
             } else {
               _doing++
             }
-          } else {
-            this.currentProjects[i].show = false
+          }
+        } else {
+          for (let i = 0; i < this.currentProjects.length; i++) {
+            if (this.currentProjects[i].type === name) {
+              _total++
+              this.currentProjects[i].show = true
+              if (this.currentProjects[i].percent === 100) {
+                _done++
+              } else {
+                _doing++
+              }
+            } else {
+              this.currentProjects[i].show = false
+            }
           }
         }
       }
@@ -653,6 +561,17 @@ export default {
     },
     chooseProject (data) {
       this.currentProject = data
+    },
+    clearContent () {
+      this.activeProjectsTag = '0'
+      this.clickProjectsTag('0')
+      this.collapseProjects = ''
+      this.count = {
+        total: 0,
+        done: 0,
+        doing: 0
+      }
+      this.currentProject = {}
     },
     viewSummaries (tel, name, email) {
       this.$Message.error('Function not available.')
@@ -807,32 +726,6 @@ export default {
 }
 
 /** modal-export **/
-
-/** modal-invite **/
-
-.div-invite {
-}
-
-.div-invite-title{
-  font-size: 16px;
-  margin: 10px auto 15px 0;
-  font-weight: bold;
-  color: red;
-}
-
-.input-invite {
-  width: 160px;
-}
-
-.btn {
-  width      : auto;
-  font-weight: bold;
-  margin-left: 15px;
-}
-
-.table-search {
-  margin-top: 20px;
-}
 
 /** modal-desband **/
 

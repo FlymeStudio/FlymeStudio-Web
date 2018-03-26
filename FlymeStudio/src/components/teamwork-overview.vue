@@ -3,13 +3,13 @@
   <Layout>
 
     <Header>
-      <topNav></topNav>
+      <componentNavTop></componentNavTop>
     </Header>
 
     <Layout>
 
       <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
-        <leftNav activeName="11"></leftNav>
+        <componentNavLeft activeName="11"></componentNavLeft>
       </Sider>
 
       <Layout :style="{padding: '0 24px'}">
@@ -26,7 +26,7 @@
               <span class="div-count" style="color:#1c2438;"> Managed ({{ managedTeams.length }})</span>
 
               <div class="div-team" slot="content" v-for="team in managedTeams" :key="team.id">
-                <Team :team="team" type="1"></Team>
+                <componentTeam :team="team" type="1"></componentTeam>
               </div>
             </Panel>
 
@@ -34,7 +34,7 @@
               <span class="div-count" style="color:#1c2438;"> Joined ({{ joinedTeams.length }})</span>
 
               <div class="div-team" slot="content" v-for="team in joinedTeams" :key="team.id">
-                <Team :team="team" type="0"></Team>
+                <componentTeam :team="team" type="0"></componentTeam>
               </div>
             </Panel>
           </Collapse>
@@ -53,10 +53,10 @@
 </template>
 
 <script>
-import topNav from './component-nav-top.vue'
-import leftNav from './component-nav-left.vue'
+import componentNavTop from './component-nav-top.vue'
+import componentNavLeft from './component-nav-left.vue'
 import componentFooter from './component-footer.vue'
-import Team from './component-team.vue'
+import componentTeam from './component-team.vue'
 import teamworkApi from '../api/teamworkApi'
 
 export default{
@@ -79,10 +79,10 @@ export default{
     }
   },
   components: {
-    topNav,
-    leftNav,
+    componentNavTop,
+    componentNavLeft,
     componentFooter,
-    Team
+    componentTeam
   },
   methods: {
     getInfo () {

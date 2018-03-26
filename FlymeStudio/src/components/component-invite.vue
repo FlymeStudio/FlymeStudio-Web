@@ -27,7 +27,7 @@
 import teamworkApi from '../api/teamworkApi'
 
 export default {
-  name: 'btn-invite',
+  name: 'component-invite',
   created () {
     this.getInfo()
   },

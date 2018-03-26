@@ -3,13 +3,13 @@
   <Layout>
 
     <Header>
-      <topNav></topNav>
+      <componentNavTop></componentNavTop>
     </Header>
 
     <Layout>
 
       <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
-        <leftNav activeName="13"></leftNav>
+        <componentNavLeft activeName="13"></componentNavLeft>
       </Sider>
 
       <Layout :style="{padding: '0 24px'}">
@@ -81,8 +81,8 @@
 </template>
 
 <script>
-import topNav from './component-nav-top.vue'
-import leftNav from './component-nav-left.vue'
+import componentNavTop from './component-nav-top.vue'
+import componentNavLeft from './component-nav-left.vue'
 import componentFooter from './component-footer.vue'
 import teamworkApi from '../api/teamworkApi'
 
@@ -107,8 +107,8 @@ export default{
     }
   },
   components: {
-    topNav,
-    leftNav,
+    componentNavTop,
+    componentNavLeft,
     componentFooter
   },
   methods: {

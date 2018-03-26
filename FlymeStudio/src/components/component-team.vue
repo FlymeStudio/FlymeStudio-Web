@@ -15,7 +15,7 @@
       <Button v-else class="btn-team" type="primary" shape="circle" icon="archive" disabled></Button>
     </Tooltip>
     <Tooltip content="Invite people">
-      <ButtonInvite :dataId="teamData.id" :dataName="teamData.name"></ButtonInvite>
+      <componentInvite :dataId="teamData.id" :dataName="teamData.name"></componentInvite>
     </Tooltip>
     <Tooltip content="Disband team">
       <Button v-if="teamData.administratorTel == info.tel" class="btn-team" type="error" shape="circle" icon="android-warning" @click="disbandTeam(teamData.id, teamData.name)"></Button>
@@ -64,7 +64,7 @@
 
 <script>
 import teamworkApi from '../api/teamworkApi'
-import ButtonInvite from './component-btn-invite.vue'
+import componentInvite from './component-invite.vue'
 import componentMembers from './component-members.vue'
 
 export default {
@@ -99,7 +99,7 @@ export default {
     }
   },
   components: {
-    ButtonInvite,
+    componentInvite,
     componentMembers
   },
   methods: {

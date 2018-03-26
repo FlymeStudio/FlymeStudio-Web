@@ -3,12 +3,12 @@
   <Layout>
 
     <Header>
-      <topNav></topNav>
+      <componentNavTop></componentNavTop>
     </Header>
 
     <Layout>
       <Sider hide-trigger :style="{height: '100vh', background: '#fff'}">
-        <leftNav activeName=""></leftNav>
+        <componentNavLeft activeName=""></componentNavLeft>
       </Sider>
 
       <Layout :style="{padding: '0 24px'}">
@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import topNav from './component-nav-top.vue'
-import leftNav from './component-nav-left.vue'
+import componentNavTop from './component-nav-top.vue'
+import componentNavLeft from './component-nav-left.vue'
 import componentFooter from './component-footer.vue'
 
 export default {
@@ -55,8 +55,8 @@ export default {
     }
   },
   components: {
-    topNav,
-    leftNav,
+    componentNavTop,
+    componentNavLeft,
     componentFooter
   },
   methods: {

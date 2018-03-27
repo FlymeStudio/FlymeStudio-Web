@@ -277,8 +277,8 @@ export default {
         tel: tel,
         email: email
       }
+      // TEST START
       if (tel === '13608089849') {
-        // TEST START
         this.currentProjects = [
           {
             timestamp: 1,

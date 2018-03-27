@@ -49,36 +49,36 @@ export default {
       withCredentials: true
     })
   },
-  viewTeamProjects (tel, teamId) {
-    var data = qs.stringify({
-      tel: tel,
-      teamId: teamId
-    })
-    return axios({
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      url: teamworkApi.viewTeamProjectsUrl(),
-      data: data,
-      withCredentials: true
-    })
-  },
-  viewTeamSummaries (tel, teamId) {
-    var data = qs.stringify({
-      tel: tel,
-      teamId: teamId
-    })
-    return axios({
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      url: teamworkApi.viewTeamSummariesUrl(),
-      data: data,
-      withCredentials: true
-    })
-  },
+  // viewTeamProjects (tel, teamId) {
+  //   var data = qs.stringify({
+  //     tel: tel,
+  //     teamId: teamId
+  //   })
+  //   return axios({
+  //     method: 'post',
+  //     headers: {
+  //       'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+  //     },
+  //     url: teamworkApi.viewTeamProjectsUrl(),
+  //     data: data,
+  //     withCredentials: true
+  //   })
+  // },
+  // viewTeamSummaries (tel, teamId) {
+  //   var data = qs.stringify({
+  //     tel: tel,
+  //     teamId: teamId
+  //   })
+  //   return axios({
+  //     method: 'post',
+  //     headers: {
+  //       'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+  //     },
+  //     url: teamworkApi.viewTeamSummariesUrl(),
+  //     data: data,
+  //     withCredentials: true
+  //   })
+  // },
   searchUser (tel, content) {
     var data = qs.stringify({
       tel: tel,

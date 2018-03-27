@@ -3,7 +3,7 @@
   <Button v-if="teamType == 1" class="btn-team" type="primary" shape="circle" icon="archive" @click="exportProjects()"></Button>
   <Button v-else class="btn-team" type="primary" shape="circle" icon="archive" disabled></Button>
 
-  <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalExport" ok-text="Ok" cancel-text="Cancel" @on-ok="clear()" @on-cancel="clear()">
+  <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalExport" ok-text="Ok" cancel-text="Cancel" @on-ok="clearAll()" @on-cancel="clearAll()">
     <p slot="header" class="p-title">
       <span>{{ teamData.name }}</span>
     </p>
@@ -21,7 +21,7 @@
             <Option v-for="member in teamData.members" :value="member.tel" :key="member.tel">{{ member.name }}({{ member.tel }})</Option>
           </Select>
           <Button class="btn" type="primary" shape="circle" icon="ios-search" @click="search()">Search</Button>
-          <Button class="btn" type="info" shape="circle" icon="android-close" @click="clear()">Clear</Button>
+          <Button class="btn" type="info" shape="circle" icon="android-close" @click="clearResource()">Clear</Button>
         </div>
         <Table class="table-resource" height="300" highlight-row border :columns="columnsResource" :data="dataResource" size="small" no-data-text="No data" no-filtered-data-text="No filtered data"></Table>
       </div>
@@ -557,9 +557,15 @@ export default {
         }
       }
     },
-    clear () {
+    clearResource () {
       this.selectMemberTel = ''
       this.dataResource = []
+    },
+    clearAll () {
+      this.selectMemberTel = ''
+      this.dataResource = []
+      this.dataChoose = []
+      this.dataExport = []
     },
     formatType (type) {
       switch (type) {

@@ -128,7 +128,7 @@
 
             <p class="detail-title" slot="title">{{ currentProject.title }}</p>
 
-            <mavon-editor class="detail-content" v-model="currentProject.content" :subfield="subfieldProject" :defaultOpen="defaultOpenProject" :toolbarsFlag="toolbarsFlagProject">{{ currentProject.content }}</mavon-editor>
+            <mavon-editor class="detail-content" v-model="currentProject.content" :subfield="subfieldProject" :defaultOpen="defaultOpenProject" :toolbarsFlag="toolbarsFlagProject"></mavon-editor>
 
             <div class="div-plans">
               <Alert class="alert-plans" v-for="item in currentProject.plans" :key="item.timestamp">

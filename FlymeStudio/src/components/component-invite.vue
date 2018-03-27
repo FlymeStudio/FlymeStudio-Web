@@ -1,25 +1,25 @@
 <template>
 <div>
-<Button class="btn-team" type="info" shape="circle" icon="android-person-add" @click="modalInvite = true"></Button>
+  <Button class="btn-team" type="info" shape="circle" icon="android-person-add" @click="modalInvite = true"></Button>
 
-<Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalInvite" ok-text="Ok" cancel-text="Cancel" @on-ok="clear()" @on-cancel="clear()">
-  <Layout>
+  <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalInvite" ok-text="Ok" cancel-text="Cancel" @on-ok="clear()" @on-cancel="clear()">
+    <Layout>
 
-    <Spin class="spin" fix v-if="spinInvite">
-      <Icon class="icon-spin" type="load-c" size=50></Icon>
-    </Spin>
+      <Spin class="spin" fix v-if="spinInvite">
+        <Icon class="icon-spin" type="load-c" size=50></Icon>
+      </Spin>
 
-  <div class="div-invite">
-    <div class="div-invite-title">Invite user to join to {{ inviteTeam.teamName }}({{ inviteTeam.teamId }}):</div>
-    <Input class="input-invite" v-model="searchContent" placeholder="User tel or name" clearable></Input>
-    <Button class="btn" type="primary" shape="circle" icon="ios-search" @click="search()">Search</Button>
-    <Button class="btn" type="info" shape="circle" icon="android-close" @click="clear()">Clear</Button>
-    <Button class="btn" type="success" shape="circle" icon="android-add" @click="invitePeople()">Invite</Button>
-    <Table class="table-search" highlight-row border :columns="columnsUser" :data="dataUser" @on-current-change="changeSelection" no-data-text="No data"></Table>
-  </div>
+      <div class="div-invite">
+        <div class="div-invite-title">Invite user to join to {{ inviteTeam.teamName }}({{ inviteTeam.teamId }}):</div>
+        <Input class="input-invite" v-model="searchContent" placeholder="User tel or name" clearable></Input>
+        <Button class="btn" type="primary" shape="circle" icon="ios-search" @click="search()">Search</Button>
+        <Button class="btn" type="info" shape="circle" icon="android-close" @click="clear()">Clear</Button>
+        <Button class="btn" type="success" shape="circle" icon="android-add" @click="invitePeople()">Invite</Button>
+        <Table class="table-search" highlight-row border :columns="columnsUser" :data="dataUser" @on-current-change="changeSelection" no-data-text="No data"></Table>
+      </div>
 
-</Layout>
-</Modal>
+    </Layout>
+  </Modal>
 </div>
 </template>
 
@@ -158,7 +158,6 @@ export default {
 </script>
 
 <style scoped>
-
 .btn-team {
   margin   : auto 5px;
   font-size: 20px;
@@ -174,14 +173,13 @@ export default {
   }
 }
 
-.div-invite {
-}
+.div-invite {}
 
-.div-invite-title{
-  font-size: 16px;
-  margin: 10px auto 15px 0;
+.div-invite-title {
+  font-size  : 16px;
+  margin     : 10px auto 15px 0;
   font-weight: bold;
-  color: red;
+  color      : red;
 }
 
 .input-invite {
@@ -197,5 +195,4 @@ export default {
 .table-search {
   margin-top: 20px;
 }
-
 </style>

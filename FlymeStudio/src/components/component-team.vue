@@ -7,8 +7,9 @@
 
   <Alert type="success">
     <Tooltip content="Export projects">
-      <Button v-if="teamType == 1" class="btn-team" type="primary" shape="circle" icon="archive" @click="exportProjects(teamData.id)"></Button>
-      <Button v-else class="btn-team" type="primary" shape="circle" icon="archive" disabled></Button>
+      <componentExportProjects :type="teamType" :teamRes="teamData"></componentExportProjects>
+      <!-- <Button v-if="teamType == 1" class="btn-team" type="primary" shape="circle" icon="archive" @click="exportProjects(teamData.id)"></Button>
+      <Button v-else class="btn-team" type="primary" shape="circle" icon="archive" disabled></Button> -->
     </Tooltip>
     <Tooltip content="Export summaries">
       <Button v-if="teamType == 1" class="btn-team" type="primary" shape="circle" icon="archive" @click="exportSummaries(teamData.id)"></Button>
@@ -64,6 +65,7 @@
 
 <script>
 import teamworkApi from '../api/teamworkApi'
+import componentExportProjects from './component-export-projects.vue'
 import componentInvite from './component-invite.vue'
 import componentMembers from './component-members.vue'
 
@@ -87,9 +89,6 @@ export default {
         messages: []
       },
       password: '',
-      /** export **/
-      modalExportProjects: false,
-      modalExportSummaries: false,
       /** disband **/
       currentDisband: {
         teamId: '',
@@ -99,6 +98,7 @@ export default {
     }
   },
   components: {
+    componentExportProjects,
     componentInvite,
     componentMembers
   },
@@ -110,9 +110,6 @@ export default {
       } else {
         this.info = this.$store.state.user.userInfo
       }
-    },
-    exportProjects (teamId) {
-      this.$Message.error('Function not available.')
     },
     exportSummaries (teamId) {
       this.$Message.error('Function not available.')
@@ -168,7 +165,6 @@ export default {
 </script>
 
 <style scoped>
-
 .span-team-name {
   margin-left: 10px;
   font-size  : 20px;
@@ -181,10 +177,10 @@ export default {
 }
 
 .div-menu-item {
-  width: 100%;
-  height: auto;
-  padding: 5px;
-  display: flex;
+  width      : 100%;
+  height     : auto;
+  padding    : 5px;
+  display    : flex;
   align-items: center;
 }
 
@@ -212,9 +208,6 @@ export default {
 .modal {
   z-index: 7;
 }
-
-/** modal-export **/
-
 /** modal-desband **/
 .modal-disband {
   position: absolute;

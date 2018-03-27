@@ -154,7 +154,7 @@
 
                   <p class="detail-title" slot="title">{{ dataCopy.title }}</p>
 
-                  <mavon-editor class="detail-content" v-model="dataCopy.content" :subfield="subfieldDetail" :defaultOpen="defaultOpenDetail" :toolbarsFlag="toolbarsFlagDetail">{{ dataCopy.content }}</mavon-editor>
+                  <mavon-editor class="detail-content" v-model="dataCopy.content" :subfield="subfieldDetail" :defaultOpen="defaultOpenDetail" :toolbarsFlag="toolbarsFlagDetail"></mavon-editor>
 
                   <div class="div-plans">
                     <Alert class="alert-plans" v-for="item in dataCopy.plans" :key="item.timestamp">
@@ -180,8 +180,8 @@
                   </FormItem>
                   <FormItem prop="type">
                     <Select class="select-type" v-model="formItem.type" size="large" placeholder="Type">
-                        <Option v-for="item in types" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                      </select>
+                      <Option v-for="item in types" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </select>
                   </FormItem>
 
                   <FormItem>

@@ -81,6 +81,12 @@ export default {
           align: 'center'
         },
         {
+          title: 'Name',
+          width: 80,
+          align: 'center',
+          key: 'name'
+        },
+        {
           title: 'Type',
           width: 100,
           align: 'center',
@@ -201,6 +207,12 @@ export default {
           align: 'center'
         },
         {
+          title: 'Name',
+          width: 80,
+          align: 'center',
+          key: 'name'
+        },
+        {
           title: 'Type',
           width: 100,
           align: 'center',
@@ -265,6 +277,10 @@ export default {
       dataChoose: [],
       columnsExport: [
         {
+          title: 'Name',
+          key: 'name'
+        },
+        {
           title: 'Percent',
           key: 'percent'
         },
@@ -276,10 +292,10 @@ export default {
           title: 'Title',
           key: 'title'
         },
-        {
-          title: 'Content',
-          key: 'content'
-        },
+        // {
+        //   title: 'Content',
+        //   key: 'content'
+        // },
         {
           title: 'Plans',
           key: 'plans'
@@ -499,15 +515,15 @@ export default {
           }
         ]
       }
-      this.computePercent()
+      this.computePercent(this.selectMemberTel)
       setTimeout(() => {
         _this.spinExport = false
-      }, 2000)
+      }, 1000)
       // TEST END
       teamworkApi.viewMemberProjects(this.info.tel, this.selectMemberTel).then(function (response) {
         if (response.data.result === true) {
           _this.dataResource = response.data.projects
-          _this.computePercent()
+          _this.computePercent(_this.selectMemberTel)
         } else {
           _this.$Notice.error({
             title: 'Failed to get data.',
@@ -517,19 +533,27 @@ export default {
         _this.spinShow = false
       })
     },
-    computePercent () {
+    computePercent (tel) {
       if (this.dataResource === null) {
         return
       }
-      for (var i = 0; i < this.dataResource.length; i++) {
-        if (this.dataResource[i].plans.length === 0) {
-          this.dataResource[i].percent = 0
+      var name = ''
+      for (var i = 0; i < this.teamData.members.length; i++) {
+        if (this.teamData.members[i].tel === tel) {
+          name = this.teamData.members[i].name
+          break
+        }
+      }
+      for (var j = 0; j < this.dataResource.length; j++) {
+        this.dataResource[j].name = name
+        if (this.dataResource[j].plans.length === 0) {
+          this.dataResource[j].percent = 0
         } else {
           var percent = 0
-          for (var j = 0; j < this.dataResource[i].plans.length; j++) {
-            percent += this.dataResource[i].plans[j].percent
+          for (var k = 0; k < this.dataResource[j].plans.length; k++) {
+            percent += this.dataResource[j].plans[k].percent
           }
-          this.dataResource[i].percent = Math.round(percent / this.dataResource[i].plans.length)
+          this.dataResource[j].percent = Math.round(percent / this.dataResource[j].plans.length)
         }
       }
     },
@@ -583,12 +607,14 @@ export default {
         for (var i = 0; i < this.dataChoose.length; i++) {
           let plans = ''
           for (var j = 0; j < this.dataChoose[i].plans.length; j++) {
-            plans = plans + this.dataChoose[i].plans[j].percent + ' [' + this.dataChoose[i].plans[j].tag + '] ' + this.dataChoose[i].plans[j].goal + '\n'
+            plans = plans + '(' + this.dataChoose[i].plans[j].percent + ') [' + this.dataChoose[i].plans[j].tag + '] ' + this.dataChoose[i].plans[j].goal + '; \n\t\t\t\t'
           }
           let project = {
+            name: this.dataChoose[i].name,
             date: this.dataChoose[i].date,
             percent: this.dataChoose[i].percent,
-            content: this.dataChoose[i].content,
+            title: this.dataChoose[i].title,
+            // content: this.dataChoose[i].content,
             plans: plans
           }
           this.dataExport.push(project)

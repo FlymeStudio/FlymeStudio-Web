@@ -3,14 +3,19 @@
   <Button v-if="teamType == 1" class="btn-team" type="primary" shape="circle" icon="archive" @click="exportProjects()"></Button>
   <Button v-else class="btn-team" type="primary" shape="circle" icon="archive" disabled></Button>
 
-  <Spin class="spin" fix v-if="spinExport">
-    <Icon class="icon-spin" type="load-c" size=50></Icon>
-  </Spin>
+  <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalExport" ok-text="Ok" cancel-text="Cancel" @on-ok="clear()" @on-cancel="clear()">
+    <p slot="header" class="p-title">
+      <span>{{ teamData.name }}</span>
+    </p>
 
-  <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modalExport" ok-text="Ok" cancel-text="Cancel">
     <Layout>
-      <span class="span-title">Resource</span>
+
+      <Spin class="spin" fix v-if="spinExport">
+        <Icon class="icon-spin" type="load-c" size=50></Icon>
+      </Spin>
+
       <div>
+        <span class="span-title">Resource</span>
         <div class="div-resource">
           <Select v-model="selectMemberTel" style="width:200px" placeholder="Select member">
             <Option v-for="member in teamData.members" :value="member.tel" :key="member.tel">{{ member.name }}({{ member.tel }})</Option>
@@ -20,11 +25,13 @@
         </div>
         <Table class="table-resource" height="300" highlight-row border :columns="columnsResource" :data="dataResource" size="small" no-data-text="No data" no-filtered-data-text="No filtered data"></Table>
       </div>
+
       <div class="div-export">
         <span class="span-title">Export</span>
-        <Table class="table-export" height="300" highlight-row border :columns="columnsExport" :data="dataExport" size="small" ref="table" no-data-text="No data"></Table>
+        <Table class="table-export" height="300" highlight-row border :columns="columnsChoose" :data="dataChoose" size="small" ref="table" no-data-text="No data"></Table>
         <Button type="primary" icon="archive" @click="exportCsv()">Export</Button>
       </div>
+
     </Layout>
   </Modal>
 </div>
@@ -78,26 +85,24 @@ export default {
           width: 100,
           align: 'center',
           key: 'type',
-          runder: (h, params) => {
-            console.log('runder:' + params.row.type)
-            // return h('div', this.formatType(params.row.type))
-            return '====='
+          render: (h, params) => {
+            return h('div', this.formatType(params.row.type))
           },
           filters: [
             {
-              label: 'Yearly',
+              label: '1. Yearly',
               value: '1'
             },
             {
-              label: 'Monthly',
+              label: '2. Monthly',
               value: '2'
             },
             {
-              label: 'Weekly',
+              label: '3. Weekly',
               value: '3'
             },
             {
-              label: 'Daily',
+              label: '4. Daily',
               value: '4'
             }
           ],
@@ -111,7 +116,6 @@ export default {
           align: 'center',
           key: 'percent',
           render: (h, params) => {
-            console.log('runder:' + params.row.percent)
             const row = params.row
             const color = row.percent === 100 ? 'green' : 'red'
             const text = row.percent
@@ -147,13 +151,12 @@ export default {
         },
         {
           title: 'Date',
-          width: 140,
+          width: 120,
           align: 'center',
           key: 'date'
         },
         {
           title: 'Title',
-          // width: 300,
           align: 'center',
           key: 'title'
         },
@@ -180,7 +183,7 @@ export default {
         }
       ],
       dataResource: [],
-      columnsExport: [
+      columnsChoose: [
         {
           type: 'expand',
           width: 50,
@@ -202,7 +205,7 @@ export default {
           width: 100,
           align: 'center',
           key: 'type',
-          runder: (h, params) => {
+          render: (h, params) => {
             return h('div', this.formatType(params.row.type))
           }
         },
@@ -228,7 +231,7 @@ export default {
         },
         {
           title: 'Date',
-          width: 140,
+          width: 120,
           align: 'center',
           key: 'date'
         },
@@ -259,6 +262,29 @@ export default {
           }
         }
       ],
+      dataChoose: [],
+      columnsExport: [
+        {
+          title: 'Percent',
+          key: 'percent'
+        },
+        {
+          title: 'Date',
+          key: 'date'
+        },
+        {
+          title: 'Title',
+          key: 'title'
+        },
+        {
+          title: 'Content',
+          key: 'content'
+        },
+        {
+          title: 'Plans',
+          key: 'plans'
+        }
+      ],
       dataExport: []
     }
   },
@@ -275,6 +301,13 @@ export default {
       this.modalExport = true
     },
     search () {
+      if (this.selectMemberTel === '') {
+        this.$Notice.error({
+          title: 'Please select a member.',
+          desc: ''
+        })
+        return
+      }
       this.spinExport = true
       let _this = this
       // TEST START
@@ -440,13 +473,36 @@ export default {
                 percent: 100
               }
             ]
+          },
+          {
+            timestamp: 1002,
+            show: true,
+            type: '4',
+            percent: 0,
+            date: '2018-03-27',
+            title: '测试标题2',
+            content: '测试内容2。。。\nddddddddddd\naaaaaaaaa',
+            plans: [
+              {
+                timestamp: 10003,
+                tag: '测试tag3',
+                goal: '测试goal3',
+                percent: 50
+              },
+              {
+                timestamp: 10004,
+                tag: '测试tag4',
+                goal: '测试goal4',
+                percent: 0
+              }
+            ]
           }
         ]
       }
       this.computePercent()
       setTimeout(() => {
         _this.spinExport = false
-      }, 1000)
+      }, 2000)
       // TEST END
       teamworkApi.viewMemberProjects(this.info.tel, this.selectMemberTel).then(function (response) {
         if (response.data.result === true) {
@@ -478,10 +534,10 @@ export default {
       }
     },
     clear () {
+      this.selectMemberTel = ''
       this.dataResource = []
     },
     formatType (type) {
-      console.log('formatType' + type)
       switch (type) {
         case '1':
           return 'Yearly'
@@ -505,17 +561,48 @@ export default {
     },
     add (index) {
       let timestamp = this.dataResource[index].timestamp
-      for (var i = 0; i < this.dataExport.length; i++) {
-        if (this.dataExport[i].timestamp === timestamp) {
+      for (var i = 0; i < this.dataChoose.length; i++) {
+        if (this.dataChoose[i].timestamp === timestamp) {
           return
         }
       }
-      this.dataExport.push(this.dataResource[index])
+      this.dataChoose.push(this.dataResource[index])
     },
     remove (index) {
-      this.dataExport.splice(index, 1)
+      this.dataChoose.splice(index, 1)
     },
     exportCsv () {
+      if (this.dataChoose.length === 0) {
+        this.$Notice.error({
+          title: 'No data to export.',
+          desc: ''
+        })
+      } else {
+        this.spinExport = true
+        this.dataExport = []
+        for (var i = 0; i < this.dataChoose.length; i++) {
+          let plans = ''
+          for (var j = 0; j < this.dataChoose[i].plans.length; j++) {
+            plans = plans + this.dataChoose[i].plans[j].percent + ' [' + this.dataChoose[i].plans[j].tag + '] ' + this.dataChoose[i].plans[j].goal + '\n'
+          }
+          let project = {
+            date: this.dataChoose[i].date,
+            percent: this.dataChoose[i].percent,
+            content: this.dataChoose[i].content,
+            plans: plans
+          }
+          this.dataExport.push(project)
+        }
+        let _this = this
+        setTimeout(() => {
+          _this.spinExport = false
+          _this.$refs.table.exportCsv({
+            filename: _this.teamData.name + '(' + this.formatDate(new Date()) + ')',
+            columns: _this.columnsExport,
+            data: _this.dataExport
+          })
+        }, 1000)
+      }
     }
   }
 }
@@ -537,18 +624,24 @@ export default {
   }
 }
 
+.p-title {
+  font-size : 16px;
+  color     : #f60;
+  text-align: center;
+}
+
 .span-title {
   width      : 100%;
-  text-align : center;
   font-size  : 18px;
   font-weight: bold;
-  margin     : 20px auto;
+  text-align : center;
+  margin     : 10px auto;
   display    : block;
 }
 
 .div-resource {
   width     : 100%;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .btn {

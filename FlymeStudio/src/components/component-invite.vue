@@ -83,7 +83,7 @@ export default {
       var regex = /^([a-zA-Z0-9\u4e00-\u9fa5\s]){2,10}$/
       if (!regex.test(this.searchContent)) {
         this.$Notice.error({
-          title: 'Invalid value.',
+          title: 'Please input content.',
           desc: ''
         })
         this.searchContent = ''

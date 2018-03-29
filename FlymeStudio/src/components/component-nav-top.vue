@@ -30,6 +30,13 @@
 
       <MenuItem name="3">
         <div class="div-menu-item">
+          <Icon class="icon-item" type="bug" size=18></Icon>
+          <span class="span-item">Feedback</span>
+        </div>
+      </MenuItem>
+
+      <MenuItem name="4">
+        <div class="div-menu-item">
           <Icon class="icon-item" type="log-out" size=18></Icon>
           <span class="span-item">Sign out</span>
         </div>
@@ -83,6 +90,9 @@ export default {
           this.clickHelp()
           break
         case '3':
+          this.clickFeedback()
+          break
+        case '4':
           this.clickSignOut()
           break
         default:
@@ -93,6 +103,9 @@ export default {
     },
     clickTitle: function () {
       this.$router.push('/home')
+    },
+    clickFeedback: function () {
+      window.open('https://github.com/FlymeStudio/FlymeStudio-Web/issues')
     },
     clickHelp: function () {
       window.open('https://github.com/FlymeStudio/FlymeStudio-Doc/blob/master/introduce.md')

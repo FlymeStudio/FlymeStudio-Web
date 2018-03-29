@@ -33,3 +33,8 @@ npm install iview --save
 ```
 npm install axios
 ```
+
+---
+## Feedback
+
+- [Issues](https://github.com/FlymeStudio/FlymeStudio-Web/issues)

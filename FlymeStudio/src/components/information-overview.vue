@@ -178,12 +178,7 @@ export default{
   },
   methods: {
     getInfo () {
-      let name = this.$store.state.user.userInfo.name
-      if (name === null) {
-        this.$router.push('/')
-      } else {
-        this.info = this.$store.state.user.userInfo
-      }
+      this.info = this.$store.state.user.userInfo
     },
     clickUser (fromName, fromTel) {
       this.user.fromName = fromName
@@ -207,7 +202,7 @@ export default{
         _this.modalTeam = true
       }, 1000)
       // TEST END
-      teamworkApi.getTeamMsg(teamId).then(function (response) {
+      teamworkApi.getTeamInfo(teamId).then(function (response) {
         _this.spinShow = false
         if (response.data.result === true) {
           _this.team.count = response.data.count

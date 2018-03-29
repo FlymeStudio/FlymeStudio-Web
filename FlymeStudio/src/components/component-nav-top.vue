@@ -74,8 +74,11 @@ export default {
   },
   methods: {
     getInfo () {
-      let name = this.$store.state.user.userInfo.name
-      if (name === null) {
+      if (!this.$store.state.user.active || this.$store.state.user.userInfo === null) {
+        this.$Notice.error({
+          title: 'Please sign in.',
+          desc: ''
+        })
         this.$router.push('/')
       } else {
         this.info = this.$store.state.user.userInfo
@@ -116,6 +119,7 @@ export default {
       // TEST START
       setTimeout(() => {
         _this.spinShow = false
+        _this.$store.dispatch('doSignOut')
         _this.$Message.success('Sign out successful.')
         _this.$router.push('/signIn')
       }, 1000)

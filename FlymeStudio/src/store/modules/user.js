@@ -1,6 +1,7 @@
 import * as types from '../mutation-types'
 
 const state = {
+  active: false,
   domain: 'http://localhost:8080',
   userInfo: {
     tel: null,
@@ -13,11 +14,11 @@ const state = {
 
 const mutations = {
   [types.SIGNIN] (state, userInfo) {
-    state.signIn = true
+    state.active = true
     state.userInfo = userInfo
   },
   [types.SIGNOUT] (state) {
-    state.signIn = false
+    state.active = false
     state.userInfo = null
   },
   [types.UPDATE] (state, userInfo) {

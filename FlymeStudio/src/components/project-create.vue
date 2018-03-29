@@ -262,12 +262,7 @@ export default{
   },
   methods: {
     getInfo () {
-      let name = this.$store.state.user.userInfo.name
-      if (name === null) {
-        this.$router.push('/')
-      } else {
-        this.info = this.$store.state.user.userInfo
-      }
+      this.info = this.$store.state.user.userInfo
     },
     upload () {
       var chooser = document.getElementById('chooser').files

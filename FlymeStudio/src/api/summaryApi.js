@@ -5,7 +5,7 @@ import axios from 'axios'
 import qs from 'qs'
 
 export default {
-  summary (tel) {
+  get (tel) {
     var data = qs.stringify({
       tel: tel
     })
@@ -14,7 +14,7 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: summaryApi.summaryUrl(),
+      url: summaryApi.getUrl(),
       data: data,
       withCredentials: true
     })

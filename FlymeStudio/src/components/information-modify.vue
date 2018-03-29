@@ -198,12 +198,7 @@ export default{
   },
   methods: {
     getInfo () {
-      let name = this.$store.state.user.userInfo.name
-      if (name === null) {
-        this.$router.push('/')
-      } else {
-        this.info = this.$store.state.user.userInfo
-      }
+      this.info = this.$store.state.user.userInfo
     },
     modify: function () {
       let _this = this
@@ -229,7 +224,7 @@ export default{
         _this.modalModify = false
       }, 1000)
       // TEST END
-      informationApi.modify(this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.newPassword, this.password).then(function (response) {
+      informationApi.modify(this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.newPassword).then(function (response) {
         if (response.data.result === true) {
           _this.$store.dispatch('doUpdate', _this.info)
           _this.$Notice.success({

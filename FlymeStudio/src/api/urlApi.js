@@ -6,30 +6,27 @@ export const accountApi = {
 }
 
 export const informationApi = {
-  informationUrl: () => '',
   modifyUrl: () => ''
 }
 
 export const teamworkApi = {
-  getTeamMsgUrl: () => '',
+  getTeamInfoUrl: () => '',
   replyMsgUrl: () => '',
   viewTeamsUrl: () => '',
-  viewTeamProjectsUrl: () => '',
-  viewTeamSummariesUrl: () => '',
   searchUserUrl: () => '',
   inviteUrl: () => '',
   disbandUrl: () => '',
   viewMemberProjectsUrl: () => '',
   viewMemberSummariesUrl: () => '',
   setPermissionUrl: () => '',
-  removeMemberUrl: () => '',
+  removeUrl: () => '',
   searchTeamUrl: () => '',
-  joinTeamUrl: () => '',
+  joinUrl: () => '',
   createUrl: () => ''
 }
 
 export const projectApi = {
-  projectUrl: () => '',
+  getUrl: () => '',
   createUrl: () => '',
   modifyUrl: () => '',
   searchUrl: () => '',
@@ -37,8 +34,9 @@ export const projectApi = {
 }
 
 export const summaryApi = {
-  summaryUrl: () => '',
+  getUrl: () => '',
   createUrl: () => '',
   modifyUrl: () => '',
-  searchUrl: () => ''
+  searchUrl: () => '',
+  deleteUrl: () => ''
 }

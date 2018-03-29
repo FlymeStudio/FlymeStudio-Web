@@ -365,12 +365,7 @@ export default{
   },
   methods: {
     getInfo () {
-      let name = this.$store.state.user.userInfo.name
-      if (name === null) {
-        this.$router.push('/')
-      } else {
-        this.info = this.$store.state.user.userInfo
-      }
+      this.info = this.$store.state.user.userInfo
     },
     getProjects (tag) {
       this.spinShow = true
@@ -519,7 +514,7 @@ export default{
       }, 1000)
       // TEST END
       let _this = this
-      projectApi.project(this.info.tel).then(function (response) {
+      projectApi.get(this.info.tel).then(function (response) {
         if (response.data.result === true) {
           _this.datas = response.data.datas
           _this.computePercent()

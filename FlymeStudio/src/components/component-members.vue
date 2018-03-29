@@ -263,12 +263,7 @@ export default {
   },
   methods: {
     getInfo () {
-      let name = this.$store.state.user.userInfo.name
-      if (name === null) {
-        this.$router.push('/')
-      } else {
-        this.info = this.$store.state.user.userInfo
-      }
+      this.info = this.$store.state.user.userInfo
     },
     viewProjects (tel, name, email) {
       this.spinShow = true
@@ -633,7 +628,7 @@ export default {
         _this.modalRemoveMember = false
       }, 2000)
       // TEST END
-      teamworkApi.removeMember(this.info.tel, this.currentRemove.tel, this.currentRemove.teamId).then(function (response) {
+      teamworkApi.remove(this.info.tel, this.currentRemove.tel, this.currentRemove.teamId).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Remove successful.',

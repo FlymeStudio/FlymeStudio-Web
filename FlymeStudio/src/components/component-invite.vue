@@ -72,12 +72,7 @@ export default {
   },
   methods: {
     getInfo () {
-      let name = this.$store.state.user.userInfo.name
-      if (name === null) {
-        this.$router.push('/')
-      } else {
-        this.info = this.$store.state.user.userInfo
-      }
+      this.info = this.$store.state.user.userInfo
     },
     search () {
       var regex = /^([a-zA-Z0-9\u4e00-\u9fa5\s]){2,10}$/

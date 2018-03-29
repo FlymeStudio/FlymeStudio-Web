@@ -1,8 +1,30 @@
 # [Doc](https://github.com/FlymeStudio/FlymeStudio-Doc/blob/master/README.md) | Web | [Server](https://github.com/FlymeStudio/FlymeStudio-Server/blob/master/README.md) | [Database](https://github.com/FlymeStudio/FlymeStudio-Database/blob/master/README.md)
 
 ---
-## Dependency
+## Configuration
 
+- [Node.js](http://nodejs.cn/download/)
+```
+sudo apt-get install nodejs
+```
+
+- npm
+```
+sudo apt-get install npm
+```
+
+- [Vue.js](https://cn.vuejs.org/v2/guide/installation.html)
+```
+npm install vue
+```
+
+- vue-cli
+```
+npm install --global vue-cli
+```
+
+---
+## Dependency
 
 ### Router
 - [vue-router](https://router.vuejs.org/zh-cn/)

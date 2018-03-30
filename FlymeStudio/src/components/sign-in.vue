@@ -118,7 +118,7 @@ export default {
           password: '123456',
           messages: [
             {
-              messageId: '1',
+              id: '1',
               type: 1,
               fromTel: '13600000001',
               fromName: '刘卓旻',
@@ -126,7 +126,7 @@ export default {
               teamId: '00001'
             },
             {
-              messageId: '2',
+              id: '2',
               type: 2,
               fromTel: '13600000002',
               fromName: '余学海',

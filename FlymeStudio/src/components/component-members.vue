@@ -76,7 +76,7 @@
 
               <!-- content -->
               <div slot="content">
-                <div class="div-content-title" v-for="data in currentProjects" v-if="data.show == true" :key="data.timestamp" @click="chooseProject(data)">
+                <div class="div-content-title" v-for="data in currentProjects" v-if="data.show == true" :key="data.id" @click="chooseProject(data)">
                   <Alert>{{ data.title }}</Alert>
                 </div>
               </div>
@@ -89,7 +89,7 @@
 
               <!-- content -->
               <div slot="content">
-                <div class="div-content-title" v-for="data in currentProjects" v-if="data.show == true" :key="data.timestamp" @click="chooseProject(data)">
+                <div class="div-content-title" v-for="data in currentProjects" v-if="data.show == true" :key="data.id" @click="chooseProject(data)">
                   <Alert>{{ data.title }}</Alert>
                 </div>
               </div>
@@ -103,7 +103,7 @@
 
               <!-- content -->
               <div slot="content">
-                <div class="div-content-title" v-for="data in currentProjects" v-if="data.show == true" :key="data.timestamp" @click="chooseProject(data)">
+                <div class="div-content-title" v-for="data in currentProjects" v-if="data.show == true" :key="data.id" @click="chooseProject(data)">
                   <Alert>{{ data.title }}</Alert>
                 </div>
               </div>
@@ -131,7 +131,7 @@
             <mavon-editor class="detail-content" v-model="currentProject.content" :subfield="subfieldProject" :defaultOpen="defaultOpenProject" :toolbarsFlag="toolbarsFlagProject"></mavon-editor>
 
             <div class="div-plans">
-              <Alert class="alert-plans" v-for="item in currentProject.plans" :key="item.timestamp">
+              <Alert class="alert-plans" v-for="item in currentProject.plans" :key="item.id">
                 <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
                 <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
                 <div class="div-plan">
@@ -276,7 +276,7 @@ export default {
       if (tel === '13608089849') {
         this.currentProjects = [
           {
-            timestamp: 1,
+            id: 1,
             show: true,
             type: '1',
             percent: 0,
@@ -285,19 +285,19 @@ export default {
             content: '内容。。。',
             plans: [
               {
-                timestamp: 0,
+                id: 0,
                 tag: 'project',
                 goal: '健身',
                 percent: 20
               },
               {
-                timestamp: 1,
+                id: 1,
                 tag: 'project',
                 goal: '考驾照',
                 percent: 100
               },
               {
-                timestamp: 2,
+                id: 2,
                 tag: 'project',
                 goal: '秋招',
                 percent: 100
@@ -305,7 +305,7 @@ export default {
             ]
           },
           {
-            timestamp: 2,
+            id: 2,
             show: true,
             type: '2',
             percent: 0,
@@ -314,13 +314,13 @@ export default {
             content: '内容。。。\nddddddddddd\naaaaaaaaa',
             plans: [
               {
-                timestamp: 3,
+                id: 3,
                 tag: '秋招',
                 goal: '复习',
                 percent: 70
               },
               {
-                timestamp: 4,
+                id: 4,
                 tag: '开学',
                 goal: '选班委',
                 percent: 100
@@ -328,7 +328,7 @@ export default {
             ]
           },
           {
-            timestamp: 3,
+            id: 3,
             show: true,
             type: '3',
             percent: 0,
@@ -337,13 +337,13 @@ export default {
             content: '内容。。。',
             plans: [
               {
-                timestamp: 5,
+                id: 5,
                 tag: '旅游',
                 goal: '深圳',
                 percent: 100
               },
               {
-                timestamp: 6,
+                id: 6,
                 tag: '旅游',
                 goal: '香港',
                 percent: 100
@@ -351,7 +351,7 @@ export default {
             ]
           },
           {
-            timestamp: 4,
+            id: 4,
             show: true,
             type: '2',
             percent: 0,
@@ -360,7 +360,7 @@ export default {
             content: '内容',
             plans: [
               {
-                timestamp: 7,
+                id: 7,
                 tag: '实习',
                 goal: '初期报告',
                 percent: 0
@@ -368,7 +368,7 @@ export default {
             ]
           },
           {
-            timestamp: 5,
+            id: 5,
             show: true,
             type: '2',
             percent: 0,
@@ -377,13 +377,13 @@ export default {
             content: '## 1.\n- projects1\n- projects2\n- projects3\n- projects4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
             plans: [
               {
-                timestamp: 8,
+                id: 8,
                 tag: '年前',
                 goal: '在家休息',
                 percent: 100
               },
               {
-                timestamp: 9,
+                id: 9,
                 tag: '年后',
                 goal: '出行游玩',
                 percent: 100
@@ -391,7 +391,7 @@ export default {
             ]
           },
           {
-            timestamp: 6,
+            id: 6,
             show: true,
             type: '2',
             percent: 0,
@@ -401,7 +401,7 @@ export default {
             plans: []
           },
           {
-            timestamp: 7,
+            id: 7,
             show: true,
             type: '4',
             percent: 0,
@@ -414,7 +414,7 @@ export default {
       } else {
         this.currentProjects = [
           {
-            timestamp: 1001,
+            id: 1001,
             show: true,
             type: '2',
             percent: 0,
@@ -423,13 +423,13 @@ export default {
             content: '测试内容。。。\nddddddddddd\naaaaaaaaa',
             plans: [
               {
-                timestamp: 10001,
+                id: 10001,
                 tag: '测试tag1',
                 goal: '测试goal1',
                 percent: 70
               },
               {
-                timestamp: 10002,
+                id: 10002,
                 tag: '测试tag2',
                 goal: '测试goal2',
                 percent: 100

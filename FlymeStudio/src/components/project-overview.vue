@@ -64,7 +64,7 @@
                   <span class="data-count" style="color:#2d8cf0;"> Total ({{ count.total }})</span>
 
                   <!-- content -->
-                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true" :key="data.timestamp">
+                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true" :key="data.id">
                     <Card>
                       <div>
                         <div class="card-top">
@@ -75,8 +75,8 @@
                             <span>{{ data.percent }}%</span>
                           </i-circle>
                           <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd" />
-                          <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
-                          <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                          <span class="card-btn" @click="showModifyModal(data.id)"><Icon type="compose" size="24"></Icon></span>
+                          <span class="card-btn" @click="showDetailModal(data.id)"><Icon type="android-open" size="24"></Icon></span>
                         </div>
                         <p class="card-title" slot="title">{{ data.title }}</p>
                       </div>
@@ -90,7 +90,7 @@
                   <span class="data-count" style="color:#19be6b;"> Done ({{ count.done }})</span>
 
                   <!-- content -->
-                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent == 100" :key="data.timestamp">
+                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent == 100" :key="data.id">
                     <Card>
                       <div>
                         <div class="card-top">
@@ -101,8 +101,8 @@
                             <span>{{ data.percent }}%</span>
                           </i-circle>
                           <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd" />
-                          <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
-                          <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                          <span class="card-btn" @click="showModifyModal(data.id)"><Icon type="compose" size="24"></Icon></span>
+                          <span class="card-btn" @click="showDetailModal(data.id)"><Icon type="android-open" size="24"></Icon></span>
                         </div>
                         <p class="card-title" slot="title">{{ data.title }}</p>
                       </div>
@@ -116,7 +116,7 @@
                   <span class="data-count" style="color:#ed3f14;"> Doing ({{ count.doing }})</span>
 
                   <!-- content -->
-                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent != 100" :key="data.timestamp">
+                  <div class="data-div" slot="content" v-for="data in datas" v-if="data.show == true && data.percent != 100" :key="data.id">
                     <Card>
                       <div>
                         <div class="card-top">
@@ -127,8 +127,8 @@
                             <span>{{ data.percent }}%</span>
                           </i-circle>
                           <DatePicker class="card-date" type="date" size="large" v-model="data.date" readonly format="yyyy-MM-dd" />
-                          <span class="card-btn" @click="showModifyModal(data.timestamp)"><Icon type="compose" size="24"></Icon></span>
-                          <span class="card-btn" @click="showDetailModal(data.timestamp)"><Icon type="android-open" size="24"></Icon></span>
+                          <span class="card-btn" @click="showModifyModal(data.id)"><Icon type="compose" size="24"></Icon></span>
+                          <span class="card-btn" @click="showDetailModal(data.id)"><Icon type="android-open" size="24"></Icon></span>
                         </div>
                         <p class="card-title" slot="title">{{ data.title }}</p>
                       </div>
@@ -157,7 +157,7 @@
                   <mavon-editor class="detail-content" v-model="dataCopy.content" :subfield="subfieldDetail" :defaultOpen="defaultOpenDetail" :toolbarsFlag="toolbarsFlagDetail"></mavon-editor>
 
                   <div class="div-plans">
-                    <Alert class="alert-plans" v-for="item in dataCopy.plans" :key="item.timestamp">
+                    <Alert class="alert-plans" v-for="item in dataCopy.plans" :key="item.id">
                       <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
                       <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
                       <div class="div-plan">
@@ -213,12 +213,12 @@
                     <span class="span-form">Set plans</span>
                   </FormItem>
                   <FormItem>
-                    <Alert class="alert-projects" type="success" v-for="item in formItem.plans" :key="item.timestamp">
+                    <Alert class="alert-projects" type="success" v-for="item in formItem.plans" :key="item.id">
                       <Slider class="slider" v-model="item.percent" show-input></Slider>
                       <div class="div-project">
                         <Input class="edit-tag" type="text" clearable placeholder="Tag" v-model="item.tag"></Input>
                         <Input class="edit-goal" type="text" clearable placeholder="Goal" v-model="item.goal"></Input>
-                        <Button class="btn-edit" type="ghost" shape="circle" icon="minus" @click="deletePlan(item.timestamp)"></Button>
+                        <Button class="btn-edit" type="ghost" shape="circle" icon="minus" @click="deletePlan(item.id)"></Button>
                       </div>
                     </Alert>
                     <Alert class="alert-projects">
@@ -372,7 +372,7 @@ export default{
       // TEST START
       this.datas = [
         {
-          timestamp: 1,
+          id: 1,
           show: true,
           type: '1',
           percent: 0,
@@ -381,19 +381,19 @@ export default{
           content: '内容。。。',
           plans: [
             {
-              timestamp: 0,
+              id: 0,
               tag: 'project',
               goal: '健身',
               percent: 20
             },
             {
-              timestamp: 1,
+              id: 1,
               tag: 'project',
               goal: '考驾照',
               percent: 100
             },
             {
-              timestamp: 2,
+              id: 2,
               tag: 'project',
               goal: '秋招',
               percent: 100
@@ -401,7 +401,7 @@ export default{
           ]
         },
         {
-          timestamp: 2,
+          id: 2,
           show: true,
           type: '2',
           percent: 0,
@@ -410,13 +410,13 @@ export default{
           content: '内容。。。\nddddddddddd\naaaaaaaaa',
           plans: [
             {
-              timestamp: 3,
+              id: 3,
               tag: '秋招',
               goal: '复习',
               percent: 70
             },
             {
-              timestamp: 4,
+              id: 4,
               tag: '开学',
               goal: '选班委',
               percent: 100
@@ -424,7 +424,7 @@ export default{
           ]
         },
         {
-          timestamp: 3,
+          id: 3,
           show: true,
           type: '3',
           percent: 0,
@@ -433,13 +433,13 @@ export default{
           content: '内容。。。',
           plans: [
             {
-              timestamp: 5,
+              id: 5,
               tag: '旅游',
               goal: '深圳',
               percent: 100
             },
             {
-              timestamp: 6,
+              id: 6,
               tag: '旅游',
               goal: '香港',
               percent: 100
@@ -447,7 +447,7 @@ export default{
           ]
         },
         {
-          timestamp: 4,
+          id: 4,
           show: true,
           type: '2',
           percent: 0,
@@ -456,7 +456,7 @@ export default{
           content: '内容',
           plans: [
             {
-              timestamp: 7,
+              id: 7,
               tag: '实习',
               goal: '初期报告',
               percent: 0
@@ -464,7 +464,7 @@ export default{
           ]
         },
         {
-          timestamp: 5,
+          id: 5,
           show: true,
           type: '2',
           percent: 0,
@@ -473,13 +473,13 @@ export default{
           content: '## 1.\n- projects1\n- projects2\n- projects3\n- projects4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
           plans: [
             {
-              timestamp: 8,
+              id: 8,
               tag: '年前',
               goal: '在家休息',
               percent: 100
             },
             {
-              timestamp: 9,
+              id: 9,
               tag: '年后',
               goal: '出行游玩',
               percent: 100
@@ -487,7 +487,7 @@ export default{
           ]
         },
         {
-          timestamp: 6,
+          id: 6,
           show: true,
           type: '2',
           percent: 0,
@@ -497,7 +497,7 @@ export default{
           plans: []
         },
         {
-          timestamp: 7,
+          id: 7,
           show: true,
           type: '4',
           percent: 0,
@@ -582,10 +582,10 @@ export default{
         _this.spinShow = false
       }, 1000)
     },
-    showModifyModal (timestamp) {
+    showModifyModal (id) {
       this.spinShow = true
       for (var i = 0; i < this.datas.length; i++) {
-        if (this.datas[i].timestamp === timestamp) {
+        if (this.datas[i].id === id) {
           // 此拷贝方式破坏了date对象的结构，其中包含的时区设置丢失，所以必须采用date重新创建一次
           // 参考文献[使用JSON序列化实现伪深克隆时Date对象时区问题的解决方案](http://blog.csdn.net/zy13608089849/article/details/79625403)
           this.formItem = JSON.parse(JSON.stringify(this.datas[i]))
@@ -599,10 +599,10 @@ export default{
         _this.spinShow = false
       }, 1000)
     },
-    showDetailModal (timestamp) {
+    showDetailModal (id) {
       this.spinShow = true
       for (var i = 0; i < this.datas.length; i++) {
-        if (this.datas[i].timestamp === timestamp) {
+        if (this.datas[i].id === id) {
           this.dataCopy = this.datas[i]
           break
         }
@@ -613,9 +613,9 @@ export default{
         _this.spinShow = false
       }, 1000)
     },
-    deletePlan (timestamp) {
+    deletePlan (id) {
       for (var i = 0; i < this.formItem.plans.length; i++) {
-        if (this.formItem.plans[i].timestamp === timestamp) {
+        if (this.formItem.plans[i].id === id) {
           this.formItem.plans.splice(i, 1)
           break
         }
@@ -623,7 +623,7 @@ export default{
     },
     addPlan () {
       var plan = {
-        timestamp: new Date().getTime(),
+        id: new Date().getTime(),
         tag: this.editTag,
         goal: this.editGoal,
         percent: 0
@@ -641,7 +641,7 @@ export default{
           desc: ''
         })
         for (var i = 0; i < _this.datas.length; i++) {
-          if (_this.datas[i].timestamp === _this.formItem.timestamp) {
+          if (_this.datas[i].id === _this.formItem.id) {
             _this.datas[i] = _this.formItem
             if (_this.datas[i].plans.length === 0) {
               _this.datas[i].percent = 0
@@ -659,7 +659,7 @@ export default{
         _this.modifyModal = false
       }, 1000)
       // TEST END
-      projectApi.modify(this.info.tel, this.formItem.timestamp, this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
+      projectApi.modify(this.info.tel, this.formItem.id, this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Modify successful.',
@@ -685,7 +685,7 @@ export default{
           desc: ''
         })
         for (var i = 0; i < _this.datas.length; i++) {
-          if (_this.datas[i].timestamp === _this.formItem.timestamp) {
+          if (_this.datas[i].id === _this.formItem.id) {
             _this.datas.splice(i, 1)
           }
         }
@@ -694,7 +694,7 @@ export default{
         _this.modifyModal = false
       }, 1000)
       // TEST END
-      projectApi.delete(this.info.tel, this.formItem.timestamp).then(function (response) {
+      projectApi.delete(this.info.tel, this.formItem.id).then(function (response) {
         _this.loadingDelete = false
         if (response.data.result === true) {
           _this.$Notice.success({

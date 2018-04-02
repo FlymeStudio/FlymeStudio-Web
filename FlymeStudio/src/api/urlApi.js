@@ -1,6 +1,6 @@
 export const accountApi = {
-  signInUrl: () => '',
-  signUpUrl: () => '',
+  signInUrl: () => 'FlymeStudio/Account/signIn',
+  signUpUrl: () => 'FlymeStudio/Account/signOut',
   signOutUrl: () => '',
   retrieveUrl: () => ''
 }

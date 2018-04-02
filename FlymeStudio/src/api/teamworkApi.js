@@ -86,7 +86,7 @@ export default {
       teamId: teamId
     })
     return axios({
-      method: 'post',
+      method: 'delete',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
@@ -133,7 +133,7 @@ export default {
       permission: permission
     })
     return axios({
-      method: 'post',
+      method: 'put',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
@@ -149,7 +149,7 @@ export default {
       teamId: teamId
     })
     return axios({
-      method: 'post',
+      method: 'delete',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },

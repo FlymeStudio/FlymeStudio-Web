@@ -56,10 +56,10 @@ export default {
       withCredentials: true
     })
   },
-  modify (tel, timestamp, type, date, title, content, plans) {
+  modify (tel, id, type, date, title, content, plans) {
     var data = qs.stringify({
       tel: tel,
-      timestamp: timestamp,
+      id: id,
       type: type,
       date: date,
       title: title,
@@ -67,7 +67,7 @@ export default {
       plans: plans
     })
     return axios({
-      method: 'post',
+      method: 'put',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
@@ -76,13 +76,13 @@ export default {
       withCredentials: true
     })
   },
-  delete (tel, timestamp) {
+  delete (tel, id) {
     var data = qs.stringify({
       tel: tel,
-      timestamp: timestamp
+      id: id
     })
     return axios({
-      method: 'post',
+      method: 'delete',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },

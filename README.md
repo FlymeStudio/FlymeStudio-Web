@@ -8,7 +8,7 @@
 sudo apt-get install nodejs
 ```
 
-- npm
+- [npm](https://www.npmjs.com/get-npm)
 ```
 sudo apt-get install npm
 ```
@@ -18,7 +18,7 @@ sudo apt-get install npm
 npm install vue
 ```
 
-- vue-cli
+- [vue-cli](https://cn.vuejs.org/v2/guide/installation.html)
 ```
 npm install --global vue-cli
 ```

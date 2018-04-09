@@ -40,17 +40,19 @@
             </div>
           </Alert>
 
+          <!-- type: 1 = invite, 2 = apply -->
           <Alert class="alert-message" show-icon v-for="item in info.messages" :key="item.messageId">
             <Icon class="icon-item" type="ios-people" slot="icon" size=25></Icon>
             <Button class="btn-user" @click="clickUser(item.fromName, item.fromTel)">{{ item.fromName }}</Button>
-            <span v-if="item.type == 1"> invited you to join </span><span v-else-if="item.type == 2"> applied to join </span>
+            <span v-if="item.type == 1"> invited you to join </span>
+            <span v-else-if="item.type == 2"> applied to join </span>
             <Button v-if="item.type == 1" class="btn-team" @click="clickTeam(item.teamName, item.teamId)">{{ item.teamName }}</Button>
             <Button v-else-if="item.type == 2" class="btn-apply" @click="clickTeam(item.teamName, item.teamId)">{{ item.teamName }}</Button>
             <template slot="desc">
               <div class="div-message">
                 <Button class="btn-message" type="success" @click="reply(item.messageId, true)">Accept</Button>
                 <Button class="btn-message" type="error" @click="reply(item.messageId, false)">Refuse</Button>
-                  <div v-if="item.type == 1" class="div-agreement" @click="modalAgreement = true"><i>Agreenment</i></div>
+                <div v-if="item.type == 1" class="div-agreement" @click="modalAgreement = true"><i>Agreenment</i></div>
               </div>
             </template>
           </Alert>

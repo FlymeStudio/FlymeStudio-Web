@@ -11,14 +11,14 @@ export const accountApi = {
 
 export const informationApi = {
   // put
-  modifyUrl: () => 'FlymeStudio/Information/information'
+  modifyUrl: () => 'FlymeStudio/Information/information',
+  // put
+  replyMsgUrl: () => 'FlymeStudio/Information/msg'
 }
 
 export const teamworkApi = {
   // get
   getTeamInfoUrl: () => 'FlymeStudio/Teamwork/teamInfo',
-  // put
-  replyMsgUrl: () => 'FlymeStudio/Teamwork/msg',
   // get
   viewTeamsUrl: () => 'FlymeStudio/Teamwork/myTeams',
   // get

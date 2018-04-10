@@ -143,6 +143,7 @@ import componentNavTop from './component-nav-top.vue'
 import componentNavLeft from './component-nav-left.vue'
 import componentFooter from './component-footer.vue'
 import teamworkApi from '../api/teamworkApi'
+import imformationApi from '../api/imformationApi'
 
 export default{
   name: 'information-overview',
@@ -231,7 +232,7 @@ export default{
         _this.spinShow = false
       }, 1000)
       // TEST END
-      teamworkApi.replyMsg(this.info.tel, messageId, result).then(function (response) {
+      imformationApi.replyMsg(messageId, result).then(function (response) {
         if (response.data.result === true) {
           setTimeout(() => {
             _this.$store.dispatch('doDeleteMsg', messageId)

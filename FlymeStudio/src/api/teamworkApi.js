@@ -19,22 +19,6 @@ export default {
       withCredentials: true
     })
   },
-  replyMsg (tel, messageId, result) {
-    var data = qs.stringify({
-      tel: tel,
-      messageId: messageId,
-      result: result
-    })
-    return axios({
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      url: teamworkApi.replyMsgUrl(),
-      data: data,
-      withCredentials: true
-    })
-  },
   viewTeams (tel) {
     var data = qs.stringify({
       tel: tel
@@ -49,9 +33,8 @@ export default {
       withCredentials: true
     })
   },
-  searchUser (tel, content) {
+  searchUser (content) {
     var data = qs.stringify({
-      tel: tel,
       content: content
     })
     return axios({
@@ -64,11 +47,11 @@ export default {
       withCredentials: true
     })
   },
-  invite (tel, toTel, teamId) {
+  invite (sender, receiver, id) {
     var data = qs.stringify({
-      tel: tel,
-      toTel: toTel,
-      teamId: teamId
+      sender: sender,
+      receiver: receiver,
+      id: id
     })
     return axios({
       method: 'post',
@@ -80,10 +63,9 @@ export default {
       withCredentials: true
     })
   },
-  disband (tel, teamId) {
+  disband (id) {
     var data = qs.stringify({
-      tel: tel,
-      teamId: teamId
+      id: id
     })
     return axios({
       method: 'delete',
@@ -95,10 +77,9 @@ export default {
       withCredentials: true
     })
   },
-  viewMemberProjects (tel, memberTel) {
+  viewMemberProjects (tel) {
     var data = qs.stringify({
-      tel: tel,
-      memberTel: memberTel
+      tel: tel
     })
     return axios({
       method: 'post',
@@ -110,10 +91,9 @@ export default {
       withCredentials: true
     })
   },
-  viewMemberSummaries (tel, memberTel) {
+  viewMemberSummaries (tel) {
     var data = qs.stringify({
-      tel: tel,
-      memberTel: memberTel
+      tel: tel
     })
     return axios({
       method: 'post',
@@ -125,11 +105,10 @@ export default {
       withCredentials: true
     })
   },
-  setPermission (tel, memberTel, teamId, permission) {
+  setPermission (tel, id, permission) {
     var data = qs.stringify({
       tel: tel,
-      memberTel: memberTel,
-      teamId: teamId,
+      id: id,
       permission: permission
     })
     return axios({
@@ -142,11 +121,10 @@ export default {
       withCredentials: true
     })
   },
-  remove (tel, memberTel, teamId) {
+  remove (tel, id) {
     var data = qs.stringify({
       tel: tel,
-      memberTel: memberTel,
-      teamId: teamId
+      id: id
     })
     return axios({
       method: 'delete',
@@ -158,9 +136,8 @@ export default {
       withCredentials: true
     })
   },
-  searchTeam (tel, content) {
+  searchTeam (content) {
     var data = qs.stringify({
-      tel: tel,
       content: content
     })
     return axios({
@@ -173,10 +150,10 @@ export default {
       withCredentials: true
     })
   },
-  join (tel, teamId) {
+  join (sender, id) {
     var data = qs.stringify({
-      tel: tel,
-      teamId: teamId
+      sender: sender,
+      id: id
     })
     return axios({
       method: 'post',

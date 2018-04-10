@@ -101,7 +101,7 @@ export default {
         _this.spinInvite = false
       }, 1000)
       // TEST END
-      teamworkApi.searchUser(this.info.tel, this.searchContent).then(function (response) {
+      teamworkApi.searchUser(this.searchContent).then(function (response) {
         if (response.data.result === true) {
           _this.dataUser = response.data.dataUser
           _this.spinInvite = false

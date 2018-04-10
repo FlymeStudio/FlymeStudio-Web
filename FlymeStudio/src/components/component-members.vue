@@ -222,8 +222,8 @@ export default {
       spinShow: false,
       /** view **/
       currentView: {
-        name: '',
         tel: '',
+        name: '',
         email: ''
       },
       count: {
@@ -268,8 +268,8 @@ export default {
     viewProjects (tel, name, email) {
       this.spinShow = true
       this.currentView = {
-        name: name,
         tel: tel,
+        name: name,
         email: email
       }
       // TEST START
@@ -446,7 +446,7 @@ export default {
       }, 2000)
       // TEST END
       let _this = this
-      teamworkApi.viewMemberProjects(this.info.tel, tel).then(function (response) {
+      teamworkApi.viewMemberProjects(tel).then(function (response) {
         if (response.data.result === true) {
           _this.currentProjects = response.data.projects
           _this.computePercent()
@@ -568,7 +568,7 @@ export default {
         _this.modalSetPermission = false
       }, 2000)
       // TEST END
-      teamworkApi.setPermission(this.info.tel, this.currentPermission.tel, this.currentPermission.teamId, this.currentPermission.permission).then(function (response) {
+      teamworkApi.setPermission(this.currentPermission.tel, this.currentPermission.teamId, this.currentPermission.permission).then(function (response) {
         if (response.data.result === true) {
           for (var j = 0; j < _this.teamData.members.length; j++) {
             if (_this.teamData.members[j].tel === _this.currentPermission.tel) {
@@ -628,7 +628,7 @@ export default {
         _this.modalRemoveMember = false
       }, 2000)
       // TEST END
-      teamworkApi.remove(this.info.tel, this.currentRemove.tel, this.currentRemove.teamId).then(function (response) {
+      teamworkApi.remove(this.currentRemove.tel, this.currentRemove.teamId).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Remove successful.',

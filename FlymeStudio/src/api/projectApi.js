@@ -38,13 +38,13 @@ export default {
       withCredentials: true
     })
   },
-  search (type, date, title, content, plans) {
+  search (tel, type, date, title, content) {
     var data = qs.stringify({
+      tel: tel,
       type: type,
       date: date,
       title: title,
-      content: content,
-      plans: plans
+      content: content
     })
     return axios({
       method: 'post',

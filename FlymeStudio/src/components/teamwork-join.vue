@@ -178,7 +178,7 @@ export default{
         _this.spinShow = false
       }, 1000)
       // TEST END
-      teamworkApi.searchTeam(this.info.tel, this.searchContent).then(function (response) {
+      teamworkApi.searchTeam(this.searchContent).then(function (response) {
         if (response.data.result === true) {
           _this.dataTeam = response.data.dataTeam
           _this.spinShow = false

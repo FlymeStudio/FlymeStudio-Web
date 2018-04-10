@@ -137,7 +137,7 @@ export default {
         _this.$router.push('/')
       }, 2000)
       // TEST END
-      teamworkApi.disband(this.info.tel, this.currentDisband.teamId).then(function (response) {
+      teamworkApi.disband(this.currentDisband.teamId).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Disband successful.',

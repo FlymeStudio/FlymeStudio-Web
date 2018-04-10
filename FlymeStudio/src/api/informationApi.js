@@ -5,9 +5,9 @@ import axios from 'axios'
 import qs from 'qs'
 
 export default {
-  modify (oldTel, name, tel, email, password) {
+  modify (old, name, tel, email, password) {
     var data = qs.stringify({
-      oldTel: oldTel,
+      old: old,
       name: name,
       tel: tel,
       email: email,
@@ -19,6 +19,21 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: informationApi.modifyUrl(),
+      data: data,
+      withCredentials: true
+    })
+  },
+  replyMsg (id, result) {
+    var data = qs.stringify({
+      id: id,
+      result: result
+    })
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: informationApi.replyMsgUrl(),
       data: data,
       withCredentials: true
     })

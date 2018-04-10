@@ -29,7 +29,7 @@ export default {
       result: result
     })
     return axios({
-      method: 'post',
+      method: 'put',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },

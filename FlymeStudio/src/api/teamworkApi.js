@@ -10,7 +10,7 @@ export default {
       id: id
     })
     return axios({
-      method: 'post',
+      method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
@@ -24,7 +24,7 @@ export default {
       tel: tel
     })
     return axios({
-      method: 'post',
+      method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
@@ -38,7 +38,7 @@ export default {
       content: content
     })
     return axios({
-      method: 'post',
+      method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
@@ -82,7 +82,7 @@ export default {
       tel: tel
     })
     return axios({
-      method: 'post',
+      method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
@@ -96,7 +96,7 @@ export default {
       tel: tel
     })
     return axios({
-      method: 'post',
+      method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
@@ -141,7 +141,7 @@ export default {
       content: content
     })
     return axios({
-      method: 'post',
+      method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
@@ -156,7 +156,7 @@ export default {
       id: id
     })
     return axios({
-      method: 'post',
+      method: 'put',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },

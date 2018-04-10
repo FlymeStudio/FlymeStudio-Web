@@ -11,26 +11,26 @@ export const accountApi = {
 
 export const informationApi = {
   // put
-  modifyUrl: () => 'FlymeStudio/Information/information',
+  modifyUrl: () => 'FlymeStudio/Information/info',
   // put
   replyMsgUrl: () => 'FlymeStudio/Information/msg'
 }
 
 export const teamworkApi = {
   // get
-  getTeamInfoUrl: () => 'FlymeStudio/Teamwork/teamInfo',
+  getTeamInfoUrl: () => 'FlymeStudio/Teamwork/team',
   // get
-  viewTeamsUrl: () => 'FlymeStudio/Teamwork/myTeams',
+  viewTeamsUrl: () => 'FlymeStudio/Teamwork/myteams',
   // get
   searchUserUrl: () => 'FlymeStudio/Teamwork/user',
   // post
   inviteUrl: () => 'FlymeStudio/Teamwork/user',
   // delete
-  disbandUrl: () => 'FlymeStudio/Teamwork/team',
+  disbandUrl: () => 'FlymeStudio/Teamwork/myteam',
   // get
-  viewMemberProjectsUrl: () => 'FlymeStudio/Teamwork/memberProjects',
+  viewMemberProjectsUrl: () => 'FlymeStudio/Teamwork/projects',
   // get
-  viewMemberSummariesUrl: () => 'FlymeStudio/Teamwork/memberSummaries',
+  viewMemberSummariesUrl: () => 'FlymeStudio/Teamwork/summaries',
   // put
   setPermissionUrl: () => 'FlymeStudio/Teamwork/permission',
   // delete
@@ -40,7 +40,7 @@ export const teamworkApi = {
   // put
   joinUrl: () => 'FlymeStudio/Teamwork/team',
   // post
-  createUrl: () => 'FlymeStudio/Teamwork/team'
+  createUrl: () => 'FlymeStudio/Teamwork/myteam'
 }
 
 export const projectApi = {
@@ -57,9 +57,14 @@ export const projectApi = {
 }
 
 export const summaryApi = {
-  getUrl: () => '',
-  createUrl: () => '',
-  modifyUrl: () => '',
-  searchUrl: () => '',
-  deleteUrl: () => ''
+  // get
+  getUrl: () => 'FlymeStudio/Summary/summaries',
+  // post
+  createUrl: () => 'FlymeStudio/Summary/summary',
+  // put
+  modifyUrl: () => 'FlymeStudio/Summary/summary',
+  // get
+  searchUrl: () => 'FlymeStudio/Summary/summary',
+  // delete
+  deleteUrl: () => 'FlymeStudio/Summary/summary'
 }

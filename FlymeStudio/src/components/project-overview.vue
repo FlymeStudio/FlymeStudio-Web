@@ -270,6 +270,8 @@ export default{
   data () {
     return {
       info: {
+        id: 0,
+        num: '',
         tel: '',
         name: '',
         email: '',
@@ -308,6 +310,7 @@ export default{
         }
       ],
       formItem: {
+        id: 0,
         type: '',
         date: '',
         title: '',
@@ -369,163 +372,35 @@ export default{
     },
     getProjects (tag) {
       this.spinShow = true
-      // TEST START
-      this.datas = [
-        {
-          id: 1,
-          show: true,
-          type: '1',
-          percent: 0,
-          date: '2017-03-01',
-          title: '2017年度计划',
-          content: '内容。。。',
-          plans: [
-            {
-              id: 0,
-              tag: 'project',
-              goal: '健身',
-              percent: 20
-            },
-            {
-              id: 1,
-              tag: 'project',
-              goal: '考驾照',
-              percent: 100
-            },
-            {
-              id: 2,
-              tag: 'project',
-              goal: '秋招',
-              percent: 100
-            }
-          ]
-        },
-        {
-          id: 2,
-          show: true,
-          type: '2',
-          percent: 0,
-          date: '2017-09-01',
-          title: '2017年9月报告',
-          content: '内容。。。\nddddddddddd\naaaaaaaaa',
-          plans: [
-            {
-              id: 3,
-              tag: '秋招',
-              goal: '复习',
-              percent: 70
-            },
-            {
-              id: 4,
-              tag: '开学',
-              goal: '选班委',
-              percent: 100
-            }
-          ]
-        },
-        {
-          id: 3,
-          show: true,
-          type: '3',
-          percent: 0,
-          date: '2018-02-12',
-          title: '2018春节活动',
-          content: '内容。。。',
-          plans: [
-            {
-              id: 5,
-              tag: '旅游',
-              goal: '深圳',
-              percent: 100
-            },
-            {
-              id: 6,
-              tag: '旅游',
-              goal: '香港',
-              percent: 100
-            }
-          ]
-        },
-        {
-          id: 4,
-          show: true,
-          type: '2',
-          percent: 0,
-          date: '2018-03-04',
-          title: '2018开学准备',
-          content: '内容',
-          plans: [
-            {
-              id: 7,
-              tag: '实习',
-              goal: '初期报告',
-              percent: 0
-            }
-          ]
-        },
-        {
-          id: 5,
-          show: true,
-          type: '2',
-          percent: 0,
-          date: '2018-01-12',
-          title: '放假安排',
-          content: '## 1.\n- projects1\n- projects2\n- projects3\n- projects4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
-          plans: [
-            {
-              id: 8,
-              tag: '年前',
-              goal: '在家休息',
-              percent: 100
-            },
-            {
-              id: 9,
-              tag: '年后',
-              goal: '出行游玩',
-              percent: 100
-            }
-          ]
-        },
-        {
-          id: 6,
-          show: true,
-          type: '2',
-          percent: 0,
-          date: '2018-03-15',
-          title: '实习相关事项',
-          content: '内容',
-          plans: []
-        },
-        {
-          id: 7,
-          show: true,
-          type: '4',
-          percent: 0,
-          date: '2018-05-01',
-          title: '毕设安排',
-          content: '内容',
-          plans: []
-        }
-      ]
-      this.computePercent()
-      this.clickTag(this.currentTag)
-      setTimeout(() => {
-        _this.spinShow = false
-      }, 1000)
-      // TEST END
       let _this = this
-      projectApi.get(this.info.tel).then(function (response) {
-        if (response.data.result === true) {
-          _this.datas = response.data.datas
-          _this.computePercent()
-          _this.clickTag(_this.currentTag)
+      projectApi.get(this.info.id).then(function (response) {
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.datas = response.data.data
+            _this.computePercent()
+            _this.clickTag(_this.currentTag)
+          } else {
+            _this.$Notice.error({
+              title: 'Failed to get projects.',
+              desc: ''
+            })
+          }
         } else {
           _this.$Notice.error({
-            title: 'Failed to get projects.',
+            title: 'HTTP request error.',
             desc: ''
           })
-          _this.spinShow = false
+          console.log('status=' + response.status)
         }
+        _this.spinShow = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        _this.spinShow = false
+        console.log(error)
       })
     },
     computePercent () {
@@ -634,81 +509,70 @@ export default{
     },
     submitModify () {
       let _this = this
-      // TEST START
-      setTimeout(() => {
-        _this.$Notice.success({
-          title: 'Modify successful.',
-          desc: ''
-        })
-        for (var i = 0; i < _this.datas.length; i++) {
-          if (_this.datas[i].id === _this.formItem.id) {
-            _this.datas[i] = _this.formItem
-            if (_this.datas[i].plans.length === 0) {
-              _this.datas[i].percent = 0
-            } else {
-              var percent = 0
-              for (var j = 0; j < _this.datas[i].plans.length; j++) {
-                percent += _this.datas[i].plans[j].percent
-              }
-              _this.datas[i].percent = Math.round(percent / _this.datas[i].plans.length)
-            }
-            break
+      projectApi.modify(this.info.id, this.formItem.id, this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.$Notice.success({
+              title: 'Modify successful.',
+              desc: ''
+            })
+            _this.getProjects(_this.currentTag)
+            _this.modifyModal = false
+          } else {
+            _this.$Notice.error({
+              title: 'Modify failed.',
+              desc: ''
+            })
           }
-        }
-        _this.clickTag(_this.currentTag)
-        _this.modifyModal = false
-      }, 1000)
-      // TEST END
-      projectApi.modify(this.info.tel, this.formItem.id, this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
-        if (response.data.result === true) {
-          _this.$Notice.success({
-            title: 'Modify successful.',
-            desc: ''
-          })
-          _this.getProjects(_this.currentTag)
-          _this.modifyModal = false
         } else {
           _this.$Notice.error({
-            title: 'Modify failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
+          console.log('status=' + response.status)
         }
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        console.log(error)
       })
     },
     deleteProject () {
       this.loadingDelete = true
       let _this = this
-      // TEST START
-      setTimeout(() => {
-        _this.$Notice.success({
-          title: 'Delete successful.',
-          desc: ''
-        })
-        for (var i = 0; i < _this.datas.length; i++) {
-          if (_this.datas[i].id === _this.formItem.id) {
-            _this.datas.splice(i, 1)
+      projectApi.delete(this.info.id, this.formItem.id).then(function (response) {
+        console.log('response=' + response)
+        _this.loadingDelete = false
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.$Notice.success({
+              title: 'Delete successful.',
+              desc: ''
+            })
+            _this.getProjects(_this.currentTag)
+            _this.modifyModal = false
+          } else {
+            _this.$Notice.error({
+              title: 'Delete failed.',
+              desc: ''
+            })
           }
-        }
-        _this.loadingDelete = false
-        _this.clickTag(_this.currentTag)
-        _this.modifyModal = false
-      }, 1000)
-      // TEST END
-      projectApi.delete(this.info.tel, this.formItem.id).then(function (response) {
-        _this.loadingDelete = false
-        if (response.data.result === true) {
-          _this.$Notice.success({
-            title: 'Delete successful.',
-            desc: ''
-          })
-          _this.getProjects(_this.currentTag)
-          _this.modifyModal = false
         } else {
           _this.$Notice.error({
-            title: 'Delete failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
+          console.log('status=' + response.status)
         }
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        console.log(error)
       })
     }
   }

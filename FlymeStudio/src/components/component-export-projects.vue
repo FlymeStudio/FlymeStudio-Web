@@ -17,8 +17,8 @@
       <div>
         <span class="span-title">Resource</span>
         <div class="div-resource">
-          <Select v-model="selectMemberTel" style="width:200px" placeholder="Select member">
-            <Option v-for="member in teamData.members" :value="member.tel" :key="member.tel">{{ member.name }}({{ member.tel }})</Option>
+          <Select v-model="selectMemberId" style="width:200px" placeholder="Select member">
+            <Option v-for="member in teamData.members" :value="member.num" :key="member.num">{{ member.name }}({{ member.num }})</Option>
           </Select>
           <Button class="btn" type="primary" shape="circle" icon="ios-search" @click="search()">Search</Button>
           <Button class="btn" type="info" shape="circle" icon="android-close" @click="clearResource()">Clear</Button>
@@ -53,6 +53,8 @@ export default {
   data () {
     return {
       info: {
+        id: 0,
+        num: '',
         tel: '',
         name: '',
         email: '',
@@ -62,7 +64,7 @@ export default {
       teamData: this.teamRes,
       modalExport: false,
       spinExport: false,
-      selectMemberTel: '',
+      selectMemberId: '',
       columnsResource: [
         {
           type: 'expand',
@@ -312,7 +314,7 @@ export default {
       this.modalExport = true
     },
     search () {
-      if (this.selectMemberTel === '') {
+      if (this.selectMemberId === '') {
         this.$Notice.error({
           title: 'Please select a member.',
           desc: ''
@@ -321,220 +323,41 @@ export default {
       }
       this.spinExport = true
       let _this = this
-      // TEST START
-      if (this.selectMemberTel === '13608089849') {
-        this.dataResource = [
-          {
-            id: 1,
-            show: true,
-            type: '1',
-            percent: 0,
-            date: '2017-03-01',
-            title: '2017年度计划',
-            content: '内容。。。',
-            plans: [
-              {
-                id: 0,
-                tag: 'project',
-                goal: '健身',
-                percent: 20
-              },
-              {
-                id: 1,
-                tag: 'project',
-                goal: '考驾照',
-                percent: 100
-              },
-              {
-                id: 2,
-                tag: 'project',
-                goal: '秋招',
-                percent: 100
-              }
-            ]
-          },
-          {
-            id: 2,
-            show: true,
-            type: '2',
-            percent: 0,
-            date: '2017-09-01',
-            title: '2017年9月报告',
-            content: '内容。。。\nddddddddddd\naaaaaaaaa',
-            plans: [
-              {
-                id: 3,
-                tag: '秋招',
-                goal: '复习',
-                percent: 70
-              },
-              {
-                id: 4,
-                tag: '开学',
-                goal: '选班委',
-                percent: 100
-              }
-            ]
-          },
-          {
-            id: 3,
-            show: true,
-            type: '3',
-            percent: 0,
-            date: '2018-02-12',
-            title: '2018春节活动',
-            content: '内容。。。',
-            plans: [
-              {
-                id: 5,
-                tag: '旅游',
-                goal: '深圳',
-                percent: 100
-              },
-              {
-                id: 6,
-                tag: '旅游',
-                goal: '香港',
-                percent: 100
-              }
-            ]
-          },
-          {
-            id: 4,
-            show: true,
-            type: '2',
-            percent: 0,
-            date: '2018-03-04',
-            title: '2018开学准备',
-            content: '内容',
-            plans: [
-              {
-                id: 7,
-                tag: '实习',
-                goal: '初期报告',
-                percent: 0
-              }
-            ]
-          },
-          {
-            id: 5,
-            show: true,
-            type: '2',
-            percent: 0,
-            date: '2018-01-12',
-            title: '放假安排',
-            content: '## 1.\n- projects1\n- projects2\n- projects3\n- projects4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
-            plans: [
-              {
-                id: 8,
-                tag: '年前',
-                goal: '在家休息',
-                percent: 100
-              },
-              {
-                id: 9,
-                tag: '年后',
-                goal: '出行游玩',
-                percent: 100
-              }
-            ]
-          },
-          {
-            id: 6,
-            show: true,
-            type: '2',
-            percent: 0,
-            date: '2018-03-15',
-            title: '实习相关事项',
-            content: '内容',
-            plans: []
-          },
-          {
-            id: 7,
-            show: true,
-            type: '4',
-            percent: 0,
-            date: '2018-05-01',
-            title: '毕设安排',
-            content: '内容',
-            plans: []
+      teamworkApi.viewMemberProjects(this.selectMemberId).then(function (response) {
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.dataResource = response.data.data
+            _this.computePercent(_this.selectMemberId)
+          } else {
+            _this.$Notice.error({
+              title: 'Failed to get data.',
+              desc: ''
+            })
           }
-        ]
-      } else {
-        this.dataResource = [
-          {
-            id: 1001,
-            show: true,
-            type: '2',
-            percent: 0,
-            date: '2018-03-26',
-            title: '测试标题',
-            content: '测试内容。。。\nddddddddddd\naaaaaaaaa',
-            plans: [
-              {
-                id: 10001,
-                tag: '测试tag1',
-                goal: '测试goal1',
-                percent: 70
-              },
-              {
-                id: 10002,
-                tag: '测试tag2',
-                goal: '测试goal2',
-                percent: 100
-              }
-            ]
-          },
-          {
-            id: 1002,
-            show: true,
-            type: '4',
-            percent: 0,
-            date: '2018-03-27',
-            title: '测试标题2',
-            content: '测试内容2。。。\nddddddddddd\naaaaaaaaa',
-            plans: [
-              {
-                id: 10003,
-                tag: '测试tag3',
-                goal: '测试goal3',
-                percent: 50
-              },
-              {
-                id: 10004,
-                tag: '测试tag4',
-                goal: '测试goal4',
-                percent: 0
-              }
-            ]
-          }
-        ]
-      }
-      this.computePercent(this.selectMemberTel)
-      setTimeout(() => {
-        _this.spinExport = false
-      }, 1000)
-      // TEST END
-      teamworkApi.viewMemberProjects(this.info.tel, this.selectMemberTel).then(function (response) {
-        if (response.data.result === true) {
-          _this.dataResource = response.data.projects
-          _this.computePercent(_this.selectMemberTel)
         } else {
           _this.$Notice.error({
-            title: 'Failed to get data.',
+            title: 'HTTP request error.',
             desc: ''
           })
+          console.log('status=' + response.status)
         }
         _this.spinShow = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        console.log(error)
       })
     },
-    computePercent (tel) {
+    computePercent (id) {
       if (this.dataResource === null) {
         return
       }
       var name = ''
       for (var i = 0; i < this.teamData.members.length; i++) {
-        if (this.teamData.members[i].tel === tel) {
+        if (this.teamData.members[i].id === id) {
           name = this.teamData.members[i].name
           break
         }
@@ -553,11 +376,11 @@ export default {
       }
     },
     clearResource () {
-      this.selectMemberTel = ''
+      this.selectMemberId = ''
       this.dataResource = []
     },
     clearAll () {
-      this.selectMemberTel = ''
+      this.selectMemberId = ''
       this.dataResource = []
       this.dataChoose = []
       this.dataExport = []

@@ -64,6 +64,8 @@ export default {
   data () {
     return {
       info: {
+        id: 0,
+        num: '',
         tel: '',
         name: '',
         email: '',
@@ -79,9 +81,12 @@ export default {
           title: 'Please sign in.',
           desc: ''
         })
-        this.$router.push('/')
+        // this.$router.push('/')
       } else {
         this.info = this.$store.state.user.userInfo
+      }
+      if (this.info.name === null || this.info.name === '') {
+        this.info.name = 'null'
       }
     },
     clickTopNav: function (name) {
@@ -116,25 +121,32 @@ export default {
     clickSignOut: function () {
       this.spinShow = true
       let _this = this
-      // TEST START
-      setTimeout(() => {
+      accountApi.signOut(this.info.id).then(function (response) {
         _this.spinShow = false
-        _this.$store.dispatch('doSignOut')
-        _this.$Message.success('Sign out successful.')
-        _this.$router.push('/signIn')
-      }, 1000)
-      // TEST END
-      accountApi.signOut(this.info.tel).then(function (response) {
-        _this.spinShow = false
-        if (response.data.result === true) {
-          _this.$store.dispatch('doSignOut')
-          _this.$Message.success('Sign out successful.')
-          setTimeout(() => {
-            _this.$router.push('/signIn')
-          }, 1000)
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.$store.dispatch('doSignOut')
+            _this.$Message.success('Sign out successful.')
+            setTimeout(() => {
+              _this.$router.push('/signIn')
+            }, 1000)
+          } else {
+            _this.$Message.error('Sign out failed.')
+          }
         } else {
-          _this.$Message.error('Sign out failed.')
+          _this.$Notice.error({
+            title: 'HTTP request error.',
+            desc: ''
+          })
+          console.log('status=' + response.status)
         }
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        console.log(error)
       })
     }
   }

@@ -1,5 +1,6 @@
 import {
-  teamworkApi
+  teamworkApi,
+  baseApi
 } from './urlApi'
 import axios from 'axios'
 import qs from 'qs'
@@ -15,13 +16,15 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: teamworkApi.getTeamInfoUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
-  viewTeams (tel) {
+  viewTeams (user) {
     var data = qs.stringify({
-      tel: tel
+      user: user
     })
     return axios({
       method: 'get',
@@ -29,7 +32,9 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: teamworkApi.viewTeamsUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
@@ -43,7 +48,9 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: teamworkApi.searchUserUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
@@ -59,13 +66,16 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: teamworkApi.inviteUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
-  disband (id) {
+  disband (id, user) {
     var data = qs.stringify({
-      id: id
+      id: id,
+      user: user
     })
     return axios({
       method: 'delete',
@@ -73,13 +83,15 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: teamworkApi.disbandUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
-  viewMemberProjects (tel) {
+  viewMemberProjects (user) {
     var data = qs.stringify({
-      tel: tel
+      user: user
     })
     return axios({
       method: 'get',
@@ -87,13 +99,15 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: teamworkApi.viewMemberProjectsUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
-  viewMemberSummaries (tel) {
+  viewMemberSummaries (user) {
     var data = qs.stringify({
-      tel: tel
+      user: user
     })
     return axios({
       method: 'get',
@@ -101,14 +115,16 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: teamworkApi.viewMemberSummariesUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
-  setPermission (tel, id, permission) {
+  setPermission (id, user, permission) {
     var data = qs.stringify({
-      tel: tel,
       id: id,
+      user: user,
       permission: permission
     })
     return axios({
@@ -117,14 +133,16 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: teamworkApi.setPermissionUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
-  remove (tel, id) {
+  remove (id, user) {
     var data = qs.stringify({
-      tel: tel,
-      id: id
+      id: id,
+      user: user
     })
     return axios({
       method: 'delete',
@@ -132,7 +150,9 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: teamworkApi.removeUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
@@ -146,7 +166,9 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: teamworkApi.searchTeamUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
@@ -161,13 +183,15 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: teamworkApi.joinUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
-  create (tel, name) {
+  create (user, name) {
     var data = qs.stringify({
-      tel: tel,
+      user: user,
       name: name
     })
     return axios({
@@ -176,7 +200,9 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: teamworkApi.createUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   }

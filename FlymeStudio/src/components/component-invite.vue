@@ -38,6 +38,8 @@ export default {
   data () {
     return {
       info: {
+        id: 0,
+        num: '',
         tel: '',
         name: '',
         email: '',
@@ -57,8 +59,8 @@ export default {
           align: 'center'
         },
         {
-          title: 'Tel',
-          key: 'tel'
+          title: 'Num',
+          key: 'num'
         },
         {
           title: 'Name',
@@ -87,31 +89,47 @@ export default {
       this.spinInvite = true
       let _this = this
       // TEST START
-      setTimeout(() => {
-        _this.dataUser = [
-          {
-            tel: '13608089849',
-            name: '曾宇'
-          },
-          {
-            tel: '13456789012',
-            name: '李四'
-          }
-        ]
-        _this.spinInvite = false
-      }, 1000)
+      // setTimeout(() => {
+      //   _this.dataUser = [
+      //     {
+      //       id: '1',
+      //       num: '12345',
+      //       name: '曾宇'
+      //     },
+      //     {
+      //       id: '2',
+      //       num: '12346',
+      //       name: '李四'
+      //     }
+      //   ]
+      //   _this.spinInvite = false
+      // }, 1000)
       // TEST END
       teamworkApi.searchUser(this.searchContent).then(function (response) {
-        if (response.data.result === true) {
-          _this.dataUser = response.data.dataUser
-          _this.spinInvite = false
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.dataUser = response.data.data
+          } else {
+            _this.$Notice.error({
+              title: 'Search failed.',
+              desc: ''
+            })
+          }
         } else {
           _this.$Notice.error({
-            title: 'Search failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
-          _this.spinInvite = false
+          console.log('status=' + response.status)
         }
+        _this.spinInvite = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        console.log(error)
       })
     },
     changeSelection (currentRow, oldCurrentRow) {
@@ -121,31 +139,37 @@ export default {
       this.searchContent = ''
       this.dataUser = []
     },
-    invitePeople (tel) {
+    invitePeople () {
       this.spinInvite = true
       let _this = this
-      // TEST START
-      setTimeout(() => {
-        _this.$Notice.success({
-          title: 'Send message successful.',
-          desc: 'Please waitting for user to check.'
-        })
-        _this.spinInvite = false
-      }, 1000)
-      // TEST END
-      teamworkApi.invite(this.info.tel, this.inviteTeam.teamId, this.currentInvite.tel).then(function (response) {
-        if (response.data.result === true) {
-          _this.$Notice.success({
-            title: 'Send message successful.',
-            desc: 'Please waitting for user to check.'
-          })
+      teamworkApi.invite(this.info.id, this.inviteTeam.teamId, this.currentInvite.id).then(function (response) {
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.$Notice.success({
+              title: 'Send message successful.',
+              desc: 'Please waitting for user to check.'
+            })
+          } else {
+            _this.$Notice.error({
+              title: 'Invite failed.',
+              desc: ''
+            })
+          }
         } else {
           _this.$Notice.error({
-            title: 'Invite failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
+          console.log('status=' + response.status)
         }
         _this.spinInvite = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        console.log(error)
       })
     }
   }

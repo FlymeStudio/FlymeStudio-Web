@@ -21,6 +21,13 @@
 
           <Alert>
             <div class="div-menu-item">
+              <Icon class="icon-item" type="pound" size=25></Icon>
+              <span class="span-item">{{ info.num }}</span>
+            </div>
+          </Alert>
+
+          <Alert>
+            <div class="div-menu-item">
               <Icon class="icon-item" type="person" size=25></Icon>
               <span class="span-item">{{ info.name }}</span>
             </div>
@@ -41,18 +48,18 @@
           </Alert>
 
           <!-- type: 1 = invite, 2 = apply -->
-          <Alert class="alert-message" show-icon v-for="item in info.messages" :key="item.messageId">
+          <Alert class="alert-message" show-icon v-for="message in info.messages" :key="message.messageId">
             <Icon class="icon-item" type="ios-people" slot="icon" size=25></Icon>
-            <Button class="btn-user" @click="clickUser(item.fromName, item.fromTel)">{{ item.fromName }}</Button>
-            <span v-if="item.type == 1"> invited you to join </span>
-            <span v-else-if="item.type == 2"> applied to join </span>
-            <Button v-if="item.type == 1" class="btn-team" @click="clickTeam(item.teamName, item.teamId)">{{ item.teamName }}</Button>
-            <Button v-else-if="item.type == 2" class="btn-apply" @click="clickTeam(item.teamName, item.teamId)">{{ item.teamName }}</Button>
+            <Button class="btn-user" @click="clickUser(message.senderName, message.senderNum)">{{ message.sendName }}</Button>
+            <span v-if="message.type == 1"> invited you to join </span>
+            <span v-else-if="message.type == 2"> applied to join </span>
+            <Button v-if="message.type == 1" class="btn-team" @click="clickTeam(message.teamName, message.teamId)">{{ message.teamName }}</Button>
+            <Button v-else-if="message.type == 2" class="btn-apply" @click="clickTeam(message.teamName, message.teamId)">{{ message.teamName }}</Button>
             <template slot="desc">
               <div class="div-message">
-                <Button class="btn-message" type="success" @click="reply(item.messageId, true)">Accept</Button>
-                <Button class="btn-message" type="error" @click="reply(item.messageId, false)">Refuse</Button>
-                <div v-if="item.type == 1" class="div-agreement" @click="modalAgreement = true"><i>Agreenment</i></div>
+                <Button class="btn-message" type="success" @click="reply(message.messageId, true)">Accept</Button>
+                <Button class="btn-message" type="error" @click="reply(message.messageId, false)">Refuse</Button>
+                <div v-if="message.type == 1" class="div-agreement" @click="modalAgreement = true"><i>Agreenment</i></div>
               </div>
             </template>
           </Alert>
@@ -62,13 +69,13 @@
             <Alert>
               <div class="div-menu-item">
                 <Icon class="icon-item" type="person" size=20></Icon>
-                <span class="span-item">{{ user.fromName }}</span>
+                <span class="span-item">{{ user.sendName }}</span>
               </div>
             </Alert>
             <Alert>
               <div class="div-menu-item">
                 <Icon class="icon-item" type="ios-telephone" size=20></Icon>
-                <span class="span-item">{{ user.fromTel }}</span>
+                <span class="span-item">{{ user.sendNum }}</span>
               </div>
             </Alert>
           </Modal>
@@ -143,7 +150,7 @@ import componentNavTop from './component-nav-top.vue'
 import componentNavLeft from './component-nav-left.vue'
 import componentFooter from './component-footer.vue'
 import teamworkApi from '../api/teamworkApi'
-import imformationApi from '../api/imformationApi'
+import imformationApi from '../api/informationApi'
 
 export default{
   name: 'information-overview',
@@ -153,6 +160,8 @@ export default{
   data () {
     return {
       info: {
+        id: 0,
+        num: '',
         tel: '',
         name: '',
         email: '',
@@ -160,8 +169,8 @@ export default{
       },
       spinShow: false,
       user: {
-        fromName: '',
-        fromTel: ''
+        sendName: '',
+        sendNum: ''
       },
       modalUser: false,
       team: {
@@ -183,9 +192,9 @@ export default{
     getInfo () {
       this.info = this.$store.state.user.userInfo
     },
-    clickUser (fromName, fromTel) {
-      this.user.fromName = fromName
-      this.user.fromTel = fromTel
+    clickUser (sendName, sendNum) {
+      this.user.sendName = sendName
+      this.user.sendNum = sendNum
       this.modalUser = true
     },
     clickTeam (teamName, teamId) {
@@ -193,65 +202,73 @@ export default{
       this.team.teamName = teamName
       this.team.teamId = teamId
       let _this = this
-      // TEST START
-      setTimeout(() => {
-        _this.team.count = 1
-        if (teamId === '00001') {
-          _this.team.administrator = '李永达'
-        } else if (teamId === '00002') {
-          _this.team.administrator = '段启智'
-        }
-        _this.spinShow = false
-        _this.modalTeam = true
-      }, 1000)
-      // TEST END
       teamworkApi.getTeamInfo(teamId).then(function (response) {
+        console.log('response=' + response)
         _this.spinShow = false
-        if (response.data.result === true) {
-          _this.team.count = response.data.count
-          _this.team.administrator = response.data.administrator
-          _this.modalTeam = true
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.team.count = response.data.data.count
+            _this.team.administrator = response.data.data.administrator
+            _this.modalTeam = true
+          } else {
+            _this.$Notice.error({
+              title: 'Get team information failed.',
+              desc: ''
+            })
+          }
         } else {
           _this.$Notice.error({
-            title: 'Get team information failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
+          console.log('status=' + response.status)
         }
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        console.log(error)
       })
     },
     reply (messageId, result) {
       this.spinShow = true
       let _this = this
-      // TEST START
-      setTimeout(() => {
-        _this.$Notice.success({
-          title: 'Reply successful.',
+      imformationApi.reply(messageId, result).then(function (response) {
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            setTimeout(() => {
+              _this.$store.dispatch('doDeleteMsg', messageId)
+              _this.info = this.$store.state.user.userInfo
+              _this.$Notice.success({
+                title: 'Reply successful.',
+                desc: ''
+              })
+            }, 1000)
+          } else {
+            setTimeout(() => {
+              _this.$Notice.error({
+                title: 'Reply failed.',
+                desc: ''
+              })
+            }, 1000)
+          }
+        } else {
+          _this.$Notice.error({
+            title: 'HTTP request error.',
+            desc: ''
+          })
+          console.log('status=' + response.status)
+        }
+        _this.spinShow = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
           desc: ''
         })
-        _this.$store.dispatch('doDeleteMsg', messageId)
         _this.spinShow = false
-      }, 1000)
-      // TEST END
-      imformationApi.replyMsg(messageId, result).then(function (response) {
-        if (response.data.result === true) {
-          setTimeout(() => {
-            _this.$store.dispatch('doDeleteMsg', messageId)
-            _this.info = this.$store.state.user.userInfo
-            _this.$Notice.success({
-              title: 'Reply successful.',
-              desc: ''
-            })
-            _this.spinShow = false
-          }, 1000)
-        } else {
-          setTimeout(() => {
-            _this.$Notice.error({
-              title: 'Reply failed.',
-              desc: ''
-            })
-            _this.spinShow = false
-          }, 1000)
-        }
+        console.log(error)
       })
     }
   }

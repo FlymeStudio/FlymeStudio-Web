@@ -25,8 +25,8 @@
     <Content class="content">
       <Form class="form" ref="formItem" :model="formItem" :rules="ruleItem">
 
-        <FormItem class="form-item" prop="id">
-          <Input type="text" v-model="formItem.id" placeholder="Tel or email" size="large" clearable>
+        <FormItem class="form-item" prop="user">
+          <Input type="text" v-model="formItem.user" placeholder="Account" size="large" clearable>
           <Icon type="person" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
@@ -60,11 +60,11 @@ export default {
   data () {
     return {
       formItem: {
-        id: '',
+        user: '',
         password: ''
       },
       ruleItem: {
-        id: [
+        user: [
           {
             required: true,
             message: 'Please fill in the account.',
@@ -109,63 +109,39 @@ export default {
     signIn: function () {
       this.loading = true
       let _this = this
-      // TEST START
-      setTimeout(() => {
-        let userInfo = {
-          tel: '13608089849',
-          name: '曾宇',
-          email: '1213814232@qq.com',
-          password: '123456',
-          messages: [
-            {
-              id: '1',
-              type: 1,
-              fromTel: '13600000001',
-              fromName: '刘卓旻',
-              teamName: 'System support',
-              teamId: '00001'
-            },
-            {
-              id: '2',
-              type: 2,
-              fromTel: '13600000002',
-              fromName: '余学海',
-              teamName: 'Overseas firmware',
-              teamId: '00002'
-            }
-          ]
-        }
-        _this.$store.dispatch('doSignIn', userInfo)
-        _this.$Notice.success({
-          title: 'Sign in successful.',
-          desc: ''
-        })
-        _this.$router.push('/home')
-      }, 1000)
-      // TEST END
-      accountApi.signIn(this.formItem.id, this.formItem.password)
+      accountApi.signIn(this.formItem.user, this.formItem.password)
         .then(function (response) {
-          if (response.data.result === true) {
-            let userInfo = {
-              tel: response.data.id,
-              name: response.data.name,
-              email: response.data.email,
-              password: _this.formItem.password,
-              messages: response.data.messages
+          console.log('response=' + response)
+          if (response.status === 200) {
+            if (response.data.result === true) {
+              let userInfo = response.data.data
+              _this.$store.dispatch('doSignIn', userInfo)
+              _this.$Notice.success({
+                title: 'Sign in successful.',
+                desc: ''
+              })
+              _this.$router.push('/home')
+            } else {
+              _this.$Notice.error({
+                title: 'Sign in failed.',
+                desc: ''
+              })
             }
-            _this.$store.dispatch('doSignIn', userInfo)
-            _this.$Notice.success({
-              title: 'Sign in successful.',
-              desc: ''
-            })
-            _this.$router.push('/home')
           } else {
             _this.$Notice.error({
-              title: 'Sign in failed.',
+              title: 'HTTP request error.',
               desc: ''
             })
-            _this.loading = false
+            console.log('status=' + response.status)
           }
+          _this.loading = false
+        }).catch(function (error) {
+          _this.$Notice.error({
+            title: 'HTTP request error.',
+            desc: ''
+          })
+          console.log(error)
+          _this.loading = false
         })
     },
     handleSubmit (name) {

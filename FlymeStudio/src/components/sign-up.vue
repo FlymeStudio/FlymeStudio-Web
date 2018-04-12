@@ -24,15 +24,20 @@
 
     <Content class="content">
       <Form class="form" ref="formItem" :model="formItem" :rules="ruleItem" v-show="isResultView == false">
+        <FormItem class="form-item" prop="num">
+          <Input type="text" v-model="formItem.num" placeholder="Staff number" size="large" clearable>
+          <Icon type="pound" slot="prepend" size=18></Icon>
+          </Input>
+        </FormItem>
 
         <FormItem class="form-item" prop="name">
-          <Input type="text" v-model="formItem.name" placeholder="Username" size="large" clearable>
+          <Input type="text" v-model="formItem.name" placeholder="User name" size="large" clearable>
           <Icon type="person" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
 
         <FormItem class="form-item" prop="tel">
-          <Input type="text" v-model="formItem.tel" placeholder="Telephone" size="large" clearable>
+          <Input type="text" v-model="formItem.tel" placeholder="Phone number" size="large" clearable>
           <Icon type="ios-telephone" slot="prepend" size=18></Icon>
           </Input>
         </FormItem>
@@ -85,13 +90,26 @@ export default {
     return {
       isResultView: false,
       formItem: {
-        name: '',
-        tel: '',
-        email: '',
-        password: '',
-        confirm: ''
+        num: '12345',
+        name: '曾宇',
+        tel: '13608089849',
+        email: '111@qq.com',
+        password: '1234567',
+        confirm: '1234567'
       },
       ruleItem: {
+        num: [
+          {
+            required: true,
+            message: 'Please fill in the staff number.',
+            trigger: 'blur'
+          },
+          {
+            pattern: /^[0-9]{1,8}$/,
+            message: 'Staff number should be a number and no more than 8 bits.',
+            trigger: 'blur'
+          }
+        ],
         name: [
           {
             required: true,
@@ -101,24 +119,24 @@ export default {
           {
             type: 'string',
             pattern: /^[\u4E00-\u9FA5]{2,4}$/,
-            message: 'Illegal username.',
+            message: 'Illegal name.',
             trigger: 'blur'
           }
         ],
         tel: [
           {
             required: true,
-            message: 'Please fill in the telephone number.',
+            message: 'Please fill in the phone number.',
             trigger: 'blur'
           },
           {
             pattern: /^[0-9]{11}$/,
-            message: 'Telephone number is 11 bits.',
+            message: 'Phone number is 11 bits.',
             trigger: 'blur'
           },
           {
             pattern: /^(13[0-9]{9})|(14[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})|(18[0-9]{9})$/,
-            message: 'Incorrect telephone number format.',
+            message: 'Incorrect phone number format.',
             trigger: 'blur'
           }
         ],
@@ -142,7 +160,7 @@ export default {
           {
             type: 'string',
             min: 6,
-            message: 'The password should be more than 6 bits.',
+            message: 'The password should be not less than 6 bits.',
             trigger: 'blur'
           }
         ],
@@ -183,29 +201,39 @@ export default {
     },
     signUp: function () {
       this.loading = true
-      setTimeout(() => {
-        this.$Notice.success({
-          title: 'Sign up successful.',
-          desc: ''
-        })
-        this.isResultView = true
-      }, 1000)
       let _this = this
-      accountApi.signUp(this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.password).then(function (response) {
-        if (response.data.result === true) {
-          _this.$Notice.success({
-            title: 'Sign up successful.',
-            desc: ''
-          })
-          _this.isResultView = true
+      accountApi.signUp(this.formItem.num, this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.password).then(function (response) {
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.$Notice.success({
+              title: 'Sign up successful.',
+              desc: ''
+            })
+            _this.isResultView = true
+          } else {
+            _this.$Notice.error({
+              title: 'Sign up failed.',
+              desc: ''
+            })
+            _this.isResultView = false
+          }
         } else {
-          _this.loading = true
           _this.$Notice.error({
-            title: 'Sign up failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
           _this.isResultView = false
+          console.log('status=' + response.status)
         }
+        _this.loading = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        console.log(error)
+        _this.loading = false
       })
     },
     handleSubmit (name) {

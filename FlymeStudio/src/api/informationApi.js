@@ -1,5 +1,6 @@
 import {
-  informationApi
+  informationApi,
+  baseApi
 } from './urlApi'
 import axios from 'axios'
 import qs from 'qs'
@@ -19,11 +20,13 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: informationApi.modifyUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
-  replyMsg (id, result) {
+  reply (id, result) {
     var data = qs.stringify({
       id: id,
       result: result
@@ -33,8 +36,10 @@ export default {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: informationApi.replyMsgUrl(),
+      url: informationApi.replyUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   }

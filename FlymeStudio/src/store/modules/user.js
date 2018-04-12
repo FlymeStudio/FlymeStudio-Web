@@ -4,11 +4,22 @@ const state = {
   active: false,
   domain: 'http://localhost:8080',
   userInfo: {
+    id: 0,
+    num: null,
     tel: null,
     name: null,
     email: null,
     password: null,
-    messages: []
+    messages: [
+      {
+        messageId: 0,
+        type: 0,
+        senderNum: '',
+        senderName: '',
+        teamId: 0,
+        teamName: ''
+      }
+    ]
   }
 }
 

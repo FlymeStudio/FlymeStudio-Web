@@ -1,13 +1,14 @@
 import {
-  projectApi
+  projectApi,
+  baseApi
 } from './urlApi'
 import axios from 'axios'
 import qs from 'qs'
 
 export default {
-  get (tel) {
+  get (user) {
     var data = qs.stringify({
-      tel: tel
+      user: user
     })
     return axios({
       method: 'get',
@@ -15,13 +16,15 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: projectApi.getUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
-  create (tel, type, date, title, content, plans) {
+  create (user, type, date, title, content, plans) {
     var data = qs.stringify({
-      tel: tel,
+      user: user,
       type: type,
       date: date,
       title: title,
@@ -34,32 +37,16 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: projectApi.createUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
-  search (tel, type, date, title, content) {
+  modify (id, user, type, date, title, content, plans) {
     var data = qs.stringify({
-      tel: tel,
-      type: type,
-      date: date,
-      title: title,
-      content: content
-    })
-    return axios({
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      url: projectApi.searchUrl(),
-      data: data,
-      withCredentials: true
-    })
-  },
-  modify (tel, id, type, date, title, content, plans) {
-    var data = qs.stringify({
-      tel: tel,
       id: id,
+      user: user,
       type: type,
       date: date,
       title: title,
@@ -72,14 +59,16 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: projectApi.modifyUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   },
-  delete (tel, id) {
+  delete (id, user) {
     var data = qs.stringify({
-      tel: tel,
-      id: id
+      id: id,
+      user: user
     })
     return axios({
       method: 'delete',
@@ -87,7 +76,9 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: projectApi.deleteUrl(),
+      baseURL: baseApi.baseUrl(),
       data: data,
+      timeout: 5000,
       withCredentials: true
     })
   }

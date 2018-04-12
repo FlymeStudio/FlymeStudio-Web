@@ -118,6 +118,8 @@ export default{
     return {
       password: '',
       info: {
+        id: 0,
+        num: '',
         tel: '',
         name: '',
         email: '',
@@ -139,23 +141,23 @@ export default{
           {
             type: 'string',
             pattern: /^[\u4E00-\u9FA5]{2,4}$/,
-            message: 'Illegal username.',
+            message: 'Illegal name.',
             trigger: 'blur'
           }
         ],
         tel: [
           {
-            message: 'Please fill in the telephone number.',
+            message: 'Please fill in the phone number.',
             trigger: 'blur'
           },
           {
             pattern: /^[0-9]{11}$/,
-            message: 'Telephone number is 11 bits.',
+            message: 'Phone number is 11 bits.',
             trigger: 'blur'
           },
           {
             pattern: /^(13[0-9]{9})|(14[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})|(18[0-9]{9})$/,
-            message: 'Incorrect telephone number format.',
+            message: 'Incorrect phone number format.',
             trigger: 'blur'
           }
         ],
@@ -177,7 +179,7 @@ export default{
           {
             type: 'string',
             min: 6,
-            message: 'The password should be more than 6 bits.',
+            message: 'The password should be no less than 6 bits.',
             trigger: 'blur'
           }
         ],
@@ -213,31 +215,36 @@ export default{
         }, 1000)
         return
       }
-      // TEST START
-      _this.$store.dispatch('doUpdate', _this.info)
-      setTimeout(() => {
-        _this.info = this.$store.state.user.userInfo
-        _this.$Notice.success({
-          title: 'Modify successful.',
-          desc: ''
-        })
-        _this.modalModify = false
-      }, 1000)
-      // TEST END
       informationApi.modify(this.info.tel, this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.newPassword).then(function (response) {
-        if (response.data.result === true) {
-          _this.$store.dispatch('doUpdate', _this.info)
-          _this.$Notice.success({
-            title: 'Modify successful.',
-            desc: ''
-          })
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.$store.dispatch('doUpdate', _this.info)
+            _this.$Notice.success({
+              title: 'Modify successful.',
+              desc: ''
+            })
+          } else {
+            _this.$Notice.error({
+              title: 'Modify failed.',
+              desc: ''
+            })
+          }
         } else {
           _this.$Notice.error({
-            title: 'Modify failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
+          console.log('status=' + response.status)
         }
         _this.modalModify = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        console.log(error)
+        _this.loading = false
       })
     },
     handleSubmit (name) {

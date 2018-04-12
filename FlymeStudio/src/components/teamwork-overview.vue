@@ -68,6 +68,8 @@ export default{
   data () {
     return {
       info: {
+        id: 0,
+        num: '',
         tel: '',
         name: '',
         email: '',
@@ -90,103 +92,34 @@ export default{
     },
     getTeams () {
       this.spinShow = false
-      // TEST START
-      this.managedTeams = [
-        {
-          id: '00001',
-          name: 'System support',
-          administratorName: '李永达',
-          administratorTel: '13612345678',
-          members: [
-            {
-              name: '李永达',
-              tel: '13612345678',
-              email: '87654321@qq.com',
-              permission: 2
-            },
-            {
-              name: '曾宇',
-              tel: '13608089849',
-              email: '1213814232@qq.com',
-              permission: 1
-            },
-            {
-              name: '刘卓旻',
-              tel: '13612345679',
-              email: '123456789@qq.com',
-              permission: 0
-            }
-          ]
-        },
-        {
-          id: '00003',
-          name: 'Test team',
-          administratorName: '曾宇',
-          administratorTel: '13608089849',
-          members: [
-            {
-              name: '曾宇',
-              tel: '13608089849',
-              email: '1213814232@qq.com',
-              permission: 2
-            },
-            {
-              name: '刘卓旻',
-              tel: '13612345679',
-              email: '123456789@qq.com',
-              permission: 0
-            },
-            {
-              name: '张三',
-              tel: '12345678901',
-              email: '123455555@qq.com',
-              permission: 1
-            }
-          ]
-        }
-      ]
-      this.joinedTeams = [
-        {
-          id: '00002',
-          name: 'Overseas firmware',
-          administratorName: '段启智',
-          administratorTel: '13456789012',
-          members: [
-            {
-              tel: '13456789012',
-              name: '段启智',
-              email: '122222222@qq.com',
-              permission: 2
-            },
-            {
-              tel: '13412345678',
-              name: '余学海',
-              email: '1111111@qq.com',
-              permission: 0
-            },
-            {
-              name: '曾宇',
-              tel: '13608089849',
-              email: '1213814232@qq.com',
-              permission: 0
-            }
-          ]
-        }
-      ]
-      this.spinShow = false
-      // TEST END
       let _this = this
-      teamworkApi.viewTeams(this.info.tel).then(function (response) {
-        if (response.data.result === true) {
-          _this.managedTeams = response.data.managedTeams
-          _this.joinedTeams = response.data.joinedTeams
+      teamworkApi.viewTeams(this.info.id).then(function (response) {
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.managedTeams = response.data.data.managedTeams
+            _this.joinedTeams = response.data.data.joinedTeams
+          } else {
+            _this.$Notice.error({
+              title: 'Failed to get data.',
+              desc: ''
+            })
+          }
         } else {
           _this.$Notice.error({
-            title: 'Failed to get data.',
+            title: 'HTTP request error.',
             desc: ''
           })
+          console.log('status=' + response.status)
         }
         _this.spinShow = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        _this.spinShow = false
+        console.log(error)
       })
     }
   }

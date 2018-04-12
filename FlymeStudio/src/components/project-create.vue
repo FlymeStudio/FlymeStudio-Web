@@ -82,11 +82,11 @@
             </FormItem>
 
             <FormItem>
-              <Alert class="alert-projects" type="success" v-for="item in formItem.plans" :key="item.timestamp">
+              <Alert class="alert-projects" type="success" v-for="item in formItem.plans" :key="item.id">
                 <div class="div-project">
                   <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
                   <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
-                  <Button class="btn-edit" type="ghost" shape="circle" icon="minus" @click="deletePlan(item.timestamp)"></Button>
+                  <Button class="btn-edit" type="ghost" shape="circle" icon="minus" @click="deletePlan(item.id)"></Button>
                 </div>
               </Alert>
               <Alert class="alert-projects">
@@ -148,6 +148,8 @@ export default{
   data () {
     return {
       info: {
+        id: 0,
+        num: '',
         tel: '',
         name: '',
         email: '',
@@ -293,9 +295,9 @@ export default{
         this.modalUpload = false
       }
     },
-    deletePlan (timestamp) {
+    deletePlan (id) {
       for (var i = 0; i < this.formItem.plans.length; i++) {
-        if (this.formItem.plans[i].timestamp === timestamp) {
+        if (this.formItem.plans[i].id === id) {
           this.formItem.plans.splice(i, 1)
           break
         }
@@ -303,7 +305,7 @@ export default{
     },
     addPlan () {
       var plan = {
-        timestamp: new Date().getTime(),
+        id: new Date().getTime(),
         tag: this.editTag,
         goal: this.editGoal
       }
@@ -331,31 +333,36 @@ export default{
     },
     save () {
       let _this = this
-      // TEST START
-      setTimeout(() => {
-        _this.$Notice.success({
-          title: 'Save successful.',
-          desc: ''
-        })
-        _this.handleReset('formItem')
-        _this.modalSave = false
-      }, 1000)
-      // TEST END
-      projectApi.create(this.info.tel, this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
-        if (response.data.result === true) {
-          _this.$Notice.success({
-            title: 'Save successful.',
-            desc: ''
-          })
-          _this.handleReset('formItem')
-          _this.modalSave = false
+      projectApi.create(this.info.id, this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.$Notice.success({
+              title: 'Save successful.',
+              desc: ''
+            })
+            _this.handleReset('formItem')
+          } else {
+            _this.$Notice.error({
+              title: 'Save failed.',
+              desc: ''
+            })
+          }
         } else {
           _this.$Notice.error({
-            title: 'Save failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
-          _this.modalSave = false
+          console.log('status=' + response.status)
         }
+        _this.modalSave = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        console.log(error)
+        _this.modalSave = false
       })
     }
   }

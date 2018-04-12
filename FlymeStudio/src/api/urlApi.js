@@ -1,70 +1,70 @@
+export const baseApi = {
+  baseUrl: () => 'http://localhost:8080/FlymeStudio/'
+}
+
 export const accountApi = {
   // post
-  signInUrl: () => 'FlymeStudio/Account/login',
+  signInUrl: () => '/Account/login',
   // post
-  signUpUrl: () => 'FlymeStudio/Account/register',
+  signUpUrl: () => '/Account/register',
   // post
-  signOutUrl: () => 'FlymeStudio/Account/logout',
+  signOutUrl: () => '/Account/logout',
   // post
-  retrieveUrl: () => 'FlymeStudio/Account/retrieve'
+  retrieveUrl: () => '/Account/retrieve'
 }
 
 export const informationApi = {
   // put
-  modifyUrl: () => 'FlymeStudio/Information/info',
+  modifyUrl: () => '/Information/info',
   // put
-  replyMsgUrl: () => 'FlymeStudio/Information/message'
+  replyUrl: () => '/Information/message'
 }
 
 export const teamworkApi = {
   // get
-  getTeamInfoUrl: () => 'FlymeStudio/Teamwork/team/all',
+  getTeamInfoUrl: () => '/Teamwork/team/all',
   // get
-  viewTeamsUrl: () => 'FlymeStudio/Teamwork/teams/my',
+  viewTeamsUrl: () => '/Teamwork/teams/my',
   // get
-  searchUserUrl: () => 'FlymeStudio/Teamwork/user/all',
+  searchUserUrl: () => '/Teamwork/user/all',
   // post
-  inviteUrl: () => 'FlymeStudio/Teamwork/user/all',
+  inviteUrl: () => '/Teamwork/user/all',
   // delete
-  disbandUrl: () => 'FlymeStudio/Teamwork/team/my',
+  disbandUrl: () => '/Teamwork/team/my',
   // get
-  viewMemberProjectsUrl: () => 'FlymeStudio/Teamwork/projects/member',
+  viewMemberProjectsUrl: () => '/Teamwork/projects/member',
   // get
-  viewMemberSummariesUrl: () => 'FlymeStudio/Teamwork/summaries/member',
+  viewMemberSummariesUrl: () => '/Teamwork/summaries/member',
   // put
-  setPermissionUrl: () => 'FlymeStudio/Teamwork/permission/member',
+  setPermissionUrl: () => '/Teamwork/permission/member',
   // delete
-  removeUrl: () => 'FlymeStudio/Teamwork/team/member',
+  removeUrl: () => '/Teamwork/team/member',
   // get
-  searchTeamUrl: () => 'FlymeStudio/Teamwork/teams/all',
+  searchTeamUrl: () => '/Teamwork/teams/all',
   // post
-  joinUrl: () => 'FlymeStudio/Teamwork/team/all',
+  joinUrl: () => '/Teamwork/team/all',
   // post
-  createUrl: () => 'FlymeStudio/Teamwork/team/my'
+  createUrl: () => '/Teamwork/team/my'
 }
 
 export const projectApi = {
   // get
-  getUrl: () => 'FlymeStudio/Project/projects/all',
+  getUrl: () => '/Project/projects/all',
   // post
-  createUrl: () => 'FlymeStudio/Project/project/my',
+  createUrl: () => '/Project/project/my',
   // delete
-  deleteUrl: () => 'FlymeStudio/Project/project/my',
-  // get
-  searchUrl: () => 'FlymeStudio/Project/projects/my',
+  deleteUrl: () => '/Project/project/my',
   // put
-  modifyUrl: () => 'FlymeStudio/Project/project/my'
+  modifyUrl: () => '/Project/project/my'
 }
 
 export const summaryApi = {
   // get
-  getUrl: () => 'FlymeStudio/Summary/summaries/all',
+  getUrl: () => '/Summary/summaries/all',
   // post
-  createUrl: () => 'FlymeStudio/Summary/summary/my',
+  createUrl: () => '/Summary/summary/my',
   // put
-  modifyUrl: () => 'FlymeStudio/Summary/summary/my',
-  // get
-  searchUrl: () => 'FlymeStudio/Summary/summaries/my',
+  modifyUrl: () => '/Summary/summary/my',
   // delete
-  deleteUrl: () => 'FlymeStudio/Summary/summary/my'
+  deleteUrl: () => '/Summary/summary/my'
 }

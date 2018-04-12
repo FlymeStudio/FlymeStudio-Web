@@ -128,14 +128,14 @@ export default {
       }
       let _this = this
       // TEST START
-      setTimeout(() => {
-        _this.$Notice.success({
-          title: 'Remove successful.',
-          desc: ''
-        })
-        _this.modalDisband = false
-        _this.$router.push('/')
-      }, 2000)
+      // setTimeout(() => {
+      //   _this.$Notice.success({
+      //     title: 'Remove successful.',
+      //     desc: ''
+      //   })
+      //   _this.modalDisband = false
+      //   _this.$router.push('/')
+      // }, 2000)
       // TEST END
       teamworkApi.disband(this.currentDisband.teamId).then(function (response) {
         if (response.data.result === true) {

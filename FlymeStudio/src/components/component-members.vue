@@ -1,27 +1,27 @@
 <template>
 <div>
-  <div class="div-member" v-for="member in teamData.members" :key="member.tel">
+  <div class="div-member" v-for="member in teamData.members" :key="member.id">
     <Icon v-if="member.permission == 2" class="icon-member" type="person" size="18" style="color:#ff9900;"></Icon>
     <Icon v-else-if="member.permission == 1" class="icon-member" type="person" size="18" style="color:#19be6b;"></Icon>
     <Icon v-else class="icon-member" type="person" size="18" style="color:#2d8cf0;"></Icon>
     <span class="span-name">{{ member.name }}</span>
-    <Icon class="icon-member" type="ios-telephone" size="18"></Icon>
-    <span class="span-tel">{{ member.tel }}</span>
+    <Icon class="icon-member" type="pound" size="18"></Icon>
+    <span class="span-tel">{{ member.num }}</span>
     <div class="btns">
       <Tooltip content="View projects">
-        <Button v-if="teamType == 1" class="btn-member" size="small" type="info" shape="circle" icon="clipboard" @click="viewProjects(member.tel, member.name, member.email)"></Button>
+        <Button v-if="teamType == 1" class="btn-member" size="small" type="info" shape="circle" icon="clipboard" @click="viewProjects(member.id, member.name, member.num)"></Button>
         <Button v-else class="btn-member" size="small" type="info" shape="circle" icon="clipboard" disabled></Button>
       </Tooltip>
       <Tooltip content="View summaries">
-        <Button v-if="teamType == 1" class="btn-member" size="small" type="info" shape="circle" icon="document-text" @click="viewSummaries(member.tel, member.name, member.email)"></Button>
+        <Button v-if="teamType == 1" class="btn-member" size="small" type="info" shape="circle" icon="document-text" @click="viewSummaries(member.id, member.name, member.num)"></Button>
         <Button v-else class="btn-member" size="small" type="info" shape="circle" icon="document-text" disabled></Button>
       </Tooltip>
       <Tooltip content="Set permission">
-        <Button v-if="teamData.administratorTel == info.tel && member.tel != info.tel" class="btn-member" size="small" type="warning" shape="circle" icon="key" @click="setMemberPermission(member.name, member.tel)" style="margin-left:10px;"></Button>
+        <Button v-if="teamData.administratorId == info.id && member.id != info.id" class="btn-member" size="small" type="warning" shape="circle" icon="key" @click="setMemberPermission(member.name, member.id)" style="margin-left:10px;"></Button>
         <Button v-else class="btn-member" size="small" type="warning" shape="circle" icon="key" disabled style="margin-left:10px;"></Button>
       </Tooltip>
       <Tooltip content="Remove member">
-        <Button v-if="teamType == 1 && member.tel != info.tel && member.permission == 0" class="btn-member" size="small" type="error" shape="circle" icon="close-round" @click="removeMember(member.tel, member.name)"></Button>
+        <Button v-if="teamType == 1 && member.id != info.id && member.permission == 0" class="btn-member" size="small" type="error" shape="circle" icon="close-round" @click="removeMember(member.id, member.name)"></Button>
         <Button v-else class="btn-member" size="small" type="error" shape="circle" icon="close-round" disabled></Button>
       </Tooltip>
     </div>
@@ -44,8 +44,8 @@
       <Header class="layout-header-bar" theme="dark">
         <Icon type="clipboard" size=18 style="margin-right:10px;"></Icon><span>Project</span>
         <Icon type="person" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentView.name }}</span>
-        <Icon type="ios-telephone" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentView.tel }}</span>
-        <Icon type="email" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentView.email }}</span>
+        <Icon type="ios-telephone" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentView.id }}</span>
+        <Icon type="pound" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentView.num }}</span>
       </Header>
 
       <Layout>
@@ -179,13 +179,13 @@
         </RadioGroup>
       </template>
     </Alert>
-    <p>Are you sure to set permission of {{ currentPermission.name }}({{ currentPermission.tel }}) in {{ currentPermission.teamName }}?</p>
+    <p>Are you sure to set permission of {{ currentPermission.name }}({{ currentPermission.id }}) in {{ currentPermission.teamName }}?</p>
   </Modal>
 
   <!-- modal-remove = -->
   <Modal class-name="vertical-center-modal" class="modal-remove" v-model="modalRemoveMember" title="Confirm" :mask-closable="false" :closable="false" ok-text="Remove" cancel-text="Cancel" loading @on-ok="remove()">
     <Alert type="warning" show-icon>
-      <p>Are you sure to remove {{ currentRemove.name }}({{ currentRemove.tel }}) from team?</p>
+      <p>Are you sure to remove {{ currentRemove.name }}({{ currentRemove.id }}) from team?</p>
       <template slot="desc">
       <p>If yes, input the password to check your identity:</p>
       <Input style="margin-top:20px;" type="password" v-model="password" size="large" placeholder="Password" clearable>
@@ -211,6 +211,8 @@ export default {
   data () {
     return {
       info: {
+        id: 0,
+        num: '',
         tel: '',
         name: '',
         email: '',
@@ -222,9 +224,9 @@ export default {
       spinShow: false,
       /** view **/
       currentView: {
-        tel: '',
+        id: '',
         name: '',
-        email: ''
+        num: ''
       },
       count: {
         total: 0,
@@ -248,7 +250,7 @@ export default {
         teamId: '',
         teamName: '',
         name: '',
-        tel: '',
+        id: '',
         permission: '0'
       },
       modalSetPermission: false,
@@ -256,7 +258,7 @@ export default {
       currentRemove: {
         teamId: '',
         name: '',
-        tel: ''
+        id: ''
       },
       modalRemoveMember: false
     }
@@ -265,190 +267,190 @@ export default {
     getInfo () {
       this.info = this.$store.state.user.userInfo
     },
-    viewProjects (tel, name, email) {
+    viewProjects (id, name, num) {
       this.spinShow = true
       this.currentView = {
-        tel: tel,
+        id: id,
         name: name,
-        email: email
+        num: num
       }
       // TEST START
-      if (tel === '13608089849') {
-        this.currentProjects = [
-          {
-            id: 1,
-            show: true,
-            type: '1',
-            percent: 0,
-            date: '2017-03-01',
-            title: '2017年度计划',
-            content: '内容。。。',
-            plans: [
-              {
-                id: 0,
-                tag: 'project',
-                goal: '健身',
-                percent: 20
-              },
-              {
-                id: 1,
-                tag: 'project',
-                goal: '考驾照',
-                percent: 100
-              },
-              {
-                id: 2,
-                tag: 'project',
-                goal: '秋招',
-                percent: 100
-              }
-            ]
-          },
-          {
-            id: 2,
-            show: true,
-            type: '2',
-            percent: 0,
-            date: '2017-09-01',
-            title: '2017年9月报告',
-            content: '内容。。。\nddddddddddd\naaaaaaaaa',
-            plans: [
-              {
-                id: 3,
-                tag: '秋招',
-                goal: '复习',
-                percent: 70
-              },
-              {
-                id: 4,
-                tag: '开学',
-                goal: '选班委',
-                percent: 100
-              }
-            ]
-          },
-          {
-            id: 3,
-            show: true,
-            type: '3',
-            percent: 0,
-            date: '2018-02-12',
-            title: '2018春节活动',
-            content: '内容。。。',
-            plans: [
-              {
-                id: 5,
-                tag: '旅游',
-                goal: '深圳',
-                percent: 100
-              },
-              {
-                id: 6,
-                tag: '旅游',
-                goal: '香港',
-                percent: 100
-              }
-            ]
-          },
-          {
-            id: 4,
-            show: true,
-            type: '2',
-            percent: 0,
-            date: '2018-03-04',
-            title: '2018开学准备',
-            content: '内容',
-            plans: [
-              {
-                id: 7,
-                tag: '实习',
-                goal: '初期报告',
-                percent: 0
-              }
-            ]
-          },
-          {
-            id: 5,
-            show: true,
-            type: '2',
-            percent: 0,
-            date: '2018-01-12',
-            title: '放假安排',
-            content: '## 1.\n- projects1\n- projects2\n- projects3\n- projects4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
-            plans: [
-              {
-                id: 8,
-                tag: '年前',
-                goal: '在家休息',
-                percent: 100
-              },
-              {
-                id: 9,
-                tag: '年后',
-                goal: '出行游玩',
-                percent: 100
-              }
-            ]
-          },
-          {
-            id: 6,
-            show: true,
-            type: '2',
-            percent: 0,
-            date: '2018-03-15',
-            title: '实习相关事项',
-            content: '内容',
-            plans: []
-          },
-          {
-            id: 7,
-            show: true,
-            type: '4',
-            percent: 0,
-            date: '2018-05-01',
-            title: '毕设安排',
-            content: '内容',
-            plans: []
-          }
-        ]
-      } else {
-        this.currentProjects = [
-          {
-            id: 1001,
-            show: true,
-            type: '2',
-            percent: 0,
-            date: '2018-03-26',
-            title: '测试标题',
-            content: '测试内容。。。\nddddddddddd\naaaaaaaaa',
-            plans: [
-              {
-                id: 10001,
-                tag: '测试tag1',
-                goal: '测试goal1',
-                percent: 70
-              },
-              {
-                id: 10002,
-                tag: '测试tag2',
-                goal: '测试goal2',
-                percent: 100
-              }
-            ]
-          }
-        ]
-      }
-      this.computePercent()
-      this.clickProjectsTag(this.activeProjectsTag)
-      setTimeout(() => {
-        _this.modalViewProjects = true
-        _this.spinShow = false
-      }, 2000)
+      // if (id === '13608089849') {
+      //   this.currentProjects = [
+      //     {
+      //       id: 1,
+      //       show: true,
+      //       type: '1',
+      //       percent: 0,
+      //       date: '2017-03-01',
+      //       title: '2017年度计划',
+      //       content: '内容。。。',
+      //       plans: [
+      //         {
+      //           id: 0,
+      //           tag: 'project',
+      //           goal: '健身',
+      //           percent: 20
+      //         },
+      //         {
+      //           id: 1,
+      //           tag: 'project',
+      //           goal: '考驾照',
+      //           percent: 100
+      //         },
+      //         {
+      //           id: 2,
+      //           tag: 'project',
+      //           goal: '秋招',
+      //           percent: 100
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       id: 2,
+      //       show: true,
+      //       type: '2',
+      //       percent: 0,
+      //       date: '2017-09-01',
+      //       title: '2017年9月报告',
+      //       content: '内容。。。\nddddddddddd\naaaaaaaaa',
+      //       plans: [
+      //         {
+      //           id: 3,
+      //           tag: '秋招',
+      //           goal: '复习',
+      //           percent: 70
+      //         },
+      //         {
+      //           id: 4,
+      //           tag: '开学',
+      //           goal: '选班委',
+      //           percent: 100
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       id: 3,
+      //       show: true,
+      //       type: '3',
+      //       percent: 0,
+      //       date: '2018-02-12',
+      //       title: '2018春节活动',
+      //       content: '内容。。。',
+      //       plans: [
+      //         {
+      //           id: 5,
+      //           tag: '旅游',
+      //           goal: '深圳',
+      //           percent: 100
+      //         },
+      //         {
+      //           id: 6,
+      //           tag: '旅游',
+      //           goal: '香港',
+      //           percent: 100
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       id: 4,
+      //       show: true,
+      //       type: '2',
+      //       percent: 0,
+      //       date: '2018-03-04',
+      //       title: '2018开学准备',
+      //       content: '内容',
+      //       plans: [
+      //         {
+      //           id: 7,
+      //           tag: '实习',
+      //           goal: '初期报告',
+      //           percent: 0
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       id: 5,
+      //       show: true,
+      //       type: '2',
+      //       percent: 0,
+      //       date: '2018-01-12',
+      //       title: '放假安排',
+      //       content: '## 1.\n- projects1\n- projects2\n- projects3\n- projects4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
+      //       plans: [
+      //         {
+      //           id: 8,
+      //           tag: '年前',
+      //           goal: '在家休息',
+      //           percent: 100
+      //         },
+      //         {
+      //           id: 9,
+      //           tag: '年后',
+      //           goal: '出行游玩',
+      //           percent: 100
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       id: 6,
+      //       show: true,
+      //       type: '2',
+      //       percent: 0,
+      //       date: '2018-03-15',
+      //       title: '实习相关事项',
+      //       content: '内容',
+      //       plans: []
+      //     },
+      //     {
+      //       id: 7,
+      //       show: true,
+      //       type: '4',
+      //       percent: 0,
+      //       date: '2018-05-01',
+      //       title: '毕设安排',
+      //       content: '内容',
+      //       plans: []
+      //     }
+      //   ]
+      // } else {
+      //   this.currentProjects = [
+      //     {
+      //       id: 1001,
+      //       show: true,
+      //       type: '2',
+      //       percent: 0,
+      //       date: '2018-03-26',
+      //       title: '测试标题',
+      //       content: '测试内容。。。\nddddddddddd\naaaaaaaaa',
+      //       plans: [
+      //         {
+      //           id: 10001,
+      //           tag: '测试tag1',
+      //           goal: '测试goal1',
+      //           percent: 70
+      //         },
+      //         {
+      //           id: 10002,
+      //           tag: '测试tag2',
+      //           goal: '测试goal2',
+      //           percent: 100
+      //         }
+      //       ]
+      //     }
+      //   ]
+      // }
+      // this.computePercent()
+      // this.clickProjectsTag(this.activeProjectsTag)
+      // setTimeout(() => {
+      //   _this.modalViewProjects = true
+      //   _this.spinShow = false
+      // }, 2000)
       // TEST END
       let _this = this
-      teamworkApi.viewMemberProjects(tel).then(function (response) {
+      teamworkApi.viewMemberProjects(id).then(function (response) {
         if (response.data.result === true) {
-          _this.currentProjects = response.data.projects
+          _this.currentProjects = response.data.data
           _this.computePercent()
           _this.clickProjectsTag(_this.activeProjectsTag)
         } else {
@@ -537,15 +539,15 @@ export default {
       }
       this.currentProject = {}
     },
-    viewSummaries (tel, name, email) {
+    viewSummaries (id, name, num) {
       this.$Message.error('Function not available.')
     },
-    setMemberPermission (name, tel) {
+    setMemberPermission (name, id) {
       this.currentPermission = {
         teamId: this.teamData.id,
         teamName: this.teamData.name,
         name: name,
-        tel: tel,
+        id: id,
         permission: 0
       }
       this.modalSetPermission = true
@@ -553,25 +555,25 @@ export default {
     setPermission () {
       let _this = this
       // TEST START
-      setTimeout(() => {
-        for (var j = 0; j < _this.teamData.members.length; j++) {
-          if (_this.teamData.members[j].tel === _this.currentPermission.tel) {
-            _this.teamData.members[j].permission = _this.currentPermission.permission
-            _this.currentPermission = {}
-            break
-          }
-        }
-        _this.$Notice.success({
-          title: 'Set successful.',
-          desc: ''
-        })
-        _this.modalSetPermission = false
-      }, 2000)
+      // setTimeout(() => {
+      //   for (var j = 0; j < _this.teamData.members.length; j++) {
+      //     if (_this.teamData.members[j].id === _this.currentPermission.id) {
+      //       _this.teamData.members[j].permission = _this.currentPermission.permission
+      //       _this.currentPermission = {}
+      //       break
+      //     }
+      //   }
+      //   _this.$Notice.success({
+      //     title: 'Set successful.',
+      //     desc: ''
+      //   })
+      //   _this.modalSetPermission = false
+      // }, 2000)
       // TEST END
-      teamworkApi.setPermission(this.currentPermission.tel, this.currentPermission.teamId, this.currentPermission.permission).then(function (response) {
+      teamworkApi.setPermission(this.currentPermission.id, this.currentPermission.teamId, this.currentPermission.permission).then(function (response) {
         if (response.data.result === true) {
           for (var j = 0; j < _this.teamData.members.length; j++) {
-            if (_this.teamData.members[j].tel === _this.currentPermission.tel) {
+            if (_this.teamData.members[j].id === _this.currentPermission.id) {
               _this.teamData.members[j].permission = _this.currentPermission.permission
               _this.currentPermission = {}
               break
@@ -590,11 +592,11 @@ export default {
         _this.modalSetPermission = false
       })
     },
-    removeMember (tel, name) {
+    removeMember (id, name) {
       this.currentRemove = {
         teamId: this.teamData.id,
         name: name,
-        tel: tel
+        id: id
       }
       this.modalRemoveMember = true
     },
@@ -612,23 +614,23 @@ export default {
       }
       let _this = this
       // TEST START
-      setTimeout(() => {
-        for (var j = 0; j < _this.teamData.members.length; j++) {
-          if (_this.teamData.members[j].tel === _this.currentRemove.tel) {
-            _this.teamData.members.splice(j, 1)
-            _this.currentRemove = []
-            _this.password = ''
-            break
-          }
-        }
-        _this.$Notice.success({
-          title: 'Remove successful.',
-          desc: ''
-        })
-        _this.modalRemoveMember = false
-      }, 2000)
+      // setTimeout(() => {
+      //   for (var j = 0; j < _this.teamData.members.length; j++) {
+      //     if (_this.teamData.members[j].id === _this.currentRemove.id) {
+      //       _this.teamData.members.splice(j, 1)
+      //       _this.currentRemove = []
+      //       _this.password = ''
+      //       break
+      //     }
+      //   }
+      //   _this.$Notice.success({
+      //     title: 'Remove successful.',
+      //     desc: ''
+      //   })
+      //   _this.modalRemoveMember = false
+      // }, 2000)
       // TEST END
-      teamworkApi.remove(this.currentRemove.tel, this.currentRemove.teamId).then(function (response) {
+      teamworkApi.remove(this.currentRemove.id, this.currentRemove.teamId).then(function (response) {
         if (response.data.result === true) {
           _this.$Notice.success({
             title: 'Remove successful.',

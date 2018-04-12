@@ -39,7 +39,7 @@
     transform        : rotateY(0);
   }
 }
-@keyframes ani-demo-spin {
+@keyframes ani-spin {
   from {
     transform: rotate(0deg);
   }
@@ -106,12 +106,13 @@
 .icon-item {
   margin     : auto 2px;
   width      : 18px;
+  display    : inline-block;
   text-align : center;
   align-items: center;
 }
 
 .icon-spin {
-  animation: ani-demo-spin 1s linear infinite;
+  animation: ani-spin 1s linear infinite;
 }
 
 .menu-item {

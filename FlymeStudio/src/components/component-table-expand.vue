@@ -7,7 +7,7 @@
   <Row>
     <div class="expand-key">Plans</div>
     <div class="div-plans">
-      <Alert class="alert-plans" v-for="item in row.plans" :key="item.timestamp">
+      <Alert class="alert-plans" v-for="item in row.plans" :key="item.id">
         <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
         <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
         <div class="div-plan">

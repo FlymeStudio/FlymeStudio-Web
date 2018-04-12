@@ -94,6 +94,8 @@ export default{
     return {
       spinShow: false,
       info: {
+        id: 0,
+        num: '',
         tel: '',
         name: '',
         email: '',
@@ -153,42 +155,31 @@ export default{
       }
       this.spinShow = true
       let _this = this
-      // TEST START
-      setTimeout(() => {
-        _this.dataTeam = [
-          {
-            id: '00001',
-            name: 'System support',
-            administrator: '李永达',
-            count: '11'
-          },
-          {
-            id: '00002',
-            name: 'Overseas firmware',
-            administrator: '段启智',
-            count: '8'
-          },
-          {
-            id: '00003',
-            name: 'System test',
-            administrator: '张三',
-            count: '9'
-          }
-        ]
-        _this.spinShow = false
-      }, 1000)
-      // TEST END
       teamworkApi.searchTeam(this.searchContent).then(function (response) {
-        if (response.data.result === true) {
-          _this.dataTeam = response.data.dataTeam
-          _this.spinShow = false
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.dataTeam = response.data.data
+          } else {
+            _this.$Notice.error({
+              title: 'Search failed.',
+              desc: ''
+            })
+          }
         } else {
           _this.$Notice.error({
-            title: 'Search failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
-          _this.spinShow = false
+          console.log('status=' + response.status)
         }
+        _this.spinShow = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        console.log(error)
       })
     },
     changeSelection (currentRow, oldCurrentRow) {
@@ -200,28 +191,35 @@ export default{
     join () {
       this.spinShow = true
       let _this = this
-      // TEST START
-      setTimeout(() => {
-        _this.$Notice.success({
-          title: 'Send message successful.',
-          desc: 'Please waitting for manager to check.'
-        })
-        _this.spinShow = false
-      }, 1000)
-      // TEST END
-      teamworkApi.join(this.info.tel, this.currentData.id).then(function (response) {
-        if (response.data.result === true) {
-          _this.$Notice.success({
-            title: 'Send message successful.',
-            desc: 'Please waitting for manager to check.'
-          })
+      teamworkApi.join(this.info.id, this.currentData.id).then(function (response) {
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.$Notice.success({
+              title: 'Send message successful.',
+              desc: 'Please waitting for manager to check.'
+            })
+          } else {
+            _this.$Notice.error({
+              title: 'Join failed.',
+              desc: ''
+            })
+          }
         } else {
           _this.$Notice.error({
-            title: 'Join failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
+          console.log('status=' + response.status)
         }
         _this.spinShow = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        _this.spinShow = false
+        console.log(error)
       })
     }
   }

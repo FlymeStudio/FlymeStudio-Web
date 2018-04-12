@@ -94,6 +94,8 @@ export default{
   data () {
     return {
       info: {
+        id: 0,
+        num: '',
         tel: '',
         name: '',
         email: '',
@@ -140,29 +142,37 @@ export default{
         }, 1000)
         return
       }
-      // TEST START
-      setTimeout(() => {
-        _this.$Notice.success({
-          title: 'Create team successful.',
-          desc: ''
-        })
-        _this.modalCreate = false
-      }, 1000)
-      // TEST END
-      teamworkApi.create(this.info.tel, this.createName).then(function (response) {
-        if (response.data.result === true) {
-          _this.$Notice.success({
-            title: 'Create team successful.',
-            desc: ''
-          })
+      teamworkApi.create(this.info.id, this.createName).then(function (response) {
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.$Notice.success({
+              title: 'Create team successful.',
+              desc: ''
+            })
+          } else {
+            _this.$Notice.error({
+              title: 'Create team failed.',
+              desc: ''
+            })
+          }
         } else {
           _this.$Notice.error({
-            title: 'Create team failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
+          console.log('status=' + response.status)
         }
         _this.password = ''
         _this.modalCreate = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        _this.password = ''
+        _this.modalCreate = false
+        console.log(error)
       })
     }
   }

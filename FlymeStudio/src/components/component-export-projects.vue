@@ -18,7 +18,7 @@
         <span class="span-title">Resource</span>
         <div class="div-resource">
           <Select v-model="selectMemberId" style="width:200px" placeholder="Select member">
-            <Option v-for="member in teamData.members" :value="member.num" :key="member.num">{{ member.name }}({{ member.num }})</Option>
+            <Option v-for="member in teamData.members" :value="member.id" :key="member.id">{{ member.name }}({{ member.num }})</Option>
           </Select>
           <Button class="btn" type="primary" shape="circle" icon="ios-search" @click="search()">Search</Button>
           <Button class="btn" type="info" shape="circle" icon="android-close" @click="clearResource()">Clear</Button>

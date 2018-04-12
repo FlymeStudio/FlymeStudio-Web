@@ -44,7 +44,6 @@
       <Header class="layout-header-bar" theme="dark">
         <Icon type="clipboard" size=18 style="margin-right:10px;"></Icon><span>Project</span>
         <Icon type="person" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentView.name }}</span>
-        <Icon type="ios-telephone" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentView.id }}</span>
         <Icon type="pound" size=18 style="margin:auto 10px auto 30px;"></Icon><span>{{ currentView.num }}</span>
       </Header>
 
@@ -179,13 +178,13 @@
         </RadioGroup>
       </template>
     </Alert>
-    <p>Are you sure to set permission of {{ currentPermission.name }}({{ currentPermission.id }}) in {{ currentPermission.teamName }}?</p>
+    <p>Are you sure to set permission of {{ currentPermission.name }}({{ currentPermission.num }}) in {{ currentPermission.teamName }}?</p>
   </Modal>
 
   <!-- modal-remove = -->
   <Modal class-name="vertical-center-modal" class="modal-remove" v-model="modalRemoveMember" title="Confirm" :mask-closable="false" :closable="false" ok-text="Remove" cancel-text="Cancel" loading @on-ok="remove()">
     <Alert type="warning" show-icon>
-      <p>Are you sure to remove {{ currentRemove.name }}({{ currentRemove.id }}) from team?</p>
+      <p>Are you sure to remove {{ currentRemove.name }}({{ currentRemove.num }}) from {{ currentRemove.teamName }}({{ currentRemove.teamId }}) ?</p>
       <template slot="desc">
       <p>If yes, input the password to check your identity:</p>
       <Input style="margin-top:20px;" type="password" v-model="password" size="large" placeholder="Password" clearable>
@@ -249,16 +248,18 @@ export default {
       currentPermission: {
         teamId: '',
         teamName: '',
-        name: '',
         id: '',
+        name: '',
+        num: '',
         permission: '0'
       },
       modalSetPermission: false,
       /** remove **/
       currentRemove: {
         teamId: '',
+        id: '',
         name: '',
-        id: ''
+        num: ''
       },
       modalRemoveMember: false
     }
@@ -274,192 +275,35 @@ export default {
         name: name,
         num: num
       }
-      // TEST START
-      // if (id === '13608089849') {
-      //   this.currentProjects = [
-      //     {
-      //       id: 1,
-      //       show: true,
-      //       type: '1',
-      //       percent: 0,
-      //       date: '2017-03-01',
-      //       title: '2017年度计划',
-      //       content: '内容。。。',
-      //       plans: [
-      //         {
-      //           id: 0,
-      //           tag: 'project',
-      //           goal: '健身',
-      //           percent: 20
-      //         },
-      //         {
-      //           id: 1,
-      //           tag: 'project',
-      //           goal: '考驾照',
-      //           percent: 100
-      //         },
-      //         {
-      //           id: 2,
-      //           tag: 'project',
-      //           goal: '秋招',
-      //           percent: 100
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       id: 2,
-      //       show: true,
-      //       type: '2',
-      //       percent: 0,
-      //       date: '2017-09-01',
-      //       title: '2017年9月报告',
-      //       content: '内容。。。\nddddddddddd\naaaaaaaaa',
-      //       plans: [
-      //         {
-      //           id: 3,
-      //           tag: '秋招',
-      //           goal: '复习',
-      //           percent: 70
-      //         },
-      //         {
-      //           id: 4,
-      //           tag: '开学',
-      //           goal: '选班委',
-      //           percent: 100
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       id: 3,
-      //       show: true,
-      //       type: '3',
-      //       percent: 0,
-      //       date: '2018-02-12',
-      //       title: '2018春节活动',
-      //       content: '内容。。。',
-      //       plans: [
-      //         {
-      //           id: 5,
-      //           tag: '旅游',
-      //           goal: '深圳',
-      //           percent: 100
-      //         },
-      //         {
-      //           id: 6,
-      //           tag: '旅游',
-      //           goal: '香港',
-      //           percent: 100
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       id: 4,
-      //       show: true,
-      //       type: '2',
-      //       percent: 0,
-      //       date: '2018-03-04',
-      //       title: '2018开学准备',
-      //       content: '内容',
-      //       plans: [
-      //         {
-      //           id: 7,
-      //           tag: '实习',
-      //           goal: '初期报告',
-      //           percent: 0
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       id: 5,
-      //       show: true,
-      //       type: '2',
-      //       percent: 0,
-      //       date: '2018-01-12',
-      //       title: '放假安排',
-      //       content: '## 1.\n- projects1\n- projects2\n- projects3\n- projects4\n---\n**paragraphy**\n---\n## 2.\nlong content: aaaaaaaaaaaaaa\n---\n > int a = 1\n\n### h3: title3\np4',
-      //       plans: [
-      //         {
-      //           id: 8,
-      //           tag: '年前',
-      //           goal: '在家休息',
-      //           percent: 100
-      //         },
-      //         {
-      //           id: 9,
-      //           tag: '年后',
-      //           goal: '出行游玩',
-      //           percent: 100
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       id: 6,
-      //       show: true,
-      //       type: '2',
-      //       percent: 0,
-      //       date: '2018-03-15',
-      //       title: '实习相关事项',
-      //       content: '内容',
-      //       plans: []
-      //     },
-      //     {
-      //       id: 7,
-      //       show: true,
-      //       type: '4',
-      //       percent: 0,
-      //       date: '2018-05-01',
-      //       title: '毕设安排',
-      //       content: '内容',
-      //       plans: []
-      //     }
-      //   ]
-      // } else {
-      //   this.currentProjects = [
-      //     {
-      //       id: 1001,
-      //       show: true,
-      //       type: '2',
-      //       percent: 0,
-      //       date: '2018-03-26',
-      //       title: '测试标题',
-      //       content: '测试内容。。。\nddddddddddd\naaaaaaaaa',
-      //       plans: [
-      //         {
-      //           id: 10001,
-      //           tag: '测试tag1',
-      //           goal: '测试goal1',
-      //           percent: 70
-      //         },
-      //         {
-      //           id: 10002,
-      //           tag: '测试tag2',
-      //           goal: '测试goal2',
-      //           percent: 100
-      //         }
-      //       ]
-      //     }
-      //   ]
-      // }
-      // this.computePercent()
-      // this.clickProjectsTag(this.activeProjectsTag)
-      // setTimeout(() => {
-      //   _this.modalViewProjects = true
-      //   _this.spinShow = false
-      // }, 2000)
-      // TEST END
       let _this = this
       teamworkApi.viewMemberProjects(id).then(function (response) {
-        if (response.data.result === true) {
-          _this.currentProjects = response.data.data
-          _this.computePercent()
-          _this.clickProjectsTag(_this.activeProjectsTag)
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.currentProjects = response.data.data
+            _this.computePercent()
+            _this.clickProjectsTag(_this.activeProjectsTag)
+          } else {
+            _this.$Notice.error({
+              title: 'Failed to get data.',
+              desc: ''
+            })
+          }
         } else {
           _this.$Notice.error({
-            title: 'Failed to get data.',
+            title: 'HTTP request error.',
             desc: ''
           })
+          console.log('status=' + response.status)
         }
         _this.spinShow = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        _this.spinShow = false
+        console.log(error)
       })
     },
     computePercent () {
@@ -554,47 +398,48 @@ export default {
     },
     setPermission () {
       let _this = this
-      // TEST START
-      // setTimeout(() => {
-      //   for (var j = 0; j < _this.teamData.members.length; j++) {
-      //     if (_this.teamData.members[j].id === _this.currentPermission.id) {
-      //       _this.teamData.members[j].permission = _this.currentPermission.permission
-      //       _this.currentPermission = {}
-      //       break
-      //     }
-      //   }
-      //   _this.$Notice.success({
-      //     title: 'Set successful.',
-      //     desc: ''
-      //   })
-      //   _this.modalSetPermission = false
-      // }, 2000)
-      // TEST END
-      teamworkApi.setPermission(this.currentPermission.id, this.currentPermission.teamId, this.currentPermission.permission).then(function (response) {
-        if (response.data.result === true) {
-          for (var j = 0; j < _this.teamData.members.length; j++) {
-            if (_this.teamData.members[j].id === _this.currentPermission.id) {
-              _this.teamData.members[j].permission = _this.currentPermission.permission
-              _this.currentPermission = {}
-              break
+      teamworkApi.setPermission(this.currentPermission.teamId, this.currentPermission.id, this.currentPermission.permission).then(function (response) {
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            for (var j = 0; j < _this.teamData.members.length; j++) {
+              if (_this.teamData.members[j].id === _this.currentPermission.id) {
+                _this.teamData.members[j].permission = _this.currentPermission.permission
+                _this.currentPermission = {}
+                break
+              }
             }
+            _this.$Notice.success({
+              title: 'Set successful.',
+              desc: ''
+            })
+          } else {
+            _this.$Notice.error({
+              title: 'Set failed.',
+              desc: ''
+            })
           }
-          _this.$Notice.success({
-            title: 'Set successful.',
-            desc: ''
-          })
         } else {
           _this.$Notice.error({
-            title: 'Set failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
+          console.log('status=' + response.status)
         }
         _this.modalSetPermission = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        _this.modalSetPermission = false
+        console.log(error)
       })
     },
     removeMember (id, name) {
       this.currentRemove = {
         teamId: this.teamData.id,
+        teamName: this.teamData.name,
         name: name,
         id: id
       }
@@ -613,39 +458,38 @@ export default {
         return
       }
       let _this = this
-      // TEST START
-      // setTimeout(() => {
-      //   for (var j = 0; j < _this.teamData.members.length; j++) {
-      //     if (_this.teamData.members[j].id === _this.currentRemove.id) {
-      //       _this.teamData.members.splice(j, 1)
-      //       _this.currentRemove = []
-      //       _this.password = ''
-      //       break
-      //     }
-      //   }
-      //   _this.$Notice.success({
-      //     title: 'Remove successful.',
-      //     desc: ''
-      //   })
-      //   _this.modalRemoveMember = false
-      // }, 2000)
-      // TEST END
-      teamworkApi.remove(this.currentRemove.id, this.currentRemove.teamId).then(function (response) {
-        if (response.data.result === true) {
-          _this.$Notice.success({
-            title: 'Remove successful.',
-            desc: ''
-          })
-          _this.currentRemove = []
-          _this.password = ''
-          _this.getTeams()
+      teamworkApi.remove(this.currentRemove.teamId, this.currentRemove.id).then(function (response) {
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.$Notice.success({
+              title: 'Remove successful.',
+              desc: ''
+            })
+            _this.currentRemove = []
+            _this.password = ''
+            _this.getTeams()
+          } else {
+            _this.$Notice.error({
+              title: 'Remove failed.',
+              desc: ''
+            })
+          }
         } else {
           _this.$Notice.error({
-            title: 'Remove failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
+          console.log('status=' + response.status)
         }
         _this.modalRemoveMember = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        _this.modalRemoveMember = false
+        console.log(error)
       })
     }
   }

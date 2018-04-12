@@ -215,7 +215,7 @@ export default{
         }, 1000)
         return
       }
-      informationApi.modify(this.info.tel, this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.newPassword).then(function (response) {
+      informationApi.modify(this.info.id, this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.newPassword).then(function (response) {
         console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {

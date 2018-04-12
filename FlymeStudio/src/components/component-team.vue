@@ -17,7 +17,7 @@
       <componentInvite :dataId="teamData.id" :dataName="teamData.name"></componentInvite>
     </Tooltip>
     <Tooltip content="Disband team">
-      <Button v-if="teamData.administratorTel == info.tel" class="btn-team" type="error" shape="circle" icon="android-warning" @click="disbandTeam(teamData.id, teamData.name)"></Button>
+      <Button v-if="teamData.administratorId == info.id" class="btn-team" type="error" shape="circle" icon="android-warning" @click="disbandTeam(teamData.id, teamData.name)"></Button>
       <Button v-else class="btn-team" type="warning" shape="circle" icon="android-warning" disabled></Button>
     </Tooltip>
   </Alert>
@@ -81,6 +81,8 @@ export default {
       teamData: this.team,
       teamType: this.type,
       info: {
+        id: 0,
+        num: '',
         tel: '',
         name: '',
         email: '',
@@ -127,30 +129,35 @@ export default {
         return
       }
       let _this = this
-      // TEST START
-      // setTimeout(() => {
-      //   _this.$Notice.success({
-      //     title: 'Remove successful.',
-      //     desc: ''
-      //   })
-      //   _this.modalDisband = false
-      //   _this.$router.push('/')
-      // }, 2000)
-      // TEST END
       teamworkApi.disband(this.currentDisband.teamId).then(function (response) {
-        if (response.data.result === true) {
-          _this.$Notice.success({
-            title: 'Disband successful.',
-            desc: ''
-          })
-          _this.$router.push('/')
+        console.log('response=' + response)
+        if (response.status === 200) {
+          if (response.data.result === true) {
+            _this.$Notice.success({
+              title: 'Disband successful.',
+              desc: ''
+            })
+            _this.$router.push('/')
+          } else {
+            _this.$Notice.error({
+              title: 'Disband failed.',
+              desc: ''
+            })
+          }
         } else {
           _this.$Notice.error({
-            title: 'Disband failed.',
+            title: 'HTTP request error.',
             desc: ''
           })
+          console.log('status=' + response.status)
         }
         _this.modalDisband = false
+      }).catch(function (error) {
+        _this.$Notice.error({
+          title: 'HTTP request error.',
+          desc: ''
+        })
+        console.log(error)
       })
     }
   }

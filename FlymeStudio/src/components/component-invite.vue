@@ -88,23 +88,6 @@ export default {
       }
       this.spinInvite = true
       let _this = this
-      // TEST START
-      // setTimeout(() => {
-      //   _this.dataUser = [
-      //     {
-      //       id: '1',
-      //       num: '12345',
-      //       name: '曾宇'
-      //     },
-      //     {
-      //       id: '2',
-      //       num: '12346',
-      //       name: '李四'
-      //     }
-      //   ]
-      //   _this.spinInvite = false
-      // }, 1000)
-      // TEST END
       teamworkApi.searchUser(this.searchContent).then(function (response) {
         console.log('response=' + response)
         if (response.status === 200) {
@@ -142,7 +125,7 @@ export default {
     invitePeople () {
       this.spinInvite = true
       let _this = this
-      teamworkApi.invite(this.info.id, this.inviteTeam.teamId, this.currentInvite.id).then(function (response) {
+      teamworkApi.invite(this.info.id, this.currentInvite.id, this.inviteTeam.teamId).then(function (response) {
         console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {

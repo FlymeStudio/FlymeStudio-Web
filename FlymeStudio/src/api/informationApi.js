@@ -6,9 +6,9 @@ import axios from 'axios'
 import qs from 'qs'
 
 export default {
-  modify (old, name, tel, email, password) {
+  modify (id, name, tel, email, password) {
     var data = qs.stringify({
-      old: old,
+      id: id,
       name: name,
       tel: tel,
       email: email,

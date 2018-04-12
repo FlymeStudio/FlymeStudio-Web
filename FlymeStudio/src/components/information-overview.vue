@@ -50,7 +50,7 @@
           <!-- type: 1 = invite, 2 = apply -->
           <Alert class="alert-message" show-icon v-for="message in info.messages" :key="message.messageId">
             <Icon class="icon-item" type="ios-people" slot="icon" size=25></Icon>
-            <Button class="btn-user" @click="clickUser(message.senderName, message.senderNum)">{{ message.sendName }}</Button>
+            <Button class="btn-user" @click="clickUser(message.senderName, message.senderId)">{{ message.senderName }}({{ message.senderNum }})</Button>
             <span v-if="message.type == 1"> invited you to join </span>
             <span v-else-if="message.type == 2"> applied to join </span>
             <Button v-if="message.type == 1" class="btn-team" @click="clickTeam(message.teamName, message.teamId)">{{ message.teamName }}</Button>
@@ -69,13 +69,13 @@
             <Alert>
               <div class="div-menu-item">
                 <Icon class="icon-item" type="person" size=20></Icon>
-                <span class="span-item">{{ user.sendName }}</span>
+                <span class="span-item">{{ user.senderName }}</span>
               </div>
             </Alert>
             <Alert>
               <div class="div-menu-item">
                 <Icon class="icon-item" type="ios-telephone" size=20></Icon>
-                <span class="span-item">{{ user.sendNum }}</span>
+                <span class="span-item">{{ user.senderNum }}</span>
               </div>
             </Alert>
           </Modal>
@@ -97,7 +97,7 @@
             <Alert>
               <div class="div-menu-item">
                 <Icon class="icon-item" type="star" size=20></Icon>
-                <span class="span-item">{{ team.administrator }}</span>
+                <span class="span-item">{{ team.administratorName }}({{ team.administratorNum }})</span>
               </div>
             </Alert>
             <Alert>
@@ -169,15 +169,16 @@ export default{
       },
       spinShow: false,
       user: {
-        sendName: '',
-        sendNum: ''
+        senderName: '',
+        senderNum: ''
       },
       modalUser: false,
       team: {
         teamId: '',
         teamName: '',
         count: 0,
-        administrator: ''
+        administratorName: '',
+        administratorNum: ''
       },
       modalTeam: false,
       modalAgreement: false
@@ -192,9 +193,9 @@ export default{
     getInfo () {
       this.info = this.$store.state.user.userInfo
     },
-    clickUser (sendName, sendNum) {
-      this.user.sendName = sendName
-      this.user.sendNum = sendNum
+    clickUser (senderName, senderNum) {
+      this.user.senderName = senderName
+      this.user.senderNum = senderNum
       this.modalUser = true
     },
     clickTeam (teamName, teamId) {
@@ -208,7 +209,8 @@ export default{
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.team.count = response.data.data.count
-            _this.team.administrator = response.data.data.administrator
+            _this.team.administratorName = response.data.data.administratorName
+            _this.team.administratorNum = response.data.data.administratorNum
             _this.modalTeam = true
           } else {
             _this.$Notice.error({

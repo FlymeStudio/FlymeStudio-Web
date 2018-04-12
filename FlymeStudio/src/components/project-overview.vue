@@ -509,7 +509,7 @@ export default{
     },
     submitModify () {
       let _this = this
-      projectApi.modify(this.info.id, this.formItem.id, this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
+      projectApi.modify(this.formItem.id, this.info.id, this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
         console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
@@ -543,7 +543,7 @@ export default{
     deleteProject () {
       this.loadingDelete = true
       let _this = this
-      projectApi.delete(this.info.id, this.formItem.id).then(function (response) {
+      projectApi.delete(this.formItem.id, this.info.id).then(function (response) {
         console.log('response=' + response)
         _this.loadingDelete = false
         if (response.status === 200) {

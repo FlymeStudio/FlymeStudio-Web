@@ -19,7 +19,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   create (user, type, date, title, content, plans) {
@@ -40,7 +40,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   modify (id, user, type, date, title, content, plans) {
@@ -62,7 +62,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   delete (id, user) {
@@ -79,7 +79,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   }
 }

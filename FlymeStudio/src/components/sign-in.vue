@@ -111,10 +111,10 @@ export default {
       let _this = this
       accountApi.signIn(this.formItem.user, this.formItem.password)
         .then(function (response) {
-          console.log('response=' + response)
           if (response.status === 200) {
             if (response.data.result === true) {
               let userInfo = response.data.data
+              console.log(response.data.data)
               _this.$store.dispatch('doSignIn', userInfo)
               _this.$Notice.success({
                 title: 'Sign in successful.',

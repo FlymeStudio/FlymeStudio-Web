@@ -559,12 +559,14 @@ export default{
               title: 'Delete failed.',
               desc: ''
             })
+            _this.loadingDelete = true
           }
         } else {
           _this.$Notice.error({
             title: 'HTTP request error.',
             desc: ''
           })
+          _this.loadingDelete = true
           console.log('status=' + response.status)
         }
       }).catch(function (error) {

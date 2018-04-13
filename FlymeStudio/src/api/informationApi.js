@@ -23,7 +23,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   reply (id, result) {
@@ -40,7 +40,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   }
 }

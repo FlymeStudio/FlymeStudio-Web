@@ -243,8 +243,8 @@ export default{
           title: 'HTTP request error.',
           desc: ''
         })
+        _this.modalModify = false
         console.log(error)
-        _this.loading = false
       })
     },
     handleSubmit (name) {

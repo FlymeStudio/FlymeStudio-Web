@@ -205,7 +205,6 @@ export default{
       let _this = this
       teamworkApi.getTeamInfo(teamId).then(function (response) {
         console.log('response=' + response)
-        _this.spinShow = false
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.team.count = response.data.data.count
@@ -225,11 +224,13 @@ export default{
           })
           console.log('status=' + response.status)
         }
+        _this.spinShow = false
       }).catch(function (error) {
         _this.$Notice.error({
           title: 'HTTP request error.',
           desc: ''
         })
+        _this.spinShow = false
         console.log(error)
       })
     },

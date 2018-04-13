@@ -19,7 +19,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   viewTeams (user) {
@@ -35,7 +35,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   searchUser (content) {
@@ -51,7 +51,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   invite (sender, receiver, id) {
@@ -69,7 +69,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   disband (id, user) {
@@ -86,7 +86,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   viewMemberProjects (user) {
@@ -102,7 +102,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   viewMemberSummaries (user) {
@@ -118,7 +118,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   setPermission (id, user, permission) {
@@ -136,7 +136,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   remove (id, user) {
@@ -153,7 +153,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   searchTeam (content) {
@@ -169,7 +169,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   join (sender, id) {
@@ -186,7 +186,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   create (user, name) {
@@ -203,7 +203,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   }
 }

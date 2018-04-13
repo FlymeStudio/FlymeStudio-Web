@@ -112,6 +112,7 @@ export default {
           title: 'HTTP request error.',
           desc: ''
         })
+        _this.spinInvite = false
         console.log(error)
       })
     },
@@ -152,6 +153,7 @@ export default {
           title: 'HTTP request error.',
           desc: ''
         })
+        _this.spinInvite = false
         console.log(error)
       })
     }

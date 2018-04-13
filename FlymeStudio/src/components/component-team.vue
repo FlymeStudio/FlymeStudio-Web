@@ -157,6 +157,7 @@ export default {
           title: 'HTTP request error.',
           desc: ''
         })
+        _this.modalDisband = false
         console.log(error)
       })
     }

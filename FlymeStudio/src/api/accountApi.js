@@ -20,7 +20,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   signUp (num, name, tel, email, password) {
@@ -40,7 +40,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
   signOut (id) {
@@ -56,14 +56,14 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   },
-  retrieve (num, name, tel, email) {
+  retrieve (num, tel, name, email) {
     var data = qs.stringify({
       num: num,
-      name: name,
       tel: tel,
+      name: name,
       email: email
     })
     return axios({
@@ -75,7 +75,7 @@ export default {
       baseURL: baseApi.baseUrl(),
       data: data,
       timeout: 5000,
-      withCredentials: true
+      withCredentials: false
     })
   }
 }

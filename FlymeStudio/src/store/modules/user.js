@@ -2,7 +2,7 @@ import * as types from '../mutation-types'
 
 const state = {
   active: false,
-  domain: 'http://localhost:8080',
+  domain: 'http://localhost:12102',
   userInfo: {
     id: 0,
     num: null,

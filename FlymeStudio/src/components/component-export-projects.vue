@@ -348,6 +348,7 @@ export default {
           title: 'HTTP request error.',
           desc: ''
         })
+        _this.spinShow = false
         console.log(error)
       })
     },

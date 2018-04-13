@@ -361,8 +361,8 @@ export default{
           title: 'HTTP request error.',
           desc: ''
         })
-        console.log(error)
         _this.modalSave = false
+        console.log(error)
       })
     }
   }

@@ -215,11 +215,28 @@ export default{
         }, 1000)
         return
       }
+      if (this.formItem.name === '') {
+        this.formItem.name = this.info.name
+      }
+      if (this.formItem.tel === '') {
+        this.formItem.tel = this.info.tel
+      }
+      if (this.formItem.email === '') {
+        this.formItem.email = this.info.email
+      }
+      if (this.formItem.newPassword === '') {
+        this.formItem.newPassword = this.info.password
+      }
       informationApi.modify(this.info.id, this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.newPassword).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
+            _this.info.name = _this.formItem.name
+            _this.info.tel = _this.formItem.tel
+            _this.info.email = _this.formItem.email
+            _this.info.password = _this.formItem.password
             _this.$store.dispatch('doUpdate', _this.info)
+            _this.getInfo()
+            _this.handleReset('formItem')
             _this.$Notice.success({
               title: 'Modify successful.',
               desc: ''
@@ -235,7 +252,6 @@ export default{
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.modalModify = false
       }).catch(function (error) {

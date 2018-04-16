@@ -130,7 +130,6 @@ export default {
       }
       let _this = this
       teamworkApi.disband(this.currentDisband.teamId).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.$Notice.success({
@@ -149,7 +148,6 @@ export default {
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.modalDisband = false
       }).catch(function (error) {

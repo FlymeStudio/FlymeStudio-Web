@@ -10,8 +10,8 @@
       </Spin>
 
       <div class="div-invite">
-        <div class="div-invite-title">Invite user to join to {{ inviteTeam.teamName }}({{ inviteTeam.teamId }}):</div>
-        <Input class="input-invite" v-model="searchContent" placeholder="User tel or name" clearable></Input>
+        <div class="div-invite-title">Invite user to join {{ inviteTeam.teamName }}({{ inviteTeam.teamId }}):</div>
+        <Input class="input-invite" v-model="searchContent" placeholder="Num | Tel | Name | Email" clearable></Input>
         <Button class="btn" type="primary" shape="circle" icon="ios-search" @click="search()">Search</Button>
         <Button class="btn" type="info" shape="circle" icon="android-close" @click="clear()">Clear</Button>
         <Button class="btn" type="success" shape="circle" icon="android-add" @click="invitePeople()">Invite</Button>
@@ -89,7 +89,6 @@ export default {
       this.spinInvite = true
       let _this = this
       teamworkApi.searchUser(this.searchContent).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.dataUser = response.data.data
@@ -104,7 +103,6 @@ export default {
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.spinInvite = false
       }).catch(function (error) {
@@ -127,7 +125,6 @@ export default {
       this.spinInvite = true
       let _this = this
       teamworkApi.invite(this.info.id, this.currentInvite.id, this.inviteTeam.teamId).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.$Notice.success({
@@ -145,7 +142,6 @@ export default {
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.spinInvite = false
       }).catch(function (error) {

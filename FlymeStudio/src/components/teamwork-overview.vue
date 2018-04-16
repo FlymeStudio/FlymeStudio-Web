@@ -94,7 +94,6 @@ export default{
       this.spinShow = false
       let _this = this
       teamworkApi.viewTeams(this.info.id).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.managedTeams = response.data.data.managedTeams
@@ -110,7 +109,6 @@ export default{
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.spinShow = false
       }).catch(function (error) {

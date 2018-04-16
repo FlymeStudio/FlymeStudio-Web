@@ -90,12 +90,12 @@ export default {
     return {
       isResultView: false,
       formItem: {
-        num: '12345',
-        name: '曾宇',
-        tel: '13608089849',
-        email: '111@qq.com',
-        password: '1234567',
-        confirm: '1234567'
+        num: '',
+        name: '',
+        tel: '',
+        email: '',
+        password: '',
+        confirm: ''
       },
       ruleItem: {
         num: [
@@ -203,7 +203,6 @@ export default {
       this.loading = true
       let _this = this
       accountApi.signUp(this.formItem.num, this.formItem.name, this.formItem.tel, this.formItem.email, this.formItem.password).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.$Notice.success({
@@ -224,7 +223,6 @@ export default {
             desc: ''
           })
           _this.isResultView = false
-          console.log('status=' + response.status)
         }
         _this.loading = false
       }).catch(function (error) {

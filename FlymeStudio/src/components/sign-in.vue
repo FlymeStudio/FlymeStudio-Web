@@ -114,7 +114,6 @@ export default {
           if (response.status === 200) {
             if (response.data.result === true) {
               let userInfo = response.data.data
-              console.log(response.data.data)
               _this.$store.dispatch('doSignIn', userInfo)
               _this.$Notice.success({
                 title: 'Sign in successful.',
@@ -132,7 +131,6 @@ export default {
               title: 'HTTP request error.',
               desc: ''
             })
-            console.log('status=' + response.status)
           }
           _this.loading = false
         }).catch(function (error) {

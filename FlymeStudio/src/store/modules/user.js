@@ -33,7 +33,10 @@ const mutations = {
     state.userInfo = null
   },
   [types.UPDATE] (state, userInfo) {
-    state.userInfo = userInfo
+    state.userInfo.tel = userInfo.tel
+    state.userInfo.name = userInfo.name
+    state.userInfo.email = userInfo.email
+    state.userInfo.password = userInfo.password
   },
   [types.DELETEMSG] (state, messageId) {
     for (var i = 0; i < state.userInfo.messages.length; i++) {

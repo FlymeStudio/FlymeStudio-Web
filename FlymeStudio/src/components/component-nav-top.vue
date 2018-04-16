@@ -122,7 +122,6 @@ export default {
       this.spinShow = true
       let _this = this
       accountApi.signOut(this.info.id).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.$store.dispatch('doSignOut')
@@ -138,7 +137,6 @@ export default {
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.spinShow = false
       }).catch(function (error) {

@@ -324,7 +324,6 @@ export default {
       this.spinExport = true
       let _this = this
       teamworkApi.viewMemberProjects(this.selectMemberId).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.dataResource = response.data.data
@@ -340,15 +339,14 @@ export default {
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
-        _this.spinShow = false
+        _this.spinExport = false
       }).catch(function (error) {
         _this.$Notice.error({
           title: 'HTTP request error.',
           desc: ''
         })
-        _this.spinShow = false
+        _this.spinExport = false
         console.log(error)
       })
     },

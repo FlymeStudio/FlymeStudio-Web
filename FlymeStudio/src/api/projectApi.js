@@ -7,17 +7,14 @@ import qs from 'qs'
 
 export default {
   get (user) {
-    var data = qs.stringify({
-      user: user
-    })
+    let url = projectApi.getUrl() + '?user=' + user
     return axios({
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: projectApi.getUrl(),
+      url: url,
       baseURL: baseApi.baseUrl(),
-      data: data,
       timeout: 5000,
       withCredentials: false
     })
@@ -66,18 +63,14 @@ export default {
     })
   },
   delete (id, user) {
-    var data = qs.stringify({
-      id: id,
-      user: user
-    })
+    let url = projectApi.deleteUrl() + '?id=' + id + '&user=' + user
     return axios({
       method: 'delete',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: projectApi.deleteUrl(),
+      url: url,
       baseURL: baseApi.baseUrl(),
-      data: data,
       timeout: 5000,
       withCredentials: false
     })

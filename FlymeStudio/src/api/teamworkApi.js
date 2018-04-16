@@ -7,49 +7,40 @@ import qs from 'qs'
 
 export default {
   getTeamInfo (id) {
-    var data = qs.stringify({
-      id: id
-    })
+    let url = teamworkApi.getTeamInfoUrl() + '?id=' + id
     return axios({
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.getTeamInfoUrl(),
+      url: url,
       baseURL: baseApi.baseUrl(),
-      data: data,
       timeout: 5000,
       withCredentials: false
     })
   },
   viewTeams (user) {
-    var data = qs.stringify({
-      user: user
-    })
+    let url = teamworkApi.viewTeamsUrl() + '?user=' + user
     return axios({
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.viewTeamsUrl(),
+      url: url,
       baseURL: baseApi.baseUrl(),
-      data: data,
       timeout: 5000,
       withCredentials: false
     })
   },
   searchUser (content) {
-    var data = qs.stringify({
-      content: content
-    })
+    let url = teamworkApi.searchUserUrl() + '?content=' + content
     return axios({
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.searchUserUrl(),
+      url: url,
       baseURL: baseApi.baseUrl(),
-      data: data,
       timeout: 5000,
       withCredentials: false
     })
@@ -73,50 +64,40 @@ export default {
     })
   },
   disband (id, user) {
-    var data = qs.stringify({
-      id: id,
-      user: user
-    })
+    let url = teamworkApi.disbandUrl() + '?id=' + id + '&user=' + user
     return axios({
       method: 'delete',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.disbandUrl(),
+      url: url,
       baseURL: baseApi.baseUrl(),
-      data: data,
       timeout: 5000,
       withCredentials: false
     })
   },
   viewMemberProjects (user) {
-    var data = qs.stringify({
-      user: user
-    })
+    let url = teamworkApi.viewMemberProjectsUrl() + '?user=' + user
     return axios({
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.viewMemberProjectsUrl(),
+      url: url,
       baseURL: baseApi.baseUrl(),
-      data: data,
       timeout: 5000,
       withCredentials: false
     })
   },
   viewMemberSummaries (user) {
-    var data = qs.stringify({
-      user: user
-    })
+    let url = teamworkApi.viewMemberSummariesUrl() + '?user=' + user
     return axios({
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.viewMemberSummariesUrl(),
+      url: url,
       baseURL: baseApi.baseUrl(),
-      data: data,
       timeout: 5000,
       withCredentials: false
     })
@@ -140,34 +121,27 @@ export default {
     })
   },
   remove (id, user) {
-    var data = qs.stringify({
-      id: id,
-      user: user
-    })
+    let url = teamworkApi.removeUrl() + '?id=' + id + '&user=' + user
     return axios({
       method: 'delete',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.removeUrl(),
+      url: url,
       baseURL: baseApi.baseUrl(),
-      data: data,
       timeout: 5000,
       withCredentials: false
     })
   },
   searchTeam (content) {
-    var data = qs.stringify({
-      content: content
-    })
+    let url = teamworkApi.searchTeamUrl() + '?content=' + content
     return axios({
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: teamworkApi.searchTeamUrl(),
+      url: url,
       baseURL: baseApi.baseUrl(),
-      data: data,
       timeout: 5000,
       withCredentials: false
     })
@@ -178,7 +152,7 @@ export default {
       id: id
     })
     return axios({
-      method: 'put',
+      method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },

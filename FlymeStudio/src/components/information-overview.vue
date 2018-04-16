@@ -50,7 +50,7 @@
           <!-- type: 1 = invite, 2 = apply -->
           <Alert class="alert-message" show-icon v-for="message in info.messages" :key="message.messageId">
             <Icon class="icon-item" type="ios-people" slot="icon" size=25></Icon>
-            <Button class="btn-user" @click="clickUser(message.senderName, message.senderId)">{{ message.senderName }}({{ message.senderNum }})</Button>
+            <Button class="btn-user">{{ message.senderName }}({{ message.senderNum }})</Button>
             <span v-if="message.type == 1"> invited you to join </span>
             <span v-else-if="message.type == 2"> applied to join </span>
             <Button v-if="message.type == 1" class="btn-team" @click="clickTeam(message.teamName, message.teamId)">{{ message.teamName }}</Button>
@@ -63,22 +63,6 @@
               </div>
             </template>
           </Alert>
-
-          <!-- modal-user -->
-          <Modal class="modal" v-model="modalUser" :closable="false" :mask-closable="false" title="User" ok-text="Ok" cancel-text="Cancel">
-            <Alert>
-              <div class="div-menu-item">
-                <Icon class="icon-item" type="person" size=20></Icon>
-                <span class="span-item">{{ user.senderName }}</span>
-              </div>
-            </Alert>
-            <Alert>
-              <div class="div-menu-item">
-                <Icon class="icon-item" type="ios-telephone" size=20></Icon>
-                <span class="span-item">{{ user.senderNum }}</span>
-              </div>
-            </Alert>
-          </Modal>
 
           <!-- modal-team -->
           <Modal class="modal" v-model="modalTeam" :closable="false" :mask-closable="false" title="Team" ok-text="Ok" cancel-text="Cancel">
@@ -168,11 +152,6 @@ export default{
         messages: []
       },
       spinShow: false,
-      user: {
-        senderName: '',
-        senderNum: ''
-      },
-      modalUser: false,
       team: {
         teamId: '',
         teamName: '',
@@ -193,18 +172,12 @@ export default{
     getInfo () {
       this.info = this.$store.state.user.userInfo
     },
-    clickUser (senderName, senderNum) {
-      this.user.senderName = senderName
-      this.user.senderNum = senderNum
-      this.modalUser = true
-    },
     clickTeam (teamName, teamId) {
       this.spinShow = true
       this.team.teamName = teamName
       this.team.teamId = teamId
       let _this = this
       teamworkApi.getTeamInfo(teamId).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.team.count = response.data.data.count
@@ -222,7 +195,6 @@ export default{
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.spinShow = false
       }).catch(function (error) {
@@ -238,7 +210,6 @@ export default{
       this.spinShow = true
       let _this = this
       imformationApi.reply(messageId, result).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             setTimeout(() => {
@@ -262,7 +233,6 @@ export default{
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.spinShow = false
       }).catch(function (error) {

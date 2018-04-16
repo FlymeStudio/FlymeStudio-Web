@@ -277,12 +277,12 @@ export default {
       }
       let _this = this
       teamworkApi.viewMemberProjects(id).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.currentProjects = response.data.data
             _this.computePercent()
             _this.clickProjectsTag(_this.activeProjectsTag)
+            _this.modalViewProjects = true
           } else {
             _this.$Notice.error({
               title: 'Failed to get data.',
@@ -294,7 +294,6 @@ export default {
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.spinShow = false
       }).catch(function (error) {
@@ -399,7 +398,6 @@ export default {
     setPermission () {
       let _this = this
       teamworkApi.setPermission(this.currentPermission.teamId, this.currentPermission.id, this.currentPermission.permission).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             for (var j = 0; j < _this.teamData.members.length; j++) {
@@ -424,7 +422,6 @@ export default {
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.modalSetPermission = false
       }).catch(function (error) {
@@ -459,7 +456,6 @@ export default {
       }
       let _this = this
       teamworkApi.remove(this.currentRemove.teamId, this.currentRemove.id).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.$Notice.success({
@@ -480,7 +476,6 @@ export default {
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.modalRemoveMember = false
       }).catch(function (error) {

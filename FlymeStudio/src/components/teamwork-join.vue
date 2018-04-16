@@ -156,7 +156,6 @@ export default{
       this.spinShow = true
       let _this = this
       teamworkApi.searchTeam(this.searchContent).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.dataTeam = response.data.data
@@ -171,7 +170,6 @@ export default{
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.spinShow = false
       }).catch(function (error) {
@@ -193,7 +191,6 @@ export default{
       this.spinShow = true
       let _this = this
       teamworkApi.join(this.info.id, this.currentData.id).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.$Notice.success({
@@ -211,7 +208,6 @@ export default{
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.spinShow = false
       }).catch(function (error) {

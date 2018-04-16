@@ -143,7 +143,6 @@ export default{
         return
       }
       teamworkApi.create(this.info.id, this.createName).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.$Notice.success({
@@ -161,7 +160,6 @@ export default{
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.password = ''
         _this.modalCreate = false

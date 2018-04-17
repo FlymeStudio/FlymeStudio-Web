@@ -383,7 +383,7 @@ export default {
       this.currentProject = {}
     },
     viewSummaries (id, name, num) {
-      this.$Message.error('Function not available.')
+      this.$Message.error('Function is not available.')
     },
     setMemberPermission (name, id) {
       this.currentPermission = {

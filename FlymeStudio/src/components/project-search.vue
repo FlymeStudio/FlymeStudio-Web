@@ -33,10 +33,10 @@
           <Layout>
             <Content :style="{padding: '15px 0', minHeight: '280px', background: '#fff'}">
               <div v-if="currentType == 1">
-                Function not available
+                Function is not available
               </div>
               <div v-if="currentType == 2">
-                Function not available
+                Function is not available
               </div>
             </Content>
           </Layout>

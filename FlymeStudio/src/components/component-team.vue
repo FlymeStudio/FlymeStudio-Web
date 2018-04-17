@@ -107,7 +107,7 @@ export default {
       this.info = this.$store.state.user.userInfo
     },
     exportSummaries (teamId) {
-      this.$Message.error('Function not available.')
+      this.$Message.error('Function is not available.')
     },
     disbandTeam (teamId, teamName) {
       this.currentDisband = {

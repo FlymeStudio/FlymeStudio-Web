@@ -23,10 +23,10 @@ export default {
     var data = qs.stringify({
       user: user,
       type: type,
-      date: date,
+      date: date.getTime(),
       title: title,
       content: content,
-      plans: plans
+      plans: JSON.stringify(plans)
     })
     return axios({
       method: 'post',
@@ -45,10 +45,10 @@ export default {
       id: id,
       user: user,
       type: type,
-      date: date,
+      date: date.getTime(),
       title: title,
       content: content,
-      plans: plans
+      plans: JSON.stringify(plans)
     })
     return axios({
       method: 'put',

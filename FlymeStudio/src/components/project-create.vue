@@ -175,7 +175,7 @@ export default{
       ],
       formItem: {
         type: '',
-        date: '',
+        date: null,
         title: '',
         content: '',
         plans: []
@@ -334,7 +334,6 @@ export default{
     save () {
       let _this = this
       projectApi.create(this.info.id, this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.$Notice.success({
@@ -353,7 +352,6 @@ export default{
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.modalSave = false
       }).catch(function (error) {

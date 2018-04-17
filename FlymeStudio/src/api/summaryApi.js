@@ -23,7 +23,7 @@ export default {
     var data = qs.stringify({
       user: user,
       type: type,
-      date: date,
+      date: date.getTime(),
       title: title,
       content: content
     })
@@ -44,7 +44,7 @@ export default {
       id: id,
       user: user,
       type: type,
-      date: date,
+      date: date.getTime(),
       title: title,
       content: content
     })

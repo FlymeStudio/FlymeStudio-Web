@@ -16,31 +16,31 @@
         <Content :style="{padding: '15px', minHeight: '280px', background: '#fff'}">
 
           <Menu class="menu" mode="horizontal" theme="light" @on-select="clickTag" active-name="0">
-            <MenuItem class="menu-item" name="0">
+            <MenuItem class="menu-item" name='0'>
             <div class="div-menu-item">
               <Icon class="icon-item" type="bookmark" size=20></Icon>
               <span class="span-item">All</span>
             </div>
             </MenuItem>
-            <MenuItem class="menu-item" name="1">
+            <MenuItem class="menu-item" name='1'>
             <div class="div-menu-item">
               <Icon class="icon-item" type="bookmark" size=20></Icon>
               <span class="span-item">Yearly</span>
             </div>
             </MenuItem>
-            <MenuItem class="menu-item" name="2">
+            <MenuItem class="menu-item" name='2'>
             <div class="div-menu-item">
               <Icon class="icon-item" type="bookmark" size=20></Icon>
               <span class="span-item">Monthly</span>
             </div>
             </MenuItem>
-            <MenuItem class="menu-item" name="3">
+            <MenuItem class="menu-item" name='3'>
             <div class="div-menu-item">
               <Icon class="icon-item" type="bookmark" size=20></Icon>
               <span class="span-item">Weekly</span>
             </div>
             </MenuItem>
-            <MenuItem class="menu-item" name="4">
+            <MenuItem class="menu-item" name='4'>
             <div class="div-menu-item">
               <Icon class="icon-item" type="bookmark" size=20></Icon>
               <span class="span-item">Daily</span>
@@ -171,7 +171,7 @@
               </Modal>
 
               <!-- modal-modify -->
-              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modifyModal" @on-ok="submitModify" loading ok-text="Modify" cancel-text="Cancel">
+              <Modal class-name="vertical-center-modal" class="modal" width="90%" :closable="true" :mask-closable="false" v-model="modifyModal" @on-ok="submitModify" :loading="loadingModify" ok-text="Modify" cancel-text="Cancel">
 
                 <Form class="form" ref="formItem" :model="formItem">
                   <FormItem>
@@ -358,7 +358,8 @@ export default{
       },
       editTag: '',
       editGoal: '',
-      loadingDelete: false
+      loadingDelete: false,
+      loadingModify: false
     }
   },
   components: {
@@ -374,10 +375,12 @@ export default{
       this.spinShow = true
       let _this = this
       projectApi.get(this.info.id).then(function (response) {
-        console.log('response=' + response)
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.datas = response.data.data
+            for (var i = 0; i < _this.datas.length; i++) {
+              _this.datas[i].date = new Date(_this.datas[i].date)
+            }
             _this.computePercent()
             _this.clickTag(_this.currentTag)
           } else {
@@ -391,7 +394,6 @@ export default{
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
         }
         _this.spinShow = false
       }).catch(function (error) {
@@ -434,7 +436,7 @@ export default{
         }
       } else {
         for (let i = 0; i < this.datas.length; i++) {
-          if (this.datas[i].type === name) {
+          if ('' + this.datas[i].type === name) {
             _total++
             this.datas[i].show = true
             if (this.datas[i].percent === 100) {
@@ -464,10 +466,11 @@ export default{
           // 此拷贝方式破坏了date对象的结构，其中包含的时区设置丢失，所以必须采用date重新创建一次
           // 参考文献[使用JSON序列化实现伪深克隆时Date对象时区问题的解决方案](http://blog.csdn.net/zy13608089849/article/details/79625403)
           this.formItem = JSON.parse(JSON.stringify(this.datas[i]))
-          this.formItem.date = new Date(this.formItem.date)
           break
         }
       }
+      this.formItem.date = new Date(this.formItem.date)
+      this.formItem.type = '' + this.formItem.type
       let _this = this
       setTimeout(() => {
         _this.modifyModal = true
@@ -508,9 +511,9 @@ export default{
       this.editGoal = ''
     },
     submitModify () {
+      this.loadingModify = true
       let _this = this
-      projectApi.modify(this.formItem.id, this.info.id, this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
-        console.log('response=' + response)
+      projectApi.modify(this.formItem.id, this.info.id, this.formItem.type, this.formItem.date.getTime(), this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.$Notice.success({
@@ -524,19 +527,21 @@ export default{
               title: 'Modify failed.',
               desc: ''
             })
+            _this.loadingModify = false
           }
         } else {
           _this.$Notice.error({
             title: 'HTTP request error.',
             desc: ''
           })
-          console.log('status=' + response.status)
+          _this.loadingModify = false
         }
       }).catch(function (error) {
         _this.$Notice.error({
           title: 'HTTP request error.',
           desc: ''
         })
+        _this.loadingModify = false
         console.log(error)
       })
     },
@@ -544,7 +549,6 @@ export default{
       this.loadingDelete = true
       let _this = this
       projectApi.delete(this.formItem.id, this.info.id).then(function (response) {
-        console.log('response=' + response)
         _this.loadingDelete = false
         if (response.status === 200) {
           if (response.data.result === true) {
@@ -567,7 +571,6 @@ export default{
             desc: ''
           })
           _this.loadingDelete = true
-          console.log('status=' + response.status)
         }
       }).catch(function (error) {
         _this.$Notice.error({

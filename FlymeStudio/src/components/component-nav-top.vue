@@ -81,7 +81,7 @@ export default {
           title: 'Please sign in.',
           desc: ''
         })
-        // this.$router.push('/')
+        this.$router.push('/')
       } else {
         this.info = this.$store.state.user.userInfo
       }

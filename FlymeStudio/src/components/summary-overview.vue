@@ -20,7 +20,7 @@
             <Icon class="icon-spin" type="load-c" size=50></Icon>
           </Spin>
 
-          Function not available
+          Function is not available
         </Content>
       </Layout>
 

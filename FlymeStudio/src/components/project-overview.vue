@@ -513,7 +513,7 @@ export default{
     submitModify () {
       this.loadingModify = true
       let _this = this
-      projectApi.modify(this.formItem.id, this.info.id, this.formItem.type, this.formItem.date.getTime(), this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
+      projectApi.modify(this.formItem.id, this.info.id, this.formItem.type, this.formItem.date, this.formItem.title, this.formItem.content, this.formItem.plans).then(function (response) {
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.$Notice.success({

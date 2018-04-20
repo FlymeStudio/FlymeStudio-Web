@@ -214,7 +214,7 @@ export default{
           if (response.data.result === true) {
             setTimeout(() => {
               _this.$store.dispatch('doDeleteMsg', messageId)
-              _this.info = this.$store.state.user.userInfo
+              _this.info = _this.$store.state.user.userInfo
               _this.$Notice.success({
                 title: 'Reply successful.',
                 desc: ''

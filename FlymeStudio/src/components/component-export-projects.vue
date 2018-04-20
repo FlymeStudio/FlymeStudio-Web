@@ -327,6 +327,9 @@ export default {
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.dataResource = response.data.data
+            for (var i = 0; i < _this.dataResource.length; i++) {
+              _this.dataResource[i].date = _this.formatDate(new Date(_this.dataResource[i].date))
+            }
             _this.computePercent(_this.selectMemberId)
           } else {
             _this.$Notice.error({

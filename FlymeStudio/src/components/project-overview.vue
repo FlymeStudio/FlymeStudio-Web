@@ -161,7 +161,7 @@
                       <Progress class="detail-progress" v-if="item.percent == 100" :percent="100" :stroke-width="18"></Progress>
                       <Progress class="detail-progress" v-else :percent="item.percent" :stroke-width="18" status="active"></Progress>
                       <div class="div-plan">
-                        <Tag class="tag-tag" type="dot" color="blue">{{ item.tag }}</Tag>
+                        <Tag class="tag-tag" type="border" color="blue">{{ item.tag }}</Tag>
                         <Input class="input-goal" type="text" :readonly="true" v-model="item.goal"></Input>
                       </div>
                     </Alert>
@@ -701,8 +701,10 @@ export default{
 }
 
 .tag-tag {
-  width  : 100px;
-  display: inline-block;
+  width     : 100px;
+  margin    : auto 5px auto 0px;
+  font-size : 15px;
+  display   : inline-block;
 }
 
 .input-goal {

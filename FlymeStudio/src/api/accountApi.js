@@ -25,11 +25,11 @@ export default {
   },
   signUp (num, name, tel, email, password) {
     var data = qs.stringify({
-      num: num,
-      name: name,
-      tel: tel,
-      email: email,
-      password: password
+      num: num.trim(),
+      name: name.trim(),
+      tel: tel.trim(),
+      email: email.trim(),
+      password: password.trim()
     })
     return axios({
       method: 'post',
@@ -61,10 +61,10 @@ export default {
   },
   retrieve (num, tel, name, email) {
     var data = qs.stringify({
-      num: num,
-      tel: tel,
-      name: name,
-      email: email
+      num: num.trim(),
+      tel: tel.trim(),
+      name: name.trim(),
+      email: email.trim()
     })
     return axios({
       method: 'post',

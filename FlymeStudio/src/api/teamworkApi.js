@@ -33,7 +33,7 @@ export default {
     })
   },
   searchUser (content) {
-    let url = teamworkApi.searchUserUrl() + '?content=' + content
+    let url = teamworkApi.searchUserUrl() + '?content=' + content.trim()
     return axios({
       method: 'get',
       headers: {
@@ -134,7 +134,7 @@ export default {
     })
   },
   searchTeam (content) {
-    let url = teamworkApi.searchTeamUrl() + '?content=' + content
+    let url = teamworkApi.searchTeamUrl() + '?content=' + content.trim()
     return axios({
       method: 'get',
       headers: {
@@ -166,7 +166,7 @@ export default {
   create (user, name) {
     var data = qs.stringify({
       user: user,
-      name: name
+      name: name.trim()
     })
     return axios({
       method: 'post',

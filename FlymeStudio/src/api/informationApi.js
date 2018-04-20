@@ -9,10 +9,10 @@ export default {
   modify (id, name, tel, email, password) {
     var data = qs.stringify({
       id: id,
-      name: name,
-      tel: tel,
-      email: email,
-      password: password
+      name: name.trim(),
+      tel: tel.trim(),
+      email: email.trim(),
+      password: password.trim()
     })
     return axios({
       method: 'put',

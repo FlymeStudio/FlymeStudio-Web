@@ -24,7 +24,7 @@ export default {
       user: user,
       type: type,
       date: date.getTime(),
-      title: title,
+      title: title.trim(),
       content: content
     })
     return axios({
@@ -45,7 +45,7 @@ export default {
       user: user,
       type: type,
       date: date.getTime(),
-      title: title,
+      title: title.trim(),
       content: content
     })
     return axios({

@@ -280,6 +280,9 @@ export default {
         if (response.status === 200) {
           if (response.data.result === true) {
             _this.currentProjects = response.data.data
+            for (var i = 0; i < _this.currentProjects.length; i++) {
+              _this.currentProjects[i].date = new Date(_this.currentProjects[i].date)
+            }
             _this.computePercent()
             _this.clickProjectsTag(_this.activeProjectsTag)
             _this.modalViewProjects = true

@@ -24,7 +24,7 @@ export default {
       user: user,
       type: type,
       date: date.getTime(),
-      title: title,
+      title: title.trim(),
       content: content,
       plans: JSON.stringify(plans)
     })
@@ -46,7 +46,7 @@ export default {
       user: user,
       type: type,
       date: date.getTime(),
-      title: title,
+      title: title.trim(),
       content: content,
       plans: JSON.stringify(plans)
     })

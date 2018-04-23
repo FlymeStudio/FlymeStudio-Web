@@ -467,7 +467,6 @@ export default {
             })
             _this.currentRemove = []
             _this.password = ''
-            _this.getTeams()
           } else {
             _this.$Notice.error({
               title: 'Remove failed.',
